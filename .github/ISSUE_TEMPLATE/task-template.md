@@ -14,3 +14,7 @@ A description of the task implementation.
 These requirements must be fulfilled for this issue to be closed / for the task to be considered finished.
 - [ ] Requirement 1
 - [ ] Requirement 2
+
+## Task dependencies
+This task requires these tasks to be complete:
+None
