@@ -16,5 +16,5 @@ These requirements must be fulfilled for this issue to be closed / for the task 
 - [ ] Requirement 2
 
 ## Task dependencies
-This task requires these tasks to be complete:
+This task requires these tasks to be completed:
 None
