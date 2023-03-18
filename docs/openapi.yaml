@@ -1,0 +1,875 @@
+openapi: 3.0.3
+info:
+  title: let API - OpenAPI 3.0
+  description: |-
+    A simple API for listing items for sale. 
+    Some useful links:
+    - [The GitHub repository](https://github.com/BeatsuDev/let)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: vkbugge@hotmail.com
+  license:
+    name: MIT License
+    url: 'https://opensource.org/licenses/MIT'
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080/
+  - url: https://api.let.no/
+tags:
+  - name: listings
+    description: Items for sale
+  - name: image
+    description: Find and create images
+  - name: category
+    description: Find and create categories
+  - name: chat
+    description: Arrange the sale of an item
+  - name: user
+    description: Operations about user
+paths:
+  /listing:
+    get:
+      tags:
+        - listings
+      summary: Retrieve any listings matching a filter
+      operationId: getListings
+      parameters:
+        - name: searchString
+          in: query
+          description: A string to match listings by
+          example: Bacon
+          required: false
+          explode: true
+          schema:
+           type: string
+        - name: location
+          in: query
+          description: The center of the search
+          required: false
+          explode: true
+          schema:
+            $ref: '#/components/schemas/Position'
+        - name: radius
+          in: query
+          description: The distance from the center of the search
+          required: false
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: categories
+          in: query
+          required: false
+          explode: true
+          schema:
+            type: array
+            items: 
+              type: integer
+              format: id
+        - name: user
+          in: query
+          required: false
+          explode: true
+          example: 10
+          schema:
+            type: integer
+            format: id
+        - name: favorites
+          in: query
+          example: 'false'
+          required: false
+          explode: true
+          schema:
+            type: boolean
+        - name: state
+          in: query
+          example: ['active']
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListingState'
+        - name: limit
+          in: query
+          example: 50
+          required: false
+          explode: true
+          schema: 
+            type: integer
+        - name: offset
+          in: query
+          example: 0
+          required: false
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Listing'
+                  next:
+                    type: string
+                    format: url
+                  prev:
+                    type: string
+                    format: url
+                  numberOfPages:
+                    type: integer
+                    example: 4
+                  pageNumber:
+                    type: integer
+                    example: 3
+        '204':
+          description: 'No listings matched the criteria.'
+          content:
+            application/json:
+              schema:
+                type: array
+                example: []
+                items:
+                  type: object
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    post:
+      tags:
+        - listings
+      summary: Create a new listing.
+      operationId: createListing
+      requestBody:
+        description: A new listing.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateListing'
+      responses:
+        '201':
+          description: 'Listing created successfully!'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    put:
+      tags:
+        - listings
+      summary: Update a listing
+      operationId: updateListing
+      requestBody:
+        description: Update an existing listing
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateListing'
+      responses:
+        '200':
+          description: 'Listing updated.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+        '404':
+          description: The listing does not exist
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /listing/{id}:
+    get:
+      tags:
+        - listings
+      summary: Retrieve an existing listing
+      description: Get a listing by ID
+      operationId: getListing
+      parameters:
+        - name: id
+          description: The ID of the listing you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+        '404':
+          description: Listing not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - listings
+      summary: Delete an existing listing.
+      description: Delete a listing by ID.
+      operationId: deleteListing
+      parameters:
+        - name: id
+          description: The id of the listing you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+        '403':
+          description: Users can only delete their own listings
+        '404':
+          description: Listing not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /image:
+    post:
+      tags:
+        - image
+      summary: Upload an image.
+      description: Upload a new image.
+      requestBody:
+        description: Upload a new image (base64 encoded).
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Image uploaded successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /image/{id}:
+    get:
+      tags:
+        - image
+      summary: Retrieve an image.
+      description: Retrieve an existing image
+      parameters:
+        - name: id
+          description: The id of the image to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully found image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Image not found
+  /category:
+    get:
+      tags:
+        - category
+      summary: Retrieve all categories
+      description: Retrieve all categories
+      operationId: getCategories
+      responses:
+        '200':
+          description: Successfully found categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        203:
+          description: No categories found.
+          content:
+            application/json:
+              schema:
+                type: array
+                example: []
+                items:
+                  $ref: '#/components/schemas/Category'
+    post: 
+      tags:
+        - category
+      summary: Create a new category
+      description: Create a new category
+      operationId: createCategory
+      requestBody:
+        description: A new category
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategory'
+      responses:
+        '201':
+          description: 'Category created successfully!'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /category/{id}:
+    get:
+      tags:
+        - category
+      summary: Retrieve an existing category
+      description: Get a category by ID
+      operationId: getCategory
+      parameters:
+        - name: id
+          description: The id of the category you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+    delete:
+      tags:
+        - category
+      summary: Delete an existing category
+      description: Delete a category by ID
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          description: The id of the category you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '403':
+          description: Users can only delete their own categories
+        '404':
+          description: Category not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /chat:
+    get:
+      tags:
+        - chat
+      summary: Retrieve all chats
+      description: Retrieve all chats
+      operationId: getChats
+      responses:
+        '200':
+          description: Successfully found chats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chat'
+        203:
+          description: No chats found
+          content:
+            application/json:
+              schema:
+                type: array
+                example: []
+                items:
+                  $ref: '#/components/schemas/Chat'
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    post: 
+      tags:
+        - chat
+      summary: Create a new chat
+      description: Create a new chat
+      operationId: createChat
+      requestBody:
+        description: A new chat.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChat'
+      responses:
+        '201':
+          description: Chat created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /chat/{id}:
+    get:
+      tags:
+        - chat
+      summary: Retrieve an existing chat
+      description: Get a chat by ID
+      operationId: getChat
+      parameters:
+        - name: id
+          description: The id of the chat you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '404':
+          description: Chat not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    post:
+      tags:
+        - chat
+      summary: Send a message to an existing chat
+      description: Send a message to an existing chat
+      operationId: sendMessage
+      parameters:
+        - name: id
+          description: The id of the chat to send to
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: A new message
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessage'
+      responses:
+        '201':
+          description: Message added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '403':
+          description: Users can only send messages to chats they are a part of
+        '404':
+          description: Chat not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '409':
+          description: User already exists
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: This can only be done by the logged in user or admin
+      operationId: updateUser
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []
+  /user/session:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+            Set-Cookie:
+              description: Cookie to be used for authentication.
+              schema:
+                type: string
+                example: 'Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM'
+        '400':
+          description: Invalid username/password supplied
+    delete:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      responses:
+        '200':
+          headers:
+            Set-Cookie:
+              description: Unset cookie
+              schema:
+                type: string
+                example: 'Authorization=; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+          description: Successful operation
+      security: 
+        - cookieAuth: []
+        - bearerAuth: []
+    put:
+      tags:
+        - user
+      summary: Renew session
+      description: ''
+      operationId: renewSession
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+            Set-Cookie:
+              description: Cookie to be used for authentication.
+              schema:
+                type: string
+                example: 'Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM'
+        '400':
+          description: Invalid session
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get user by id
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: id
+          in: path
+          description: The id of the user to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user or admin
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: The id of the user to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+components:
+  schemas:
+    CreateListing:
+      type: object
+      properties:
+        summary:
+          type: string
+        description:
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Image'
+        gallery:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        location:
+          $ref: '#/components/schemas/Position'
+        price:
+          type: integer
+          description: Price in øre
+          example: 26300
+    UpdateListing:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 1337
+            state:
+              $ref: '#/components/schemas/ListingState'
+        - $ref: '#/components/schemas/CreateListing'
+    Listing:
+      allOf:
+        - type: object
+          properties:
+            sellerId:
+              type: integer
+              format: int64
+              example: 5678
+            created:
+              type: string
+              format: date-time
+            sold:
+              type: string
+              format: date-time
+        - $ref: '#/components/schemas/UpdateListing'
+    ListingState:
+      type: string
+      enum:
+        - sold
+        - archived
+        - active
+        - deleted
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+    Position:
+      type: object
+      properties:
+        longitude:
+          type: number
+          example: 35.929673
+        latitude:
+          type: number
+          example: -78.948237
+    CreateChat:
+      type: object
+      properties:
+        listingId:
+          type: integer
+          format: int64
+          example: 73
+    Chat:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 832
+            listingId:
+              type: integer
+              format: int64
+              example: 378
+            buyerId:
+              type: integer
+              format: int64
+              example: 93
+            messages:
+              type: array
+              items:
+                $ref: '#/components/schemas/Message'
+        - $ref: '#/components/schemas/CreateChat'
+    CreateMessage:
+      type: object
+      properties:
+        text:
+          type: string
+        chat:
+          type: integer
+          format: int64
+          example: 67
+    Message:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 32
+            sent:
+              type: string
+              format: date-time
+            sender:
+              type: string
+              enum:
+                - buyer
+                - seller
+        - $ref: '#/components/schemas/CreateMessage'
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        petId:
+          type: integer
+          format: int64
+          example: 198772
+        quantity:
+          type: integer
+          format: int32
+          example: 7
+        shipDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: Order Status
+          example: approved
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          type: boolean
+      xml:
+        name: order
+    CreateCategory:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Electronics
+    Category:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 10
+        - $ref: '#/components/schemas/CreateCategory'
+    CreateUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: example@example.org
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        password:
+          type: string
+          example: password123
+    User:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 10
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+      
