@@ -20,3 +20,15 @@ main {
 .spacer {
   flex: 1;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
