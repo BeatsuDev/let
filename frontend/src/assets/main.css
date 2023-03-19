@@ -1,5 +1,5 @@
 @import "./base.css";
-@import './text.css';
+@import "./text.css";
 
 #app {
   margin: 0 auto;
@@ -12,10 +12,9 @@
 }
 
 .container {
-  display:flex;
+  display: flex;
 }
 
 .spacer {
-    flex: 1;
+  flex: 1;
 }
-
