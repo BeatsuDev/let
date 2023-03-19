@@ -32,7 +32,7 @@ const item = {
     <div id="images-section">
       <div id="main-image" :style="{backgroundImage: `url(${item.imageUrls[0]})`}"></div>
       <div id="other-images">
-        <div v-for="image in item.imageUrls" :style="{backgroundImage: `url(${image})`}"></div>
+        <div :key="'image-' + index" v-for="(image, index) in item.imageUrls" :style="{backgroundImage: `url(${image})`}"></div>
       </div>
     </div>
 
