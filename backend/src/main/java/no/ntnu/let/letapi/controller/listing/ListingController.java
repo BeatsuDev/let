@@ -57,7 +57,7 @@ public class ListingController {
 
         // If no listings matched the criteria, return a 204 No Content
         if (listings.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No listings matched the criteria");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         // Build the next and previous page URLs
