@@ -12,11 +12,12 @@ const { item } = toRefs(props);
 const item = {
   imageUrls: [
     "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg"
+    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
+    "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
   ],
   title: "Plante",
   shortDescription: "En kul plante.",
-  description: "Dette er en veldig kul plante. Du vil ha denne! Jeg vet du vil!!",
+  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac tellus dictum, ultrices odio vitae, mattis magna. Nunc nec ultrices sapien. Nam sodales consectetur hendrerit. Morbi porttitor dolor urna, convallis semper tellus porta in. Donec id mauris id ligula iaculis iaculis eget eu risus. Curabitur malesuada, ante ut blandit maximus, purus eros ultrices enim, at convallis mi nibh ut dui. Phasellus feugiat lectus ut faucibus condimentum. Mauris molestie et justo et dignissim. Aliquam facilisis bibendum dolor, nec tempor est pretium et. Nulla vulputate hendrerit commodo. Nullam posuere magna nulla, a bibendum felis rutrum eget. Nunc mollis dignissim efficitur. Proin porta metus placerat arcu suscipit ullamcorper. Vivamus porta, mi eu iaculis finibus, odio dolor condimentum arcu, ac aliquam velit urna et enim. Maecenas at lacus a ex malesuada tristique. Curabitur tempus metus et dui ultricies tincidunt. Ut iaculis justo non orci consectetur dignissim. Suspendisse potenti. Nunc magna ipsum, consequat nec metus id, vulputate rutrum urna. Quisque augue nulla, tincidunt non dolor quis, viverra sagittis diam. Phasellus placerat mollis gravida. Ut nibh arcu, pulvinar quis elit et, sagittis consectetur purus. Sed a eros ante.`,
   price: 500,
   location: "Oslo, Høybråten",
   category: "Stygge planter",
@@ -70,4 +71,20 @@ const item = {
 
 <style scoped>
 
+main {
+  display: flex;
+  flex-direction: row;
+}
+.images-section {
+  flex: 1;
+  padding: 2rem;
+}
+
+#main-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
