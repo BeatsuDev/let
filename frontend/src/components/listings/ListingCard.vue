@@ -1,0 +1,34 @@
+<template>
+  <div class="card">
+    <img
+      class="thumbnail"
+      src="https://assets.api.uizard.io/api/cdn/stream/c2f78838-2c8f-47b4-ad29-7547ae6e294e.jpg"
+      alt="thumbnail"
+    />
+    <div class="text-title">{{ props.value.title }}</div>
+  </div>
+</template>
+<script lang="ts" setup>
+import { Listing } from "@/types/listing";
+
+const props = defineProps({
+  value: {
+    type: Listing,
+    required: true,
+  },
+});
+</script>
+<style scoped>
+.card {
+  width: 20rem;
+  height: 20rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+</style>
