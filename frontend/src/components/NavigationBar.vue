@@ -10,7 +10,7 @@ import ProfileIcon from "@/components/icons/ProfileIcon.vue";
 
 <template>
   <header>
-    <RouterLink id="navbar-logo" to="/">let.no</RouterLink>
+    <RouterLink id="navbar-logo" to="/">letno</RouterLink>
     <nav>
       <RouterLink to="/admin"> <AdminIcon /> Admin </RouterLink>
       <RouterLink to="/chats"> <ChatIcon /> Chats </RouterLink>
@@ -50,7 +50,6 @@ a:hover {
 }
 
 #navbar-logo {
-  font-weight: bold;
   margin-left: 1rem;
   text-decoration: none;
 }
