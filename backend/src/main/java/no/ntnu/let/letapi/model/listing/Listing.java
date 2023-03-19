@@ -29,6 +29,9 @@ public class Listing {
     private Date created;
 
     @Column
+    private Date sold;
+
+    @Column
     private int price;
 
     @OneToOne
@@ -42,4 +45,7 @@ public class Listing {
 
     @ManyToMany
     private List<Image> gallery;
+
+    @Enumerated(EnumType.STRING)
+    private ListingState state;
 }
