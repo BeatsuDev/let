@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: "/testItemDetail",
       name: "testItemDetail",
-      component: () => import("../views/ItemDetailsPage.vue"),
+      component: () => import("../views/ListingDetailsView.vue"),
     },
     {
       path: "/:pathMatch(.*)*",
