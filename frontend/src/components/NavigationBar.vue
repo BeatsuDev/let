@@ -7,7 +7,7 @@ import { RouterLink } from "vue-router";
 <template>
   <header>
     <nav>
-  <RouterLink to="/">Let.no</RouterLink>
+      <RouterLink to="/">Let.no</RouterLink>
       <RouterLink to="/admin">Admin</RouterLink>
       <RouterLink to="/chats">Chats</RouterLink>
       <RouterLink to="/create-listing">New Listing</RouterLink>
