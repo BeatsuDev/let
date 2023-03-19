@@ -34,6 +34,9 @@ public class Listing {
     @Column
     private int price;
 
+    @ManyToOne
+    private Category category;
+
     @OneToOne
     private Location location;
 
