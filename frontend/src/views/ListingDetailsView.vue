@@ -30,11 +30,9 @@ const item = {
 <template>
   <main>
     <div id="images-section">
-      <div id="main-image">
-        <img :src="item.imageUrls[0]" />
-      </div>
+      <div id="main-image" :style="{backgroundImage: `url(${item.imageUrls[0]})`}"></div>
       <div id="other-images">
-        <img v-for="image in item.imageUrls" :src="image" />
+        <div v-for="image in item.imageUrls" :style="{backgroundImage: `url(${image})`}"></div>
       </div>
     </div>
 
@@ -75,16 +73,41 @@ main {
   display: flex;
   flex-direction: row;
 }
-.images-section {
+#images-section {
+  flex: 1;
+  padding: 2rem;
+  overflow-x: scroll;
+}
+
+#details-section {
   flex: 1;
   padding: 2rem;
 }
 
 #main-image {
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+#other-images {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+#other-images > div {
+  width: 100px;
+  height: 100px;
+  margin-right: .5rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 </style>
