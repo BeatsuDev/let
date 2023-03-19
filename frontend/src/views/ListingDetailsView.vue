@@ -140,18 +140,18 @@ main {
 
 .top-bar > h1 {
   flex: 1;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 500;
   margin: 0;
 }
 
 .top-bar > #edit-btn {
   background-color: #3B8905;
-  padding: 0.2rem 2rem;
+  padding: 0.3rem 2rem;
   color: white;
   cursor: pointer;
   font-family: Inter;
-  font-size: .6rem;
+  font-size: .8rem;
   font-weight: bold;
   margin-right: 1rem;
 }
@@ -164,7 +164,7 @@ main {
 }
 
 .price-bar > #price {
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 500;
   margin-right: 1rem;
 }
@@ -235,5 +235,19 @@ main {
   font-size: 1.2rem;
   font-weight: normal;
   margin: 20px 0 0 10px;
+}
+
+@media (max-width: 1100px) {
+  main {
+    flex-direction: column;
+  }
+
+  #images-section {
+    max-width: 100%;
+  }
+
+  #details-section {
+    max-width: 100%;
+  }
 }
 </style>
