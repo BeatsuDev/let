@@ -37,14 +37,17 @@ const item = {
     </div>
 
     <div id="details-section">
+
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
         <div id="edit-btn">Edit</div>
         <div id="bookmark-btn">Bookmark</div>
       </div>
+
       <div class="price-bar">
         <div id="price">{{ item.price }}kr</div>
       </div>
+
       <div class="misc-info-bar">
         <div class="misc-bar-left">
           <h2>Category:</h2>
@@ -59,10 +62,12 @@ const item = {
           <p id="location">{{ item.location }}</p>
         </div>
       </div>
+
       <div class="description-bar">
         <h2>Description</h2>
         <p id="description">{{ item.description }}</p>
       </div>
+
     </div>
   </main>
 </template>
