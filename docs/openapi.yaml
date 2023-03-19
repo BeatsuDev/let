@@ -48,7 +48,7 @@ paths:
           required: false
           explode: true
           schema:
-            $ref: '#/components/schemas/Position'
+            $ref: '#/components/schemas/Location'
         - name: radius
           in: query
           description: The distance from the center of the search
@@ -634,7 +634,7 @@ paths:
         - user
       summary: Get user by id
       description: ''
-      operationId: getUserByName
+      operationId: getUserById
       parameters:
         - name: id
           in: path
@@ -688,7 +688,7 @@ components:
           items:
             $ref: '#/components/schemas/Image'
         location:
-          $ref: '#/components/schemas/Position'
+          $ref: '#/components/schemas/Location'
         price:
           type: integer
           description: Price in øre
@@ -706,6 +706,7 @@ components:
         - $ref: '#/components/schemas/CreateListing'
     Listing:
       allOf:
+        - $ref: '#/components/schemas/UpdateListing'
         - type: object
           properties:
             sellerId:
@@ -718,7 +719,6 @@ components:
             sold:
               type: string
               format: date-time
-        - $ref: '#/components/schemas/UpdateListing'
     ListingState:
       type: string
       enum:
@@ -731,7 +731,7 @@ components:
       properties:
         id:
           type: integer
-    Position:
+    Location:
       type: object
       properties:
         longitude:
@@ -740,6 +740,9 @@ components:
         latitude:
           type: number
           example: -78.948237
+        name:
+          type: string
+          example: 'Trondheim, Norway'
     CreateChat:
       type: object
       properties:
@@ -794,36 +797,6 @@ components:
                 - buyer
                 - seller
         - $ref: '#/components/schemas/CreateMessage'
-    Order:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-      xml:
-        name: order
     CreateCategory:
       type: object
       properties:
@@ -863,6 +836,7 @@ components:
               type: integer
               format: int64
               example: 10
+        - $ref: '#/components/schemas/CreateUser'
   securitySchemes:
     bearerAuth:
       type: http
