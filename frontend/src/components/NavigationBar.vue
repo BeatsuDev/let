@@ -13,11 +13,8 @@ import ProfileIcon from "@/components/icons/ProfileIcon.vue";
     <RouterLink id="navbar-logo" to="/">let.no</RouterLink>
     <nav>
       <RouterLink to="/admin"> <AdminIcon /> Admin </RouterLink>
-
       <RouterLink to="/chats"> <ChatIcon /> Chats </RouterLink>
-
       <RouterLink to="/create-listing"> <CreateListingIcon /> New listing </RouterLink>
-
       <RouterLink to="/profile"> <ProfileIcon /> Profile </RouterLink>
     </nav>
   </header>
@@ -26,10 +23,10 @@ import ProfileIcon from "@/components/icons/ProfileIcon.vue";
 <style scoped>
 header {
   display: flex;
-  line-height: 3rem;
+  line-height: 2.5rem;
   padding: 0.5rem;
-  height: 3rem;
-  font-size: 1.5rem;
+  height: 2.5rem;
+  font-size: 1.2rem;
 }
 
 nav {
@@ -59,7 +56,7 @@ a:hover {
 }
 
 svg {
-  height: 1.2rem !important;
+  height: 1rem !important;
   margin: 0 0.3rem;
 }
 </style>
