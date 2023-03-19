@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/listing")
+@RestController
+@RequestMapping("/listing")
 public class ListingController {
     @GetMapping("/")
     public ResponseEntity<Object> getListings(

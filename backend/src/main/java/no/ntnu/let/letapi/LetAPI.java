@@ -1,12 +1,14 @@
 package no.ntnu.let.letapi;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Main class for the LetAPI application.
  */
-public class LetAPI extends SpringApplication {
+@SpringBootApplication
+public class LetAPI {
     public static void main(String[] args) {
-        run(LetAPI.class, args);
+        SpringApplication.run(LetAPI.class, args);
     }
 }

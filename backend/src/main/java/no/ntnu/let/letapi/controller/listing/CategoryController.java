@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/category")
+@RestController
+@RequestMapping("/category")
 public class CategoryController {
     @GetMapping("/")
     public ResponseEntity<Object> getCategories() {
