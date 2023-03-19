@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/listing")
 public class ListingController {
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> getListings(
             @RequestParam String searchString,
             @RequestParam LocationDTO locationDTO,
@@ -26,12 +26,12 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Object> createListing(@RequestBody ListingDTO listingDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<Object> updateListing(@RequestBody ListingDTO listingDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }

@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> getChats() {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Object> createChat(ChatDTO chatDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/image")
 public class ImageController {
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Object> uploadImage() {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }

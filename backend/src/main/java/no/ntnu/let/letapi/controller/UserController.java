@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody UserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> updateUser(@RequestBody UserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }

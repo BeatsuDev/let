@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> getCategories() {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Object> createCategory(@RequestBody CategoryDTO categoryDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
