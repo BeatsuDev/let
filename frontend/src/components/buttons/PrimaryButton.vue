@@ -1,5 +1,5 @@
 <template>
-  <Button  :disabled="props.disabled">{{props.value}}</Button>
+  <Button :disabled="props.disabled">{{ props.value }}</Button>
 </template>
 <script lang="ts" setup>
 const props = defineProps({

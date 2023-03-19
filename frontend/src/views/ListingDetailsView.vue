@@ -23,21 +23,24 @@ const item = {
   category: "Stygge planter",
   seller: {
     name: "Arunan Gnanasekaran",
-  }
-}
+  },
+};
 </script>
 
 <template>
   <main>
     <div id="images-section">
-      <div id="main-image" :style="{backgroundImage: `url(${item.imageUrls[0]})`}"></div>
+      <div id="main-image" :style="{ backgroundImage: `url(${item.imageUrls[0]})` }"></div>
       <div id="other-images">
-        <div :key="'image-' + index" v-for="(image, index) in item.imageUrls" :style="{backgroundImage: `url(${image})`}"></div>
+        <div
+          :key="'image-' + index"
+          v-for="(image, index) in item.imageUrls"
+          :style="{ backgroundImage: `url(${image})` }"
+        ></div>
       </div>
     </div>
 
     <div id="details-section">
-
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
         <div id="edit-btn">Edit</div>
@@ -67,13 +70,11 @@ const item = {
         <h2>Description</h2>
         <p id="description">{{ item.description }}</p>
       </div>
-
     </div>
   </main>
 </template>
 
 <style scoped>
-
 main {
   display: flex;
   flex-direction: row;
@@ -110,7 +111,7 @@ main {
 #other-images > div {
   width: 100px;
   height: 100px;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
