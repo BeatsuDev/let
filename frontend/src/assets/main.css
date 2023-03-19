@@ -1,14 +1,13 @@
 @import "./base.css";
 @import "./text.css";
 
-#app {
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+body {
+  margin: 0;
+  padding: 0;
 }
 
-.main {
-  width: 80%;
+main {
+  padding: 20px 40px;
 }
 
 .container {
