@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 /*
 import { toRefs } from 'vue';
 import type { Item } from '@/types/Item.d.ts';
@@ -11,6 +12,12 @@ const { item } = toRefs(props);
 */
 const item = {
   imageUrls: [
+    "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
+    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
+    "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
+    "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
+    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
+    "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
     "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
     "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
     "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
@@ -30,20 +37,20 @@ const item = {
 <template>
   <main>
     <div id="images-section">
-      <div id="main-image" :style="{ backgroundImage: `url(${item.imageUrls[0]})` }"></div>
+      <img :src="item.imageUrls[0]" id="main-image" />
       <div id="other-images">
-        <div
+        <img
           :key="'image-' + index"
-          v-for="(image, index) in item.imageUrls"
-          :style="{ backgroundImage: `url(${image})` }"
-        ></div>
+          v-for="(image_url, index) in item.imageUrls"
+          :style="{ backgroundImage: `url(${image_url})` }"
+        />
       </div>
     </div>
 
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
-        <div id="edit-btn">Edit</div>
+        <div id="edit-btn">EDIT</div>
         <div id="bookmark-btn">Bookmark</div>
       </div>
 
@@ -56,7 +63,7 @@ const item = {
           <h2>Category:</h2>
           <p id="category">{{ item.category }}</p>
           <!-- TODO: Button component here -->
-          <button>Contact Seller</button>
+          <button>CONTACT SELLER</button>
         </div>
         <div class="misc-bar-right">
           <h3>Sold by:</h3>
@@ -79,41 +86,154 @@ main {
   display: flex;
   flex-direction: row;
 }
+
+/* ----- IMAGES SECTION ----- */
 #images-section {
   flex: 1;
   padding: 2rem;
-  overflow-x: scroll;
-}
-
-#details-section {
-  flex: 1;
-  padding: 2rem;
+  max-width: 50%;
 }
 
 #main-image {
-  width: 300px;
-  height: 300px;
+  height: 60vh;
+  max-width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  margin: 0 auto;
 }
 
 #other-images {
   margin-top: 1rem;
-  display: flex;
-  flex-direction: row;
+  display: inline-block;
+  white-space: nowrap;
+  max-width: 100%;
   overflow-x: auto;
 }
 
-#other-images > div {
+#other-images > img {
   width: 100px;
   height: 100px;
   margin-right: 0.5rem;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  cursor: pointer;
+}
+
+
+/* ----- DETAILS SECTION ----- */
+#details-section {
+  flex: 1;
+  padding: 2rem;
+  max-width: 50%;
+}
+
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.top-bar > h1 {
+  flex: 1;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.top-bar > #edit-btn {
+  background-color: #3B8905;
+  padding: 0.2rem 2rem;
+  color: white;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: .6rem;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.price-bar {
+  display: flex;
+  margin-top: 10px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.price-bar > #price {
+  font-size: 1.7rem;
+  font-weight: 500;
+  margin-right: 1rem;
+}
+
+/* ----- MISC INFO BAR ----- */
+.misc-info-bar {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+}
+
+.misc-info-bar > .misc-bar-left {
+  flex: 1;
+  max-width: 50%;
+}
+
+.misc-info-bar > .misc-bar-right {
+  flex: 1;
+  max-width: 50%;
+  border: 1px solid #C1C1C1;
+  padding: 1rem;
+  font-family: Inter;
+}
+
+.misc-info-bar > .misc-bar-right > h3 {
+  font-size: 0.8rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.misc-info-bar > .misc-bar-right > p {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.misc-info-bar > .misc-bar-left > h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.misc-info-bar > .misc-bar-left > p {
+  font-size: 0.7rem;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.misc-info-bar > .misc-bar-left > button {
+  background-color: black;
+  border: 0;
+  padding: .6rem 2rem;
+  color: white;
+  cursor: pointer;
+  font-family: Inter;
+  font-size: .6rem;
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+/* ----- DESCRIPTION BAR ----- */
+.description-bar {
+  margin-top: 1rem;
+}
+
+.description-bar > h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin: 20px 0 0 10px;
 }
 </style>
