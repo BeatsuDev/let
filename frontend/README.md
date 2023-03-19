@@ -66,3 +66,41 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+### Pre-commit hooks 
+Run format and lint before commit
+
+
+```shell
+#!/bin/bash
+
+# Change work-dir to git root
+pushd $(git rev-parse --show-toplevel) > /dev/null
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "^frontend/")
+
+### Frontend formatter and linter ###
+if [ -n "$FILES" ]; then
+    cd frontend
+    npm run lint
+    npm run formatter
+    cd ..
+    git add $FILES
+fi
+
+### Backend formatter ###
+
+# Get the list of modified files
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "^backend/")
+
+# Run Spotless only if there are modified files in the backend folder
+if [ -n "$FILES" ]; then
+    cd backend
+  mvn spotless:apply --quiet
+    cd ..
+  git add $FILES
+fi
+
+# Reset work-dir
+popd > /dev/null
+``` 
+
