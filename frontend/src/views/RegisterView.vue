@@ -13,26 +13,32 @@ const validatePassword = (password: string) => {
   return re.test(password);
 };
 
-function login() {
+function register() {
+  if (!firstName.value || !lastName.value) {
+    alert("Navn kan ikke være tomme!");
+    return;
+  }
+
   if (!validateEmail(email.value) || !validatePassword(password.value)) {
-    // Better error handling
+    // TODO: Better error handling
     alert("Invalid email or password");
     return;
   }
 
+  alert("Registrering vellykket! (ikke egt, det skal fikses)");
 }
 
 // v-models
+const firstName = ref("");
+const lastName = ref("");
 const email = ref("");
 const password = ref("");
 
 const responses = [
-  "Welcome back! 🤗",
-  "Time to find some stuff 🔍",
-  "You're back! 🎉",
-  "We missed you! 🥺",
-  "One step closer to finding your future home! 🤩",
-  "What was that password again... 🤔",
+  "På tide å finne ting 🔍",
+  "Klar til å finne drømmeplanten? 🌱",
+  "En ny verden venter deg! 🌎",
+  "Et steg nærmere å finne drømmehjemmet! 🤩",
 ];
 
 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
@@ -41,13 +47,17 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
-    <form @submit.prevent="login">
+    <form @submit.prevent="register">
+      <label for="first-name">Fornavn</label>
+      <input class="input-text" type="text" id="first-name" v-model="firstName" placeholder="Ola"/>
+      <label for="last-name">Etternavn</label>
+      <input class="input-text" type="text" id="last-name" v-model="lastName" placeholder="Sørmann"/>
       <label for="email">Email</label>
-      <input class="input-text" type="email" id="email" v-model="email" placeholder="myman@gmail.com"/>
-      <label for="password">Password</label>
-      <input class="input-text" type="password" id="password" v-model="password" placeholder="verysecure123"/>
-      <button class="button button-black" type="submit">Log in</button>
-      <RouterLink to="/register">Don't have an account?</RouterLink>
+      <input class="input-text" type="email" id="email" v-model="email" placeholder="ola.sormann@gmail.com"/>
+      <label for="password">Passord</label>
+      <input class="input-text" type="password" id="password" v-model="password" placeholder="sikker123"/>
+      <button class="button button-black" type="submit">Registrer</button>
+      <RouterLink to="/login">Jeg har en konto!</RouterLink>
     </form>
   </div>
 </template>
