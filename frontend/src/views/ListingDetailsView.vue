@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
+import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 /*
 import { toRefs } from 'vue';
 import type { Item } from '@/types/Item.d.ts';
@@ -49,7 +50,7 @@ const item = {
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
         <div id="edit-btn">EDIT</div>
-        <div id="bookmark-btn">Bookmark</div>
+        <div id="bookmark-btn"><BookmarkIcon /></div>
       </div>
 
       <div class="price-bar">
