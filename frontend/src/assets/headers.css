@@ -27,3 +27,9 @@ h5 {
   font-weight: normal;
   margin: 0;
 }
+
+.center-text {
+  text-align: center;
+  font-family: Inter, sans-serif;
+  width: 100%;
+}
