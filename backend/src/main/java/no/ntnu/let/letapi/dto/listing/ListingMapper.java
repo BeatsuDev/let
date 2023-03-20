@@ -1,6 +1,7 @@
 package no.ntnu.let.letapi.dto.listing;
 
 import no.ntnu.let.letapi.dto.user.UserMapper;
+import no.ntnu.let.letapi.model.listing.Category;
 import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.Location;
@@ -26,6 +27,8 @@ public interface ListingMapper {
     default String formatDate(Date date) {
         return DateUtil.formatDate(date);
     }
+
+    Category toCategory(CategoryCreationDTO categoryCreationDTO);
 
     @Mappings({
             @Mapping(target = "category.id", source = "categoryId"),
