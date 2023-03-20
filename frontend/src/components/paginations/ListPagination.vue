@@ -1,7 +1,7 @@
 <template>
-  <PrimaryButton value="Forrige" @click="previousPage" />
-  <PrimaryButton :value="props.value" disabled />
-  <PrimaryButton value="Neste" @click="nextPage" />
+  <button @click="previousPage" class="button">Forrige</button>
+  <button disabled class="button button-black mono">{{ props.value }}</button>
+  <button @click="nextPage" class="button">Neste</button>
 </template>
 
 <script lang="ts" setup>
@@ -26,3 +26,8 @@ function previousPage() {
   }
 }
 </script>
+<style>
+.mono {
+  min-width: 3rem;
+}
+</style>
