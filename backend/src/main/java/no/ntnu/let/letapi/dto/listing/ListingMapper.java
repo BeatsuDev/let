@@ -22,25 +22,26 @@ public interface ListingMapper {
         return imageDTO.getUrl();
     }
 
-    String toCategoryName(Long id);
-    Category toCategory(Long id);
-
     @Mappings({
+            @Mapping(target = "category.id", source = "categoryId"),
             @Mapping(target = "thumbnail", source = "thumbnailId"),
             @Mapping(target = "gallery", source = "galleryIds")
     })
     Listing toListing(ListingCreationDTO listingCreationDTO);
     @Mappings({
+            @Mapping(target = "category.id", source = "categoryId"),
             @Mapping(target = "thumbnail", source = "thumbnailId"),
             @Mapping(target = "gallery", source = "galleryIds")
     })
     Listing toListing(ListingUpdateDTO listingUpdateDTO);
     @Mappings({
+            @Mapping(target = "categoryName", source = "category.name"),
             @Mapping(target = "thumbnailUrl", source = "thumbnail.url"),
             @Mapping(target = "locationName", source = "location.name")
     })
     ListingMinimalDTO toListingMinimalDTO(Listing listing);
     @Mappings({
+            @Mapping(target = "categoryName", source = "category.name"),
             @Mapping(target = "thumbnailUrl", source = "thumbnail"),
             @Mapping(target = "galleryUrls", source = "gallery"),
             @Mapping(target = "locationName", source = "location.name")
