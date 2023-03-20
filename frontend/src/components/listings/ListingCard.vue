@@ -10,14 +10,13 @@
         <div class="row italic row-margin">
           {{ props.value.locationName }}
         </div>
-
         <div class="row row-margin" style="padding-right: 10px">
-          <div class="text-paragraph">{{ props.value.title }}</div>
+          <div>{{ props.value.title }}</div>
           <div class="spacer" />
-          <div class="text-paragraph">{{ props.value.price }}kr</div>
+          <div>{{ props.value.price }}kr</div>
         </div>
         <div class="row">
-          <div class="text-paragraph">{{ props.value.summary }}</div>
+          <div>{{ props.value.summary }}</div>
         </div>
       </div>
     </div>
