@@ -98,7 +98,7 @@ export class ListingFilter {
     this.latitude = null;
     this.latitude = null;
     this.search = null;
-    this.radius = null;
+    this.radius = 30;
     this.favorites = false;
   }
 }
