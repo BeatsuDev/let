@@ -1,33 +1,35 @@
 <template>
   <div
-    :class="{
+      :class="{
       sidebar: true,
       'drawer-collapse': props.collapsed,
       'drawer-active': !props.collapsed,
     }"
   >
-    <button style="margin-bottom: 1.5rem" @click="collapse" class="button">Skjul</button>
+    <button style="margin-bottom: 1.5rem" @click="collapse" class="button"> <CollapseIcon class="button-icon" />Skjul</button>
     <h3 class="item">Kategori</h3>
     <div
-      v-for="(category, index) in categories"
-      class="category text-paragraph hide-overflow"
-      :key="index"
-      @click="updateCategory(category.name)"
+        v-for="(category, index) in categories"
+        class="category text-paragraph hide-overflow"
+        :key="index"
+        @click="updateCategory(category.name)"
     >
       {{ category.name }}
     </div>
     <h3 class="item">Søk</h3>
-    <input type="search" v-model="value.search" />
+    <input type="search" v-model="value.search" class="input-text"/>
     <h3 class="item">Lokasjon</h3>
-    <input type="search" v-model="value.search" />
+    <input type="search" class="input-text" v-model="value.search"/>
     <h3 class="item">Radius</h3>
-    <input type="range" v-model="value.radius" style="width: 100%" />
-    <div class="center">{{ props.modelValue.radius }}km</div>
+    <input type="range" class="slider" v-model="value.radius" style="width: 100%"/>
+    <div class="center-text">{{ props.modelValue.radius }}km</div>
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, PropType } from "vue";
-import { Category, ListingFilter } from "@/types/listing";
+import {computed, PropType} from "vue";
+import {ListingFilter} from "@/types/listing";
+import type {Category} from "@/service/models";
+import CollapseIcon from "@/components/icons/CollapseIcon.vue";
 
 const props = defineProps({
   collapsed: {
@@ -51,7 +53,7 @@ const value = computed({
     return props.modelValue;
   },
   set(value: string) {
-    const newFilter = { ...props.modelValue, [value]: value };
+    const newFilter = {...props.modelValue, [value]: value};
     console.log(newFilter);
     emit("update:modelValue", newFilter);
   },
@@ -62,7 +64,7 @@ function collapse() {
 }
 
 function updateCategory(category: string) {
-  const newFilter = { ...props.modelValue, category };
+  const newFilter = {...props.modelValue, category};
   emit("update:modelValue", newFilter);
 }
 </script>
@@ -113,17 +115,17 @@ function updateCategory(category: string) {
   background-color: #f1f1f1;
 }
 
-.center {
-  text-align: center;
-  font-family: Inter, sans-serif;
-  width: 100%;
-}
-
 @media screen and (max-width: 600px) {
   .sidebar {
     margin-top: 0;
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .drawer-collapse {
+    width: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>
