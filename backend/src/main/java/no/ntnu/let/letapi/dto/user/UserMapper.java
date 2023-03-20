@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public abstract class UserMapper {
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Named("toMinimalDTO")
     public abstract UserMinimalDTO toMinimalDTO(User user);
     public abstract UserFullDTO toFullDTO(User user);
 

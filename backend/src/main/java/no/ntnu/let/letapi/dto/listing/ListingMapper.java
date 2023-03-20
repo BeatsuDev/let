@@ -1,5 +1,6 @@
 package no.ntnu.let.letapi.dto.listing;
 
+import no.ntnu.let.letapi.dto.user.UserMapper;
 import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.Location;
@@ -10,7 +11,7 @@ import org.mapstruct.Mappings;
 
 import java.util.Date;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface ListingMapper {
     Location toLocation(LocationDTO locationDTO);
     LocationDTO toLocationDTO(Location location);
@@ -47,7 +48,8 @@ public interface ListingMapper {
             @Mapping(target = "categoryName", source = "category.name"),
             @Mapping(target = "thumbnailUrl", source = "thumbnail"),
             @Mapping(target = "galleryUrls", source = "gallery"),
-            @Mapping(target = "locationName", source = "location.name")
+            @Mapping(target = "locationName", source = "location.name"),
+            @Mapping(target = "seller", source = "seller", qualifiedByName = "toMinimalDTO")
     })
     ListingFullDTO toListingFullDTO(Listing listing);
 }
