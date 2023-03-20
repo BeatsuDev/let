@@ -43,10 +43,10 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
     <h2 id="title">{{ randomResponse }}</h2>
     <form @submit.prevent="login">
       <label for="email">Email</label>
-      <input type="email" id="email" v-model="email" placeholder="myman@gmail.com"/>
+      <input class="input-text" type="email" id="email" v-model="email" placeholder="myman@gmail.com"/>
       <label for="password">Password</label>
-      <input type="password" id="password" v-model="password" placeholder="verysecure123"/>
-      <button type="submit">Become a leter</button>
+      <input class="input-text" type="password" id="password" v-model="password" placeholder="verysecure123"/>
+      <button class="button button-black" type="submit">Log in</button>
       <RouterLink to="/register">Don't have an account?</RouterLink>
     </form>
   </div>
@@ -87,26 +87,11 @@ label {
   margin-top: 1rem;
 }
 
-input {
-  padding: 1.2rem;
-  background-color: #eee;
-  color: #030303;
-  font-size: 1rem;
-  border: 0;
-}
-
-input:focus {
-  outline: 0;
-}
-
 button {
   width: 100%;
-  border: 0;
-  background-color: black;
-  color: white;
   padding: 1.5rem 0;
   margin-top: 20px;
-  cursor: pointer;
+  font-size: 1rem;
 }
 
 a {
