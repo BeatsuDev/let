@@ -1,40 +1,46 @@
 <template>
   <main>
     <NavigationDrawer
-      v-model="listingFilter"
-      v-model:collapsed="collapsed"
-      :categories="categories"
+        v-model="listingFilter"
+        v-model:collapsed="collapsed"
+        :categories="categories"
     ></NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
       <h1 class="one-line">Hva leter du etter i dag?</h1>
       <div class="menu">
-        <button @click="collapsed = !collapsed" class="button"> <FilterIcon class="button-icon"/>Filtre</button>
-        <div class="spacer" />
-        <ListPagination :value="page" @next="nextPage" @previous="previousPage"></ListPagination>
+        <button @click="collapsed = !collapsed" class="button">
+          <FilterIcon class="button-icon"/>
+          Filtre
+        </button>
+        <div class="spacer"/>
+        <ListPagination :value="listingFilter.page" @next="nextPage" @previous="previousPage"></ListPagination>
       </div>
       <ListingScrollPane :listings="listings"></ListingScrollPane>
       <div class="menu">
-        <div class="spacer" />
-        <ListPagination :value="page" @next="nextPage" @previous="previousPage"></ListPagination>
+        <div class="spacer"/>
+        <ListPagination :value="listingFilter.page" @next="nextPage" @previous="previousPage"></ListPagination>
       </div>
     </div>
   </main>
 </template>
 <script setup lang="ts">
 import ListPagination from "@/components/paginations/ListPagination.vue";
-import { ref } from "vue";
+import {ref, watch} from "vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
-import { ListingFilter } from "@/types/listing";
+import {ListingFilter} from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
-import type { Category, ListingMinimal } from "@/service/models";
+import type {Category, ListingMinimal} from "@/service/models";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
 
-const page = ref(1);
 const listings = ref([] as ListingMinimal[]);
 const categories = ref([] as Category[]);
 const collapsed = ref(false);
 
 const listingFilter = ref(new ListingFilter());
+
+watch(listingFilter, () => {
+  fetchEvents();
+}, {deep: true})
 
 const listing = {
   id: 1,
@@ -46,22 +52,24 @@ const listing = {
   categoryName: "test",
 } as ListingMinimal;
 
-const category = { name: "test" } as Category;
-
 for (let i = 0; i < 20; i++) {
   listings.value.push(listing);
 }
 
 for (let i = 0; i < 5; i++) {
-  categories.value.push(category);
+  categories.value.push({name: "test" + i} as Category);
 }
 
 function nextPage() {
-  page.value++;
+  listingFilter.value.page++;
 }
 
 function previousPage() {
-  page.value--;
+  listingFilter.value.page--;
+}
+
+function fetchEvents() {
+  console.table(listingFilter.value)
 }
 </script>
 <style scoped>

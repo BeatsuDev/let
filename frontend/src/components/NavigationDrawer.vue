@@ -12,7 +12,8 @@
         v-for="(category, index) in categories"
         class="category text-paragraph hide-overflow"
         :key="index"
-        @click="updateCategory(category.name)"
+        :class="{ 'active-category': value.category === category.name }"
+        @click="value.category = category.name; "
     >
       {{ category.name }}
     </div>
@@ -21,12 +22,12 @@
     <h3 class="item">Lokasjon</h3>
     <input type="search" class="input-text" v-model="value.search"/>
     <h3 class="item">Radius</h3>
-    <input type="range" class="slider" v-model="value.radius" style="width: 100%"/>
-    <div class="center-text">{{ props.modelValue.radius }}km</div>
+    <input type="range" class="slider" v-model="radius" @mouseup="value.radius = radius" style="width: 100%"/>
+    <div class="center-text">{{ radius }}km</div>
   </div>
 </template>
 <script lang="ts" setup>
-import {computed, PropType} from "vue";
+import {computed, PropType, ref} from "vue";
 import {ListingFilter} from "@/types/listing";
 import type {Category} from "@/service/models";
 import CollapseIcon from "@/components/icons/CollapseIcon.vue";
@@ -46,6 +47,8 @@ const props = defineProps({
   },
 });
 
+const radius = ref(props.modelValue.radius);
+
 const emit = defineEmits(["update:modelValue", "update:collapsed"]);
 
 const value = computed({
@@ -53,7 +56,7 @@ const value = computed({
     return props.modelValue;
   },
   set(value: string) {
-    const newFilter = {...props.modelValue, [value]: value};
+    const newFilter = {...props.modelValue, [value]: value} as ListingFilter;
     console.log(newFilter);
     emit("update:modelValue", newFilter);
   },
@@ -61,11 +64,6 @@ const value = computed({
 
 function collapse() {
   emit("update:collapsed", true);
-}
-
-function updateCategory(category: string) {
-  const newFilter = {...props.modelValue, category};
-  emit("update:modelValue", newFilter);
 }
 </script>
 <style scoped>
@@ -112,6 +110,11 @@ function updateCategory(category: string) {
 .category:hover {
   color: #282828;
   cursor: pointer;
+  background-color: #f1f1f1;
+}
+
+.active-category {
+  color: #282828;
   background-color: #f1f1f1;
 }
 
