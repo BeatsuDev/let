@@ -1,7 +1,8 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48">
+  <svg class="IconSearchDialogstyles__Icon-sc-1ud0l4m-9 lhKRHM" viewBox="0 0 24 24">
+    <path d="M0 0h24v24H0z" fill="none"></path>
     <path
-      d="M12 28.05h15.65v-3H12Zm0-6.5h24v-3H12Zm0-6.5h24v-3H12ZM4 44V7q0-1.15.9-2.075Q5.8 4 7 4h34q1.15 0 2.075.925Q44 5.85 44 7v26q0 1.15-.925 2.075Q42.15 36 41 36H12Zm3-7.25L10.75 33H41V7H7ZM7 7v29.75Z"
-    />
+      d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"
+    ></path>
   </svg>
 </template>
