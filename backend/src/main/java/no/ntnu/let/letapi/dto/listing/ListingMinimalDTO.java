@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ListingMinimalDTO {
-private Long id;
+    private Long id;
     private String title;
     private String shortDescription;
-    private String price;
+    private Long price;
     private String thumbnailUrl;
     private String locationName;
     private String categoryName;

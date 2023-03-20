@@ -32,7 +32,7 @@ public class Listing {
     private Date sold;
 
     @Column
-    private int price;
+    private long price;
 
     @ManyToOne
     private Category category;
