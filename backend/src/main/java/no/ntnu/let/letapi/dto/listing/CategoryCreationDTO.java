@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryDTO {
-    private long id;
+public class CategoryCreationDTO {
     private String name;
 }

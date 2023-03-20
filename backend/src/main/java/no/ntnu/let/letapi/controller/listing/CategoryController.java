@@ -1,6 +1,6 @@
 package no.ntnu.let.letapi.controller.listing;
 
-import no.ntnu.let.letapi.dto.listing.CategoryDTO;
+import no.ntnu.let.letapi.dto.listing.CategoryCreationDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<Object> createCategory(@RequestBody CategoryCreationDTO categoryDTO) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
