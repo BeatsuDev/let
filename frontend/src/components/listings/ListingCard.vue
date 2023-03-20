@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="$emit('click', props.value.id)">
     <img
       class="thumbnail"
       src="https://assets.api.uizard.io/api/cdn/stream/c2f78838-2c8f-47b4-ad29-7547ae6e294e.jpg"
@@ -28,6 +28,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["click"]);
 </script>
 <style scoped>
 .card {
@@ -41,6 +43,10 @@ const props = defineProps({
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+}
+
+.card:hover {
+  cursor: pointer;
 }
 
 .thumbnail {
