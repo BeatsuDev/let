@@ -18,8 +18,8 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
-      path: "/testItemDetail",
-      name: "testItemDetail",
+      path: "/listing/:id",
+      name: "listing-details",
       component: () => import("../views/ListingDetailsView.vue"),
     },
     {

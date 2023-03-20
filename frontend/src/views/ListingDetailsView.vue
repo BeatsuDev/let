@@ -1,30 +1,35 @@
 <script setup lang="ts">
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import { reactive } from "vue";
-/*
-import { toRefs } from 'vue';
-import type { Item } from '@/types/Item.d.ts';
 
-const props = defineProps<{
-  item: string;
-}>();
+const image_urls = [
+  "https://media.discordapp.net/attachments/903975806227857409/1087280248007176282/20230320_081917.jpg",
+  "https://media.discordapp.net/attachments/903975806227857409/1087280248300785724/20230320_081925.jpg",
+  "https://media.discordapp.net/attachments/903975806227857409/1087280248539844628/20230320_081933.jpg",
+  "https://media.discordapp.net/attachments/903975806227857409/1087280248804094022/20230320_081948.jpg",
+  "https://media.discordapp.net/attachments/903975806227857409/1087280249085120512/20230320_082012.jpg",
+  "https://media.discordapp.net/attachments/903975806227857409/1087280249353539635/20230320_082042.jpg",
+  "https://media.discordapp.net/attachments/903975806227857409/1087280249588428800/20230320_082112.jpg",
+];
 
-const { item } = toRefs(props);
-*/
+const description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac tellus dictum, ultrices odio vitae,
+  mattis magna. Nunc nec ultrices sapien. Nam sodales consectetur hendrerit. Morbi porttitor dolor urna, convallis semper
+  tellus porta in. Donec id mauris id ligula iaculis iaculis eget eu risus. Curabitur malesuada, ante ut blandit maximus,
+  purus eros ultrices enim, at convallis mi nibh ut dui. Phasellus feugiat lectus ut faucibus condimentum. Mauris molestie
+  et justo et dignissim. Aliquam facilisis bibendum dolor, nec tempor est pretium et. Nulla vulputate hendrerit commodo.
+  Nullam posuere magna nulla, a bibendum felis rutrum eget. Nunc mollis dignissim efficitur. Proin porta metus placerat
+  arcu suscipit ullamcorper. Vivamus porta, mi eu iaculis finibus, odio dolor condimentum arcu, ac aliquam velit urna et
+  enim. Maecenas at lacus a ex malesuada tristique. Curabitur tempus metus et dui ultricies tincidunt. Ut iaculis justo
+  non orci consectetur dignissim. Suspendisse potenti. Nunc magna ipsum, consequat nec metus id, vulputate rutrum urna.
+  Quisque augue nulla, tincidunt non dolor quis, viverra sagittis diam. Phasellus placerat mollis gravida. Ut nibh arcu,
+  pulvinar quis elit et, sagittis consectetur purus. Sed a eros ante.`;
+
 const item = reactive({
-  imageUrls: [
-    "https://media.discordapp.net/attachments/903975806227857409/1087280248007176282/20230320_081917.jpg",
-    "https://media.discordapp.net/attachments/903975806227857409/1087280248300785724/20230320_081925.jpg",
-    "https://media.discordapp.net/attachments/903975806227857409/1087280248539844628/20230320_081933.jpg",
-    "https://media.discordapp.net/attachments/903975806227857409/1087280248804094022/20230320_081948.jpg",
-    "https://media.discordapp.net/attachments/903975806227857409/1087280249085120512/20230320_082012.jpg",
-    "https://media.discordapp.net/attachments/903975806227857409/1087280249353539635/20230320_082042.jpg",
-    "https://media.discordapp.net/attachments/903975806227857409/1087280249588428800/20230320_082112.jpg",
-  ],
+  imageUrls: image_urls,
   title: "Plante",
   shortDescription: "En kul plante.",
-  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac tellus dictum, ultrices odio vitae, mattis magna. Nunc nec ultrices sapien. Nam sodales consectetur hendrerit. Morbi porttitor dolor urna, convallis semper tellus porta in. Donec id mauris id ligula iaculis iaculis eget eu risus. Curabitur malesuada, ante ut blandit maximus, purus eros ultrices enim, at convallis mi nibh ut dui. Phasellus feugiat lectus ut faucibus condimentum. Mauris molestie et justo et dignissim. Aliquam facilisis bibendum dolor, nec tempor est pretium et. Nulla vulputate hendrerit commodo. Nullam posuere magna nulla, a bibendum felis rutrum eget. Nunc mollis dignissim efficitur. Proin porta metus placerat arcu suscipit ullamcorper. Vivamus porta, mi eu iaculis finibus, odio dolor condimentum arcu, ac aliquam velit urna et enim. Maecenas at lacus a ex malesuada tristique. Curabitur tempus metus et dui ultricies tincidunt. Ut iaculis justo non orci consectetur dignissim. Suspendisse potenti. Nunc magna ipsum, consequat nec metus id, vulputate rutrum urna. Quisque augue nulla, tincidunt non dolor quis, viverra sagittis diam. Phasellus placerat mollis gravida. Ut nibh arcu, pulvinar quis elit et, sagittis consectetur purus. Sed a eros ante.`,
-  price: 500,
+  description: description,
+  price: 50000,
   location: "Oslo, Høybråten",
   category: "Stygge planter",
   seller: {
@@ -67,14 +72,14 @@ function handleBookmarkClick() {
         <div id="bookmark-btn">
           <BookmarkIcon
             :bookmarked="item.isBookmarked"
-            :class="{filled: item.isBookmarked}"
+            :class="{ filled: item.isBookmarked }"
             @toggleBookmark="handleBookmarkClick"
           />
         </div>
       </div>
 
       <div class="price-bar">
-        <div id="price">{{ item.price }}kr</div>
+        <div id="price">{{ item.price / 100 }}kr</div>
       </div>
 
       <div class="misc-info-bar">
