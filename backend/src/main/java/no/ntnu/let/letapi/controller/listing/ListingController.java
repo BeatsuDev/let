@@ -52,7 +52,7 @@ public class ListingController {
 
 
         // Get the listings from the database
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         Page<Listing> listings = listingService.getListings(filterBuilder.build(), pageRequest);
 
         // If no listings matched the criteria, return a 204 No Content
@@ -75,7 +75,7 @@ public class ListingController {
         List<ListingMinimalDTO> listingsDTO = listings.getContent().stream().map(mapper::toListingMinimalDTO).toList();
         var pagedListings = new PagedListingsDTO(
                 listingsDTO,
-                listings.getNumber(),
+                listings.getNumber() + 1,
                 listings.getTotalPages(),
                 nextUrl,
                 prevUrl
