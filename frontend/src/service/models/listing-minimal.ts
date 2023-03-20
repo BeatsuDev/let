@@ -12,51 +12,51 @@
  * Do not edit the class manually.
  */
 /**
- * 
+ *
  * @export
  * @interface ListingMinimal
  */
 export interface ListingMinimal {
-    /**
-     * 
-     * @type {number}
-     * @memberof ListingMinimal
-     */
-    id?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListingMinimal
-     */
-    title?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListingMinimal
-     */
-    summary?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ListingMinimal
-     */
-    price?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListingMinimal
-     */
-    thumbnailUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListingMinimal
-     */
-    locationName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListingMinimal
-     */
-    categoryName?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof ListingMinimal
+   */
+  id?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof ListingMinimal
+   */
+  title?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ListingMinimal
+   */
+  summary?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof ListingMinimal
+   */
+  price?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof ListingMinimal
+   */
+  thumbnailUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ListingMinimal
+   */
+  locationName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ListingMinimal
+   */
+  categoryName?: string;
 }

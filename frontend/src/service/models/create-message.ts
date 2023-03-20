@@ -12,21 +12,21 @@
  * Do not edit the class manually.
  */
 /**
- * 
+ *
  * @export
  * @interface CreateMessage
  */
 export interface CreateMessage {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMessage
-     */
-    text?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateMessage
-     */
-    chat?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof CreateMessage
+   */
+  text?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CreateMessage
+   */
+  chat?: number;
 }

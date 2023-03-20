@@ -12,15 +12,15 @@
  * Do not edit the class manually.
  */
 /**
- * 
+ *
  * @export
  * @interface Image
  */
 export interface Image {
-    /**
-     * 
-     * @type {number}
-     * @memberof Image
-     */
-    id?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Image
+   */
+  id?: number;
 }

@@ -12,27 +12,27 @@
  * Do not edit the class manually.
  */
 /**
- * 
+ *
  * @export
  * @interface UserMinimal
  */
 export interface UserMinimal {
-    /**
-     * 
-     * @type {string}
-     * @memberof UserMinimal
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserMinimal
-     */
-    firstName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserMinimal
-     */
-    lastName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserMinimal
+   */
+  email?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserMinimal
+   */
+  firstName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserMinimal
+   */
+  lastName?: string;
 }
