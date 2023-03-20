@@ -895,7 +895,6 @@ components:
               type: boolean
               example: false
         - $ref: '#/components/schemas/UserMinimal'  
-
   securitySchemes:
     bearerAuth:
       type: http
