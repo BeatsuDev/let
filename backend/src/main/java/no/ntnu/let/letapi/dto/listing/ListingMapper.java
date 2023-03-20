@@ -1,6 +1,5 @@
 package no.ntnu.let.letapi.dto.listing;
 
-import no.ntnu.let.letapi.model.listing.Category;
 import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.Location;
@@ -8,10 +7,8 @@ import no.ntnu.let.letapi.util.DateUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.Named;
 
 import java.util.Date;
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ListingMapper {

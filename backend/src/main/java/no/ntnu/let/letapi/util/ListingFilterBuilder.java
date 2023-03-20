@@ -3,7 +3,6 @@ package no.ntnu.let.letapi.util;
 import no.ntnu.let.letapi.dto.listing.LocationDTO;
 import no.ntnu.let.letapi.model.listing.ListingState;
 
-import java.io.Console;
 import java.util.List;
 
 public class ListingFilterBuilder {
