@@ -12,6 +12,7 @@ import no.ntnu.let.letapi.util.UrlUtil;
 @Setter
 @Entity
 public class Image {
+    private static final String IMAGE_BASE_URL = UrlUtil.getBaseUrl() + "/image/";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

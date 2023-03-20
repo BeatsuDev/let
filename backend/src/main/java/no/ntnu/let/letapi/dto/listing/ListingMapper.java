@@ -16,10 +16,9 @@ public interface ListingMapper {
     LocationDTO toLocationDTO(Location location);
 
     Image toImage(Long id);
-    ImageDTO toImageDTO(Image image);
     default String toImageUrl(Image image) {
-        ImageDTO imageDTO = toImageDTO(image);
-        return imageDTO.getUrl();
+        if (image == null) return null;
+        return image.getUrl();
     }
 
     default String formatDate(Date date) {
