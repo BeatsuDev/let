@@ -79,20 +79,20 @@ function handleBookmarkClick() {
       </div>
 
       <div class="price-bar">
-        <div id="price">{{ item.price / 100 }}kr</div>
+        <h2>{{ item.price / 100 }}kr</h2>
       </div>
 
       <div class="misc-info-bar">
         <div class="misc-bar-left">
-          <h2>Category:</h2>
+          <h3>Category:</h3>
           <p id="category">{{ item.category }}</p>
           <!-- TODO: Button component here -->
           <button class="button button-black button-screaming">Contact Seller</button>
         </div>
         <div class="misc-bar-right">
-          <h3>Sold by:</h3>
+          <h5>Sold by:</h5>
           <p id="seller">{{ item.seller.name }}</p>
-          <h3>Location:</h3>
+          <h5 id="location-header">Location:</h5>
           <p id="location">{{ item.location }}</p>
         </div>
       </div>
@@ -162,9 +162,6 @@ main {
 
 .top-bar > h1 {
   flex: 1;
-  font-size: 3rem;
-  font-weight: 500;
-  margin: 0;
 }
 
 .top-bar > #edit-btn {
@@ -178,9 +175,7 @@ main {
   align-items: center;
 }
 
-.price-bar > #price {
-  font-size: 2rem;
-  font-weight: 500;
+.price-bar > h2 {
   margin-right: 1rem;
 }
 
@@ -204,10 +199,8 @@ main {
   font-family: Inter;
 }
 
-.misc-info-bar > .misc-bar-right > h3 {
-  font-size: 0.8rem;
-  font-weight: normal;
-  margin: 0;
+.misc-info-bar #location-header {
+  margin-top: 1rem;
 }
 
 .misc-info-bar > .misc-bar-right > p {
@@ -216,10 +209,7 @@ main {
   margin: 0;
 }
 
-.misc-info-bar > .misc-bar-left > h2 {
-  font-size: 1.2rem;
-  font-weight: normal;
-  margin: 0;
+.misc-info-bar > .misc-bar-left > h3 {
   margin-top: 20px;
 }
 
