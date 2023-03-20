@@ -12,15 +12,13 @@ const { item } = toRefs(props);
 */
 const item = {
   imageUrls: [
-    "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/c0dfbf89-8d77-42ab-ad3b-155bd55178da.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/87658174-25e0-4002-ab8f-b4e7961200cd.jpg",
-    "https://assets.api.uizard.io/api/cdn/stream/4a1a87f6-3bed-4dfc-8301-a53777cf226f.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280248007176282/20230320_081917.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280248300785724/20230320_081925.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280248539844628/20230320_081933.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280248804094022/20230320_081948.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280249085120512/20230320_082012.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280249353539635/20230320_082042.jpg",
+    "https://media.discordapp.net/attachments/903975806227857409/1087280249588428800/20230320_082112.jpg",
   ],
   title: "Plante",
   shortDescription: "En kul plante.",
