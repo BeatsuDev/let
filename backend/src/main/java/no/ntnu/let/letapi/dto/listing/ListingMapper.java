@@ -20,8 +20,7 @@ public interface ListingMapper {
     @Named("toImageUrl")
     default String toImageUrl(Image image) {
         if (image == null) return null;
-        String IMAGE_BASE = UrlUtil.getBaseUrl() + "/uploads/images/";
-        return IMAGE_BASE + image.getFileName();
+        return UrlUtil.getImageUrl(image.getFileName());
     }
     @Mapping(target = "url", source = "image", qualifiedByName = "toImageUrl")
     ImageDTO toImageDTO(Image image);

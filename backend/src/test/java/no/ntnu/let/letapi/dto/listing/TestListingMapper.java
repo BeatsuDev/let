@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,9 +30,11 @@ public class TestListingMapper {
 
     @BeforeEach
     public void resetImages() {
-        image1.setId(1L);
-        image2.setId(2L);
-        image3.setId(3L);
+        long id = 1L;
+        for (Image image : Stream.of(image1, image2, image3).toList()) {
+            image.setId(id);
+            image.setFileName("dev-gallery" + id + ".jpg");
+        }
     }
 
     @BeforeEach
@@ -116,12 +119,26 @@ public class TestListingMapper {
     }
 
     @Test
+    public void testToImageDTO() {
+        ImageDTO imageDTO = listingMapper.toImageDTO(image1);
+        assertEquals(1L, imageDTO.getId());
+        assertEquals(UrlUtil.getImageUrl(image1.getFileName()), imageDTO.getUrl());
+    }
+
+    @Test
     public void testToCategory() {
         CategoryCreationDTO listingDTO= new CategoryCreationDTO();
         listingDTO.setName("Test category 1");
 
         Category category = listingMapper.toCategory(listingDTO);
         assertEquals("Test category 1", category.getName());
+    }
+
+    @Test
+    public void testToCategoryDTO() {
+        CategoryDTO categoryDTO = listingMapper.toCategoryDTO(category1);
+        assertEquals(1L, categoryDTO.getId());
+        assertEquals("Test category 1", categoryDTO.getName());
     }
 
     @Test void testToListingFromListingCreateDTL() {
@@ -164,7 +181,8 @@ public class TestListingMapper {
         assertEquals("Test listing 1", listingMinimalDTO.getTitle());
         assertEquals("Test short description 1", listingMinimalDTO.getSummary());
         assertEquals(100L, listingMinimalDTO.getPrice());
-        assertEquals(UrlUtil.getBaseUrl() + "/image/" + image1.getFileName(), listingMinimalDTO.getThumbnailUrl());
+        assertEquals(UrlUtil.getImageUrl(image1.getFileName()),
+                listingMinimalDTO.getThumbnailUrl());
         assertEquals("Test category 1", listingMinimalDTO.getCategoryName());
         assertEquals("Test location 1", listingMinimalDTO.getLocationName());
     }
@@ -178,12 +196,13 @@ public class TestListingMapper {
         assertEquals("Test short description 1", listingFullDTO.getSummary());
         assertEquals("Test description 1", listingFullDTO.getDescription());
         assertEquals(100L, listingFullDTO.getPrice());
-        assertEquals(UrlUtil.getBaseUrl() + "/image/" + image1.getFileName(), listingFullDTO.getThumbnailUrl());
+        assertEquals(UrlUtil.getImageUrl(image1.getFileName()),
+                listingFullDTO.getThumbnailUrl());
         assertEquals("Test category 1", listingFullDTO.getCategoryName());
         assertEquals("Test location 1", listingFullDTO.getLocationName());
         assertEquals(ListingState.ACTIVE, listingFullDTO.getState());
         assertEquals(Stream.of(image1, image2, image3)
-                        .map(i -> UrlUtil.getBaseUrl() + "/image/" + i.getFileName()).toList(),
+                        .map(i -> UrlUtil.getImageUrl(i.getFileName())).toList(),
                 List.of(listingFullDTO.getGalleryUrls()));
         assertEquals("2001-01-08T22:00:00.000Z", listingFullDTO.getCreated());
         assertEquals("Test", listingFullDTO.getSeller().getFirstName());
