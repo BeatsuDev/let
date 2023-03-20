@@ -5,11 +5,13 @@ import no.ntnu.let.letapi.dto.user.UserMapperImpl;
 import no.ntnu.let.letapi.model.listing.*;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.util.DateUtil;
+import no.ntnu.let.letapi.util.UrlUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -162,7 +164,7 @@ public class TestListingMapper {
         assertEquals("Test listing 1", listingMinimalDTO.getTitle());
         assertEquals("Test short description 1", listingMinimalDTO.getSummary());
         assertEquals(100L, listingMinimalDTO.getPrice());
-        assertEquals(image1.getUrl(), listingMinimalDTO.getThumbnailUrl());
+        assertEquals(UrlUtil.getBaseUrl() + "/image/" + image1.getFileName(), listingMinimalDTO.getThumbnailUrl());
         assertEquals("Test category 1", listingMinimalDTO.getCategoryName());
         assertEquals("Test location 1", listingMinimalDTO.getLocationName());
     }
@@ -176,11 +178,13 @@ public class TestListingMapper {
         assertEquals("Test short description 1", listingFullDTO.getSummary());
         assertEquals("Test description 1", listingFullDTO.getDescription());
         assertEquals(100L, listingFullDTO.getPrice());
-        assertEquals(image1.getUrl(), listingFullDTO.getThumbnailUrl());
+        assertEquals(UrlUtil.getBaseUrl() + "/image/" + image1.getFileName(), listingFullDTO.getThumbnailUrl());
         assertEquals("Test category 1", listingFullDTO.getCategoryName());
         assertEquals("Test location 1", listingFullDTO.getLocationName());
         assertEquals(ListingState.ACTIVE, listingFullDTO.getState());
-        assertEquals(List.of(image1.getUrl(), image2.getUrl(), image3.getUrl()), List.of(listingFullDTO.getGalleryUrls()));
+        assertEquals(Stream.of(image1, image2, image3)
+                        .map(i -> UrlUtil.getBaseUrl() + "/image/" + i.getFileName()).toList(),
+                List.of(listingFullDTO.getGalleryUrls()));
         assertEquals("2001-01-08T22:00:00.000Z", listingFullDTO.getCreated());
         assertEquals("Test", listingFullDTO.getSeller().getFirstName());
         assertEquals("User", listingFullDTO.getSeller().getLastName());

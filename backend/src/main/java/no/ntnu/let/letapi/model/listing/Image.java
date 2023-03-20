@@ -1,9 +1,6 @@
 package no.ntnu.let.letapi.model.listing;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import no.ntnu.let.letapi.util.UrlUtil;
@@ -17,7 +14,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    public String getUrl() {
-        return UrlUtil.getBaseUrl() + '/' + id;
-    }
+    @Column(nullable = false)
+    private String fileName;
 }

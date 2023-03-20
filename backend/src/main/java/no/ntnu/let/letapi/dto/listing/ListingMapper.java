@@ -6,10 +6,8 @@ import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.Location;
 import no.ntnu.let.letapi.util.DateUtil;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import no.ntnu.let.letapi.util.UrlUtil;
+import org.mapstruct.*;
 
 import java.util.Date;
 
@@ -19,10 +17,14 @@ public interface ListingMapper {
     LocationDTO toLocationDTO(Location location);
 
     Image toImage(Long id);
+    @Named("toImageUrl")
     default String toImageUrl(Image image) {
         if (image == null) return null;
-        return image.getUrl();
+        String IMAGE_BASE = UrlUtil.getBaseUrl() + "/uploads/images/";
+        return IMAGE_BASE + image.getFileName();
     }
+    @Mapping(target = "url", source = "image", qualifiedByName = "toImageUrl")
+    ImageDTO toImageDTO(Image image);
 
     default String formatDate(Date date) {
         return DateUtil.formatDate(date);
@@ -44,14 +46,14 @@ public interface ListingMapper {
     Listing toListing(ListingUpdateDTO listingUpdateDTO);
     @Mappings({
             @Mapping(target = "categoryName", source = "category.name"),
-            @Mapping(target = "thumbnailUrl", source = "thumbnail.url"),
+            @Mapping(target = "thumbnailUrl", source = "thumbnail", qualifiedByName = "toImageUrl"),
             @Mapping(target = "locationName", source = "location.name")
     })
     ListingMinimalDTO toListingMinimalDTO(Listing listing);
     @Mappings({
             @Mapping(target = "categoryName", source = "category.name"),
-            @Mapping(target = "thumbnailUrl", source = "thumbnail"),
-            @Mapping(target = "galleryUrls", source = "gallery"),
+            @Mapping(target = "thumbnailUrl", source = "thumbnail", qualifiedByName = "toImageUrl"),
+            @Mapping(target = "galleryUrls", source = "gallery", qualifiedByName = "toImageUrl"),
             @Mapping(target = "locationName", source = "location.name"),
             @Mapping(target = "seller", source = "seller", qualifiedByName = "toMinimalDTO")
     })
