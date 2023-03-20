@@ -31,6 +31,7 @@ public interface ListingMapper {
     }
 
     Category toCategory(CategoryCreationDTO categoryCreationDTO);
+    CategoryDTO toCategoryDTO(Category category);
 
     @Mappings({
             @Mapping(target = "category.id", source = "categoryId"),
