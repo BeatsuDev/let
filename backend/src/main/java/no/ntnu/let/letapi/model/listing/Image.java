@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import no.ntnu.let.letapi.util.UrlUtil;
 
 @Getter
 @Setter
@@ -14,4 +15,8 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    public String getUrl() {
+        return UrlUtil.getBaseUrl() + '/' + id;
+    }
 }
