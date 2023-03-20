@@ -8,7 +8,7 @@
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
       <div class="text-title one-line">Hva leter du etter i dag?</div>
       <div class="menu">
-        <button @click="collapsed = !collapsed"></button>
+        <button @click="collapsed = !collapsed" class="button">Filtre</button>
         <div class="spacer" />
         <ListPagination :value="page" @next="nextPage" @previous="previousPage"></ListPagination>
       </div>
