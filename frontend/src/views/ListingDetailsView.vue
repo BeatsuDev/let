@@ -68,7 +68,7 @@ function handleBookmarkClick() {
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
-        <div id="edit-btn">Edit</div>
+        <div id="edit-btn" class="button-slim button-green button-screaming">Edit</div>
         <div id="bookmark-btn">
           <BookmarkIcon
             :bookmarked="item.isBookmarked"
@@ -87,7 +87,7 @@ function handleBookmarkClick() {
           <h2>Category:</h2>
           <p id="category">{{ item.category }}</p>
           <!-- TODO: Button component here -->
-          <button>Contact Seller</button>
+          <button class="button button-black button-screaming">Contact Seller</button>
         </div>
         <div class="misc-bar-right">
           <h3>Sold by:</h3>
@@ -168,14 +168,6 @@ main {
 }
 
 .top-bar > #edit-btn {
-  background-color: #3b8905;
-  padding: 0.3rem 2rem;
-  color: white;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-family: Inter;
-  font-size: 0.8rem;
-  font-weight: bold;
   margin-right: 1rem;
 }
 
@@ -238,15 +230,7 @@ main {
 }
 
 .misc-info-bar > .misc-bar-left > button {
-  background-color: black;
-  border: 0;
-  padding: 0.6rem 2rem;
-  color: white;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-family: Inter;
   font-size: 0.6rem;
-  font-weight: bold;
   margin-top: 40px;
 }
 

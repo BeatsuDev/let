@@ -1,5 +1,6 @@
 @import "./base.css";
 @import "./text.css";
+@import "./buttons.css";
 
 body {
   margin: 0;

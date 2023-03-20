@@ -1,0 +1,31 @@
+.button-screaming {
+  font-family: Inter;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.button {
+  border: 0;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  font-family: Inter;
+  cursor: pointer;
+}
+
+.button-slim {
+    border: 0;
+    padding: 0.3rem 2rem;
+    font-size: 0.8rem;
+    font-family: Inter;
+    cursor: pointer;
+}
+
+.button-green {
+  background-color: #3b8905;
+  color: white;
+}
+
+.button-black {
+  background-color: black;
+  color: white;
+}
