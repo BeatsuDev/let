@@ -5,13 +5,14 @@ import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.Location;
 import no.ntnu.let.letapi.util.DateUtil;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 import java.util.Date;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ListingMapper {
     Location toLocation(LocationDTO locationDTO);
     LocationDTO toLocationDTO(Location location);
