@@ -4,10 +4,13 @@ import no.ntnu.let.letapi.model.listing.Category;
 import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.Location;
+import no.ntnu.let.letapi.util.DateUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -20,6 +23,10 @@ public interface ListingMapper {
     default String toImageUrl(Image image) {
         ImageDTO imageDTO = toImageDTO(image);
         return imageDTO.getUrl();
+    }
+
+    default String formatDate(Date date) {
+        return DateUtil.formatDate(date);
     }
 
     @Mappings({
