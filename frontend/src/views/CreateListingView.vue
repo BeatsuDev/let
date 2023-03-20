@@ -84,6 +84,10 @@ input, textarea {
   margin-bottom: 1rem;
 }
 
+.row > .col {
+  grid-column: 1 / 6;
+}
+
 #row-1 > .col:first-child {
   grid-column: 1 / 5;
 }
@@ -98,18 +102,6 @@ input, textarea {
 
 #row-2 > .col:last-child {
   grid-column: 4 / 6;
-}
-
-#row-3 > .col:first-child {
-  grid-column: 1 / 6;
-}
-
-#row-4 > .col:first-child {
-  grid-column: 1 / 6;
-}
-
-#row-5 > .col:first-child {
-  grid-column: 1 / 6;
 }
 
 #row-6 > .col:first-child {
