@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import("../views/RegisterView.vue"),
     },
     {
+      path: "/create-listing",
+      name: "create-listing",
+      component: () => import("../views/CreateListingView.vue"),
+    },
+    {
       path: "/listing/:id",
       name: "listing-details",
       component: () => import("../views/ListingDetailsView.vue"),
