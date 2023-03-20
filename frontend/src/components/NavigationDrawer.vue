@@ -1,69 +1,33 @@
 <template>
   <div
-      :class="{
+    :class="{
       sidebar: true,
-      'drawer-collapse': props.collapsed,
-      'drawer-active': !props.collapsed,
+      'drawer-collapse': props.modelValue,
+      'drawer-active': !props.modelValue,
     }"
   >
-    <button style="margin-bottom: 1.5rem" @click="collapse" class="button"> <CollapseIcon class="button-icon" />Skjul</button>
+    <button style="margin-bottom: 1.5rem" @click="collapse" class="button">
+      <CollapseIcon class="button-icon" />
+      Skjul
+    </button>
     <h3 class="item">Kategori</h3>
-    <div
-        v-for="(category, index) in categories"
-        class="category text-paragraph hide-overflow"
-        :key="index"
-        :class="{ 'active-category': value.category === category.name }"
-        @click="value.category = category.name; "
-    >
-      {{ category.name }}
-    </div>
-    <h3 class="item">Søk</h3>
-    <input type="search" v-model="value.search" class="input-text"/>
-    <h3 class="item">Lokasjon</h3>
-    <input type="search" class="input-text" v-model="value.search"/>
-    <h3 class="item">Radius</h3>
-    <input type="range" class="slider" v-model="radius" @mouseup="value.radius = radius" style="width: 100%"/>
-    <div class="center-text">{{ radius }}km</div>
+    <slot />
   </div>
 </template>
 <script lang="ts" setup>
-import {computed, PropType, ref} from "vue";
-import {ListingFilter} from "@/types/listing";
-import type {Category} from "@/service/models";
 import CollapseIcon from "@/components/icons/CollapseIcon.vue";
 
 const props = defineProps({
-  collapsed: {
+  modelValue: {
     type: Boolean,
     default: false,
   },
-  modelValue: {
-    type: ListingFilter,
-    required: true,
-  },
-  categories: {
-    type: [Array] as PropType<Category[]>,
-    required: true,
-  },
 });
 
-const radius = ref(props.modelValue.radius);
-
-const emit = defineEmits(["update:modelValue", "update:collapsed"]);
-
-const value = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value: string) {
-    const newFilter = {...props.modelValue, [value]: value} as ListingFilter;
-    console.log(newFilter);
-    emit("update:modelValue", newFilter);
-  },
-});
+const emit = defineEmits(["update:modelValue"]);
 
 function collapse() {
-  emit("update:collapsed", true);
+  emit("update:modelValue", true);
 }
 </script>
 <style scoped>
@@ -92,30 +56,9 @@ function collapse() {
   padding-right: 0;
 }
 
-.hide-overflow {
-  overflow: hidden;
-}
-
 .item {
   margin-top: 0.8rem;
   padding: 0.2rem;
-}
-
-.category {
-  transition: 0.3s;
-  padding: 0.5rem;
-  font-family: Inter, serif;
-}
-
-.category:hover {
-  color: #282828;
-  cursor: pointer;
-  background-color: #f1f1f1;
-}
-
-.active-category {
-  color: #282828;
-  background-color: #f1f1f1;
 }
 
 @media screen and (max-width: 600px) {
