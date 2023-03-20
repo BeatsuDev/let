@@ -102,3 +102,11 @@ export class ListingFilter {
     this.favorites = false;
   }
 }
+
+export class Category {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
