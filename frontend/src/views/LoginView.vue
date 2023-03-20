@@ -26,11 +26,21 @@ function login() {
 const email = ref("");
 const password = ref("");
 
+const responses = [
+  "Welcome back! 🤗",
+  "Time to find some stuff 🔍",
+  "You're back! 🎉",
+  "We missed you! 🥺",
+  "One step closer to finding your future home! 🤩",
+  "What was that password again... 🤔",
+];
+
+const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 </script>
 
 <template>
   <div class="wrapper">
-    <h2>Welcome back</h2>
+    <h2 id="title">{{ randomResponse }}</h2>
     <form @submit.prevent="login">
       <label for="email">Email</label>
       <input type="email" id="email" v-model="email" placeholder="myman@gmail.com"/>
@@ -66,19 +76,23 @@ form {
   margin: 0 auto;
 }
 
-input, label {
+label, input {
   display: block;
   width: 100%;
-  margin: 10px 0;
+  margin: 0px 0;
   font-family: Inter;
 }
 
+label {
+  margin-top: 1rem;
+}
+
 input {
-  padding: 20px;
+  padding: 1.2rem;
   background-color: #eee;
   color: #030303;
+  font-size: 1rem;
   border: 0;
-  line-height: 1.5rem;
 }
 
 input:focus {
