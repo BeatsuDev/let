@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import axios from "axios";
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
+import { reactive } from "vue";
 /*
 import { toRefs } from 'vue';
 import type { Item } from '@/types/Item.d.ts';
@@ -12,7 +11,7 @@ const props = defineProps<{
 
 const { item } = toRefs(props);
 */
-const item = {
+const item = reactive({
   imageUrls: [
     "https://media.discordapp.net/attachments/903975806227857409/1087280248007176282/20230320_081917.jpg",
     "https://media.discordapp.net/attachments/903975806227857409/1087280248300785724/20230320_081925.jpg",
@@ -31,12 +30,18 @@ const item = {
   seller: {
     name: "Arunan Gnanasekaran",
   },
-};
+  isBookmarked: false,
+});
 
 function handleImageClick(event: MouseEvent) {
   const image = event.target as HTMLImageElement;
   const mainImage = document.getElementById("main-image") as HTMLImageElement;
   mainImage.src = image.src;
+}
+
+function handleBookmarkClick() {
+  item.isBookmarked = !item.isBookmarked;
+  console.log(item.isBookmarked);
 }
 </script>
 
@@ -58,8 +63,14 @@ function handleImageClick(event: MouseEvent) {
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
-        <div id="edit-btn">EDIT</div>
-        <div id="bookmark-btn"><BookmarkIcon /></div>
+        <div id="edit-btn">Edit</div>
+        <div id="bookmark-btn">
+          <BookmarkIcon
+            :bookmarked="item.isBookmarked"
+            :class="{filled: item.isBookmarked}"
+            @toggleBookmark="handleBookmarkClick"
+          />
+        </div>
       </div>
 
       <div class="price-bar">
@@ -71,7 +82,7 @@ function handleImageClick(event: MouseEvent) {
           <h2>Category:</h2>
           <p id="category">{{ item.category }}</p>
           <!-- TODO: Button component here -->
-          <button>CONTACT SELLER</button>
+          <button>Contact Seller</button>
         </div>
         <div class="misc-bar-right">
           <h3>Sold by:</h3>
@@ -155,6 +166,7 @@ main {
   background-color: #3b8905;
   padding: 0.3rem 2rem;
   color: white;
+  text-transform: uppercase;
   cursor: pointer;
   font-family: Inter;
   font-size: 0.8rem;
@@ -225,6 +237,7 @@ main {
   border: 0;
   padding: 0.6rem 2rem;
   color: white;
+  text-transform: uppercase;
   cursor: pointer;
   font-family: Inter;
   font-size: 0.6rem;
