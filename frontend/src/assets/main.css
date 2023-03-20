@@ -37,3 +37,8 @@ main {
   font-family: Inter, sans-serif;
   width: 100%;
 }
+
+.drawer-item {
+  margin-top: 0.8rem;
+  padding: 0.2rem;
+}
