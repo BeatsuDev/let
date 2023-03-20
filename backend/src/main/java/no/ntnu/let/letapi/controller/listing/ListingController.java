@@ -40,6 +40,9 @@ public class ListingController {
             @RequestParam(defaultValue = "1", required = false) Integer page,
             @RequestParam(defaultValue = "50", required = false) Integer pageSize
             ) {
+        // Validate the page number
+        if (page <= 0) return ResponseEntity.badRequest().body("Page number must be greater than 0");
+
         // Build the filter
         ListingFilterBuilder filterBuilder = new ListingFilterBuilder();
         filterBuilder
@@ -50,15 +53,12 @@ public class ListingController {
                 .states(states);
         ListingFilter filter = filterBuilder.build();
 
-
         // Get the listings from the database
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         Page<Listing> listings = listingService.getListings(filterBuilder.build(), pageRequest);
 
         // If no listings matched the criteria, return a 204 No Content
-        if (listings.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        if (listings.isEmpty()) return ResponseEntity.noContent().build();
 
         // Build the next and previous page URLs
         String requestUrl = BASE_URL + filter.toUrlParameters();
