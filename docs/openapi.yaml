@@ -501,14 +501,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CreateUser'
       responses:
         '201':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserFull'
         '409':
           description: User already exists
     put:
@@ -522,14 +522,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              allOf:
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      description: ID of the user to update
+                      example: 1
+                - $ref: '#/components/schemas/CreateUser'
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserFull'
         '404':
           description: User not found
       security:
@@ -648,7 +656,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserFull'
         '404':
           description: User not found
     delete:
@@ -751,6 +759,8 @@ components:
               type: array
               items:
                 type: string
+            seller:
+              $ref: "#/components/schemas/UserMinimal"
     ListingState:
       type: string
       enum:
@@ -860,7 +870,20 @@ components:
         password:
           type: string
           example: password123
-    User:
+    UserMinimal:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: example@example.org
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+    UserFull:
       allOf:
         - type: object
           properties:
@@ -868,7 +891,11 @@ components:
               type: integer
               format: int64
               example: 10
-        - $ref: '#/components/schemas/CreateUser'
+            admin:
+              type: boolean
+              example: false
+        - $ref: '#/components/schemas/UserMinimal'  
+
   securitySchemes:
     bearerAuth:
       type: http
