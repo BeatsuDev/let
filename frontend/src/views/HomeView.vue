@@ -6,7 +6,7 @@
       :categories="categories"
     ></NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
-      <div class="text-title one-line">Hva leter du etter i dag?</div>
+      <h1 class="one-line">Hva leter du etter i dag?</h1>
       <div class="menu">
         <button @click="collapsed = !collapsed" class="button">Filtre</button>
         <div class="spacer" />
