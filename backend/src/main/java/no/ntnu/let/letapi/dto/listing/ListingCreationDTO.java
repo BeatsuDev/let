@@ -11,7 +11,7 @@ public class ListingCreationDTO {
     private String title;
     private String shortDescription;
     private String description;
-    private String price;
+    private Long price;
     private Long categoryId;
     private LocationDTO location;
     private Long thumbnailId;
