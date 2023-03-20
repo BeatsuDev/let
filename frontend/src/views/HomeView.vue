@@ -20,28 +20,16 @@
 import ListPagination from "@/components/paginations/ListPagination.vue";
 import { ref } from "vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
-import { Image, Listing, ListingFilter, Location } from "@/types/listing";
+import { ListingCard, ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 
 const page = ref(1);
-const listings = ref([] as Listing[]);
+const listings = ref([] as ListingCard[]);
 const collapsed = ref(false);
 
 const listingFilter = ref(new ListingFilter());
 
-const listing = new Listing(
-  1,
-  "Test",
-  1,
-  new Date(),
-  new Date(),
-  "test",
-  "test",
-  new Image(1),
-  [new Image(1)],
-  new Location(1, 1),
-  100
-);
+const listing = new ListingCard(1, "Test", "Test", 1, "test", "test", "test");
 
 for (let i = 0; i < 20; i++) {
   listings.value.push(listing);
