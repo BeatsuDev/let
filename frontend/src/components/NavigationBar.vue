@@ -15,7 +15,7 @@ import ProfileIcon from "@/components/icons/ProfileIcon.vue";
       <RouterLink to="/admin"> <AdminIcon /> Admin </RouterLink>
       <RouterLink to="/chats"> <ChatIcon /> Chats </RouterLink>
       <RouterLink to="/create-listing"> <CreateListingIcon /> New listing </RouterLink>
-      <RouterLink to="/profile"> <ProfileIcon /> Profile </RouterLink>
+      <RouterLink to="/login"> <ProfileIcon /> Profile </RouterLink>
     </nav>
   </header>
 </template>
