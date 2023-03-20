@@ -12,10 +12,10 @@ import ProfileIcon from "@/components/icons/ProfileIcon.vue";
   <header>
     <RouterLink id="navbar-logo" to="/">letno</RouterLink>
     <nav>
-      <RouterLink to="/admin"> <AdminIcon /> Admin </RouterLink>
-      <RouterLink to="/chats"> <ChatIcon /> Chats </RouterLink>
-      <RouterLink to="/create-listing"> <CreateListingIcon /> Ny Annonse </RouterLink>
-      <RouterLink to="/login"> <ProfileIcon /> Profil </RouterLink>
+      <RouterLink to="/admin"> <AdminIcon /> admin </RouterLink>
+      <RouterLink to="/chats"> <ChatIcon /> chats </RouterLink>
+      <RouterLink to="/create-listing"> <CreateListingIcon /> ny Annonse </RouterLink>
+      <RouterLink to="/login"> <ProfileIcon /> profil </RouterLink>
     </nav>
   </header>
 </template>
