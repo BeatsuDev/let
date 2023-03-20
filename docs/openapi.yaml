@@ -773,6 +773,10 @@ components:
       properties:
         id:
           type: integer
+          format: int64
+          example: 982
+        url:
+          type: string
     Location:
       type: object
       properties:
