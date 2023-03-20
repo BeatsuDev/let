@@ -11,6 +11,6 @@ import java.util.Date;
 public class ListingFullDTO extends ListingMinimalDTO {
     private String description;
     private ListingState state;
-    private Date created;
+    private String created;
     private String[] galleryUrls;
 }
