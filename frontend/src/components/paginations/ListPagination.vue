@@ -1,7 +1,7 @@
 <template>
-  <PrimaryButton value="Forrige" @click="$emit('previous')" />
+  <PrimaryButton value="Forrige" @click="previousPage" />
   <PrimaryButton :value="props.value" disabled />
-  <PrimaryButton value="Neste" @click="$emit('next')" />
+  <PrimaryButton value="Neste" @click="nextPage" />
 </template>
 
 <script lang="ts" setup>
@@ -15,4 +15,14 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["next", "previous"]);
+
+function nextPage() {
+  emit("next");
+}
+
+function previousPage() {
+  if (props.value > 1) {
+    emit("previous");
+  }
+}
 </script>
