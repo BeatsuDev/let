@@ -13,11 +13,11 @@
 }
 
 .button-slim {
-    border: 0;
-    padding: 0.3rem 2rem;
-    font-size: 0.8rem;
-    font-family: Inter;
-    cursor: pointer;
+  border: 0;
+  padding: 0.3rem 2rem;
+  font-size: 0.8rem;
+  font-family: Inter;
+  cursor: pointer;
 }
 
 .button-green {

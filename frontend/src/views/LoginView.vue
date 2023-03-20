@@ -19,7 +19,6 @@ function login() {
     alert("Invalid email or password");
     return;
   }
-
 }
 
 // v-models
@@ -43,9 +42,21 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
     <h2 id="title">{{ randomResponse }}</h2>
     <form @submit.prevent="login">
       <label for="email">Email</label>
-      <input class="input-text" type="email" id="email" v-model="email" placeholder="myman@gmail.com"/>
+      <input
+        class="input-text"
+        type="email"
+        id="email"
+        v-model="email"
+        placeholder="myman@gmail.com"
+      />
       <label for="password">Password</label>
-      <input class="input-text" type="password" id="password" v-model="password" placeholder="verysecure123"/>
+      <input
+        class="input-text"
+        type="password"
+        id="password"
+        v-model="password"
+        placeholder="verysecure123"
+      />
       <button class="button button-black" type="submit">Log in</button>
       <RouterLink to="/register">Don't have an account?</RouterLink>
     </form>
@@ -76,7 +87,8 @@ form {
   margin-bottom: 4rem;
 }
 
-label, input {
+label,
+input {
   display: block;
   width: 100%;
   margin: 0px 0;
