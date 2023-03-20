@@ -270,10 +270,9 @@ paths:
         '200':
           description: Successfully found image
           content:
-            image/jpeg:
+            application/json:
               schema:
-                type: string
-                format: binary
+                $ref: '#/components/schemas/Image'
         '404':
           description: Image not found
   /category:
