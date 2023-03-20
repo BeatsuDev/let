@@ -113,6 +113,15 @@ public class TestListingMapper {
         assertEquals(1L, image.getId());
     }
 
+    @Test
+    public void testToCategory() {
+        CategoryCreationDTO listingDTO= new CategoryCreationDTO();
+        listingDTO.setName("Test category 1");
+
+        Category category = listingMapper.toCategory(listingDTO);
+        assertEquals("Test category 1", category.getName());
+    }
+
     @Test void testToListingFromListingCreateDTL() {
         Listing listing = listingMapper.toListing((ListingCreationDTO) listingUpdateDTO1);
 
