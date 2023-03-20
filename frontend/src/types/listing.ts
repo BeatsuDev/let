@@ -5,6 +5,7 @@ export class ListingFilter {
   search?: string | null;
   radius?: number | null;
   favorites: boolean;
+  page: number;
 
   constructor() {
     this.category = null;
@@ -14,5 +15,6 @@ export class ListingFilter {
     this.search = null;
     this.radius = 30;
     this.favorites = false;
+    this.page = 1;
   }
 }
