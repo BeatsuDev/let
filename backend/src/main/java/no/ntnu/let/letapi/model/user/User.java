@@ -1,4 +1,4 @@
-package no.ntnu.let.letapi.model;
+package no.ntnu.let.letapi.model.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;

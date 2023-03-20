@@ -3,7 +3,7 @@ package no.ntnu.let.letapi.model.listing;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import no.ntnu.let.letapi.model.User;
+import no.ntnu.let.letapi.model.user.User;
 
 import java.util.Date;
 import java.util.List;

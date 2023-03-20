@@ -2,7 +2,7 @@ package no.ntnu.let.letapi.dto.listing;
 
 import lombok.Getter;
 import lombok.Setter;
-import no.ntnu.let.letapi.dto.UserMinimalDTO;
+import no.ntnu.let.letapi.dto.user.UserMinimalDTO;
 import no.ntnu.let.letapi.model.listing.ListingState;
 
 @Getter

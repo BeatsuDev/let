@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
-import no.ntnu.let.letapi.model.User;
+import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.model.listing.Listing;
 
 @Getter

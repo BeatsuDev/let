@@ -1,4 +1,4 @@
-package no.ntnu.let.letapi.dto;
+package no.ntnu.let.letapi.dto.user;
 
 public class LoginDTO {
     private String email;

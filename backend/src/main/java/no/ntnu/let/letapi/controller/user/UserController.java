@@ -1,8 +1,8 @@
-package no.ntnu.let.letapi.controller;
+package no.ntnu.let.letapi.controller.user;
 
-import no.ntnu.let.letapi.dto.LoginDTO;
-import no.ntnu.let.letapi.dto.UserCreationDTO;
-import no.ntnu.let.letapi.dto.UserUpdateDTO;
+import no.ntnu.let.letapi.dto.user.LoginDTO;
+import no.ntnu.let.letapi.dto.user.UserCreationDTO;
+import no.ntnu.let.letapi.dto.user.UserUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
