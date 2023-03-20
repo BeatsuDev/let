@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
+import axios from "axios";
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 /*
 import { toRefs } from 'vue';
@@ -31,6 +32,12 @@ const item = {
     name: "Arunan Gnanasekaran",
   },
 };
+
+function handleImageClick(event: MouseEvent) {
+  const image = event.target as HTMLImageElement;
+  const mainImage = document.getElementById("main-image") as HTMLImageElement;
+  mainImage.src = image.src;
+}
 </script>
 
 <template>
@@ -39,9 +46,11 @@ const item = {
       <img :src="item.imageUrls[0]" id="main-image" />
       <div id="other-images">
         <img
+          :id="'image-' + index"
           :key="'image-' + index"
           v-for="(image_url, index) in item.imageUrls"
-          :style="{ backgroundImage: `url(${image_url})` }"
+          :src="image_url"
+          @click="handleImageClick"
         />
       </div>
     </div>
@@ -117,9 +126,8 @@ main {
   width: 100px;
   height: 100px;
   margin-right: 0.5rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  object-position: center;
+  object-fit: cover;
   cursor: pointer;
 }
 
