@@ -10,7 +10,7 @@ import type { PropType } from "vue";
 
 const props = defineProps({
   listings: {
-    type: [Array] as PropType<Listing[]>,
+    type: [Array] as PropType<ListingCard[]>,
     required: true,
   },
 });
