@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from "vue";
 /*
 import { toRefs } from 'vue';
 import type { Item } from '@/types/Item.d.ts';
@@ -124,7 +124,6 @@ main {
   cursor: pointer;
 }
 
-
 /* ----- DETAILS SECTION ----- */
 #details-section {
   flex: 1;
@@ -146,12 +145,12 @@ main {
 }
 
 .top-bar > #edit-btn {
-  background-color: #3B8905;
+  background-color: #3b8905;
   padding: 0.3rem 2rem;
   color: white;
   cursor: pointer;
   font-family: Inter;
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: bold;
   margin-right: 1rem;
 }
@@ -184,7 +183,7 @@ main {
 .misc-info-bar > .misc-bar-right {
   flex: 1;
   max-width: 50%;
-  border: 1px solid #C1C1C1;
+  border: 1px solid #c1c1c1;
   padding: 1rem;
   font-family: Inter;
 }
@@ -217,11 +216,11 @@ main {
 .misc-info-bar > .misc-bar-left > button {
   background-color: black;
   border: 0;
-  padding: .6rem 2rem;
+  padding: 0.6rem 2rem;
   color: white;
   cursor: pointer;
   font-family: Inter;
-  font-size: .6rem;
+  font-size: 0.6rem;
   font-weight: bold;
   margin-top: 40px;
 }
