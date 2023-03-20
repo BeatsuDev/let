@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ImageDTO {
-    private Integer id;
+    private Long id;
     private String url;
 }

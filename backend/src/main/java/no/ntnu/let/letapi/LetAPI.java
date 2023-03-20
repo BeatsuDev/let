@@ -1,10 +1,6 @@
 package no.ntnu.let.letapi;
 
-import no.ntnu.let.letapi.model.listing.Category;
-import no.ntnu.let.letapi.model.listing.Image;
-import no.ntnu.let.letapi.model.listing.Listing;
-import no.ntnu.let.letapi.model.listing.Location;
-import no.ntnu.let.letapi.model.listing.ListingState;
+import no.ntnu.let.letapi.model.listing.*;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.listing.CategoryRepository;
 import no.ntnu.let.letapi.repository.listing.ImageRepository;
