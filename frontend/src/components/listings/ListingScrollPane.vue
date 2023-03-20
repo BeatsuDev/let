@@ -12,10 +12,11 @@
 import ListingCard from "@/components/listings/ListingCard.vue";
 import type { PropType } from "vue";
 import router from "@/router";
+import type { ListingMinimal } from "@/service/models";
 
 const props = defineProps({
   listings: {
-    type: [Array] as PropType<ListingCard[]>,
+    type: [Array] as PropType<ListingMinimal[]>,
     required: true,
   },
 });
