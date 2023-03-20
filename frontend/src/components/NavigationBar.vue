@@ -27,6 +27,7 @@ header {
   padding: 2rem;
   height: 2.5rem;
   font-size: 1.2rem;
+  z-index: 100;
 }
 
 nav {
