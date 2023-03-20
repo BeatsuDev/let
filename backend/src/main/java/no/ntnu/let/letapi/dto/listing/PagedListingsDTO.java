@@ -3,7 +3,6 @@ package no.ntnu.let.letapi.dto.listing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
