@@ -115,7 +115,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Listing'
+                      $ref: '#/components/schemas/ListingMinimal'
                   next:
                     type: string
                     format: url
@@ -157,7 +157,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Listing'
+                $ref: '#/components/schemas/ListingFull'
       security:
         - cookieAuth: []
         - bearerAuth: []
@@ -178,7 +178,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Listing'
+                $ref: '#/components/schemas/ListingFull'
         '404':
           description: The listing does not exist
       security:
@@ -204,7 +204,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Listing'
+                $ref: '#/components/schemas/ListingFull'
         '404':
           description: Listing not found
       security:
@@ -229,7 +229,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Listing'
+                $ref: '#/components/schemas/ListingFull'
         '403':
           description: Users can only delete their own listings
         '404':
@@ -677,22 +677,32 @@ components:
     CreateListing:
       type: object
       properties:
+        title:
+          type: string
         summary:
           type: string
         description:
           type: string
-        thumbnail:
-          $ref: '#/components/schemas/Image'
-        gallery:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
-        location:
-          $ref: '#/components/schemas/Location'
         price:
           type: integer
           description: Price in øre
           example: 26300
+        categoryId:
+          type: integer
+          format: int64
+          example: 1234
+        location:
+          $ref: '#/components/schemas/Location'
+        thumbnailId:
+          type: integer
+          format: int64
+          example: 876
+        galleryIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+            example: 876
     UpdateListing:
       allOf:
         - type: object
@@ -704,21 +714,43 @@ components:
             state:
               $ref: '#/components/schemas/ListingState'
         - $ref: '#/components/schemas/CreateListing'
-    Listing:
+    ListingMinimal:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 982
+        title:
+          type: string
+        summary:
+          type: string
+        price:
+          type: integer
+          format: int64
+          example: 6500
+        thumbnailUrl:
+          type: string
+        locationName:
+          type: string
+        categoryName:
+          type: string
+    ListingFull:
       allOf:
-        - $ref: '#/components/schemas/UpdateListing'
+        - $ref: "#/components/schemas/ListingMinimal"
         - type: object
           properties:
-            sellerId:
-              type: integer
-              format: int64
-              example: 5678
+            description:
+              type: string
+            state:
+              $ref: "#/components/schemas/ListingState"
             created:
               type: string
               format: date-time
-            sold:
-              type: string
-              format: date-time
+            galleryUrls:
+              type: array
+              items:
+                type: string
     ListingState:
       type: string
       enum:
