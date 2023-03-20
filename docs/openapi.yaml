@@ -130,13 +130,6 @@ paths:
                     example: 3
         '204':
           description: 'No listings matched the criteria.'
-          content:
-            application/json:
-              schema:
-                type: array
-                example: []
-                items:
-                  type: object
       security:
         - cookieAuth: []
         - bearerAuth: []
