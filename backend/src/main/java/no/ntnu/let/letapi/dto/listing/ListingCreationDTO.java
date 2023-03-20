@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class ListingCreationDTO {
     private String title;
-    private String shortDescription;
+    private String summary;
     private String description;
     private Long price;
     private Long categoryId;

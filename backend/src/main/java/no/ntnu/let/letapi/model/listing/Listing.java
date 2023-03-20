@@ -20,7 +20,7 @@ public class Listing {
     private String title;
 
     @Column(nullable = false)
-    private String shortDescription;
+    private String summary;
 
     @Column(nullable = false)
     private String description;

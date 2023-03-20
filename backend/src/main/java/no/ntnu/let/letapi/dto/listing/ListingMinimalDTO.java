@@ -8,7 +8,7 @@ import lombok.Setter;
 public class ListingMinimalDTO {
     private Long id;
     private String title;
-    private String shortDescription;
+    private String summary;
     private Long price;
     private String thumbnailUrl;
     private String locationName;
