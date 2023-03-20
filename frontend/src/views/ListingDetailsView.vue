@@ -68,7 +68,7 @@ function handleBookmarkClick() {
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ item.title }}</h1>
-        <div id="edit-btn" class="button-slim button-green button-screaming">Edit</div>
+        <div id="edit-btn" class="button-slim button-green button-screaming">Rediger</div>
         <div id="bookmark-btn">
           <BookmarkIcon
             :bookmarked="item.isBookmarked"
@@ -84,21 +84,21 @@ function handleBookmarkClick() {
 
       <div class="misc-info-bar">
         <div class="misc-bar-left">
-          <h3>Category:</h3>
+          <h3>Kategori:</h3>
           <p id="category">{{ item.category }}</p>
           <!-- TODO: Button component here -->
-          <button class="button button-black button-screaming">Contact Seller</button>
+          <button class="button button-black button-screaming">Kontakt Seller</button>
         </div>
         <div class="misc-bar-right">
-          <h5>Sold by:</h5>
+          <h5>Selges av:</h5>
           <p id="seller">{{ item.seller.name }}</p>
-          <h5 id="location-header">Location:</h5>
+          <h5 id="location-header">Sted:</h5>
           <p id="location">{{ item.location }}</p>
         </div>
       </div>
 
       <div class="description-bar">
-        <h2>Description</h2>
+        <h2>Beskrivelse</h2>
         <p id="description">{{ item.description }}</p>
       </div>
     </div>
@@ -132,7 +132,8 @@ main {
 
 #other-images {
   margin-top: 1rem;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   white-space: nowrap;
   max-width: 100%;
   overflow-x: auto;
