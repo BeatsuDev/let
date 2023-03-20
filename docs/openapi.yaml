@@ -234,12 +234,12 @@ paths:
     post:
       tags:
         - image
-      summary: Upload an image.
-      description: Upload a new image.
+      summary: Upload an image
+      description: Upload a new image
       requestBody:
-        description: Upload a new image (base64 encoded).
+        description: Upload a new image
         content:
-          application/octet-stream:
+          multipart/form-data:
             schema:
               type: string
               format: binary
