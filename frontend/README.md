@@ -104,3 +104,8 @@ fi
 popd > /dev/null
 ``` 
 
+### Using geolocations with api-ninjas 
+
+1. Create an account on [api-ninjas](https://apilist.fun/api/ninjas-geolocation-api)
+2. Create a .env.local file in the root of the project, by copying the .env.local.example file and fill in your api key
+
