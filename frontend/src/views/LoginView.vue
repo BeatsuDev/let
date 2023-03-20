@@ -16,7 +16,7 @@ const validatePassword = (password: string) => {
 function login() {
   if (!validateEmail(email.value) || !validatePassword(password.value)) {
     // Better error handling
-    alert("Invalid email or password");
+    alert("Ugyldig epost eller passord");
     return;
   }
 }
@@ -26,12 +26,12 @@ const email = ref("");
 const password = ref("");
 
 const responses = [
-  "Welcome back! 🤗",
-  "Time to find some stuff 🔍",
-  "You're back! 🎉",
-  "We missed you! 🥺",
-  "One step closer to finding your future home! 🤩",
-  "What was that password again... 🤔",
+  "Velkommen tilbake! 🤗",
+  "På tide å lete 🔍",
+  "Du er tilbake! 🎉",
+  "Vi har savna deg 🥺",
+  "Et steg nærmere å finne drømmehjemmet! 🤩",
+  "Hva var nå passordet igjen... 🤔",
 ];
 
 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
@@ -47,18 +47,18 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         type="email"
         id="email"
         v-model="email"
-        placeholder="myman@gmail.com"
+        placeholder="ola.sormann@gmail.com"
       />
-      <label for="password">Password</label>
+      <label for="password">Passord</label>
       <input
         class="input-text"
         type="password"
         id="password"
         v-model="password"
-        placeholder="verysecure123"
+        placeholder="sikker123"
       />
-      <button class="button button-black" type="submit">Log in</button>
-      <RouterLink to="/register">Don't have an account?</RouterLink>
+      <button class="button button-black" type="submit">Logg in</button>
+      <RouterLink to="/register">Har du ikke en konto?</RouterLink>
     </form>
   </div>
 </template>
