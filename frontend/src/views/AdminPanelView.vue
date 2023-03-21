@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="wrapper">
@@ -11,10 +9,12 @@
           <h2>Lag Ny Kategori</h2>
           <form>
             <div class="form-group">
-              <input class="input-text" type="text" id="name" placeholder="Elektronikk"/>
+              <input class="input-text" type="text" id="name" placeholder="Elektronikk" />
             </div>
             <div class="form-group">
-              <button class="button button-black button-screaming" type="submit">Lag Kategori</button>
+              <button class="button button-black button-screaming" type="submit">
+                Lag Kategori
+              </button>
             </div>
           </form>
         </div>
@@ -64,7 +64,8 @@ h1 {
   flex-direction: row;
 }
 
-.left-container, .right-container {
+.left-container,
+.right-container {
   flex: 1;
   padding: 1rem;
 }
@@ -110,7 +111,8 @@ form input {
     flex-direction: column;
   }
 
-  .left-container, .right-container {
+  .left-container,
+  .right-container {
     padding: 0;
   }
 

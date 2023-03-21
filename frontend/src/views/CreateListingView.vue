@@ -11,7 +11,7 @@
         </div>
         <div class="col">
           <h3><label for="price">Pris (kr)</label></h3>
-          <input class="input-text" type="text" id="price" placeholder="249.99"/>
+          <input class="input-text" type="text" id="price" placeholder="249.99" />
         </div>
       </div>
 
@@ -22,7 +22,7 @@
         </div>
         <div class="col">
           <h3><label for="category">Kategori</label></h3>
-          <input class="input-text" type="text" id="category" placeholder="Planter"/>
+          <input class="input-text" type="text" id="category" placeholder="Planter" />
         </div>
       </div>
 
@@ -49,7 +49,9 @@
 
       <div class="row" id="row-6">
         <div class="col">
-          <button class="button button-black button-screaming" type="submit">Publiser annonse</button>
+          <button class="button button-black button-screaming" type="submit">
+            Publiser annonse
+          </button>
         </div>
       </div>
     </form>
@@ -69,7 +71,8 @@ label {
   margin-bottom: 0.2rem;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
   resize: none;
 }
