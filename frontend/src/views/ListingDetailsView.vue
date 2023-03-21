@@ -65,7 +65,6 @@ function handleBookmarkClick() {
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
           <p id="category">{{ data.categoryName }}</p>
-          <!-- TODO: Button component here -->
           <button class="button button-black button-screaming">Kontakt Seller</button>
         </div>
         <div class="misc-bar-right">
