@@ -31,7 +31,6 @@ const emit = defineEmits(["createListing"]);
 async function submitData() {
   const result = await validator.value.$validate();
   if (!result) {
-    alert("error");
     return;
   }
 
