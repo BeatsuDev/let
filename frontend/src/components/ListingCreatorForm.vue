@@ -54,10 +54,6 @@ function submitHandler() {
   emit("createListing", listingData);
   return true;
 }
-
-setInterval(() => {
-  console.log("title: " + title.value);
-}, 1000);
 </script>
 
 <template>
