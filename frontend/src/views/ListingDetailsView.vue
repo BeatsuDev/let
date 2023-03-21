@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
-import { reactive } from "vue";
+import { useRoute } from "vue-router";
+import { ListingsApi } from "@/service/index";
+import runAxios from "@/service/composable";
+
+const route = useRoute();
+
+const api = new ListingsApi();
+
+const id = Number(route.params.id);
+
+const { data, error } = runAxios(api.getListing(id));
 
 const image_urls = [
   "https://media.discordapp.net/attachments/903975806227857409/1087280248007176282/20230320_081917.jpg",
@@ -24,41 +34,37 @@ const description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pr
   Quisque augue nulla, tincidunt non dolor quis, viverra sagittis diam. Phasellus placerat mollis gravida. Ut nibh arcu,
   pulvinar quis elit et, sagittis consectetur purus. Sed a eros ante.`;
 
-const item = reactive({
-  imageUrls: image_urls,
-  title: "Plante",
-  shortDescription: "En kul plante.",
-  description: description,
-  price: 50000,
-  location: "Oslo, Høybråten",
-  category: "Stygge planter",
-  seller: {
-    name: "Arunan Gnanasekaran",
-  },
-  isBookmarked: false,
-});
-
 function handleImageClick(event: MouseEvent) {
   const image = event.target as HTMLImageElement;
   const mainImage = document.getElementById("main-image") as HTMLImageElement;
   mainImage.src = image.src;
 }
 
+const tempItem = {
+  isBookmarked: false,
+}
+
 function handleBookmarkClick() {
-  item.isBookmarked = !item.isBookmarked;
-  console.log(item.isBookmarked);
+  tempItem.isBookmarked = !tempItem.isBookmarked;
+  console.log(tempItem.isBookmarked);
 }
 </script>
 
 <template>
-  <main>
+  <div v-if="!data && !error">
+    Loading...
+  </div>
+  <div v-else-if="error">
+    Error: {{ error }}
+  </div>
+  <main v-else-if="data">
     <div id="images-section">
-      <img :src="item.imageUrls[0]" id="main-image" />
+      <img :src="data.galleryUrls![0]" id="main-image" />
       <div id="other-images">
         <img
           :id="'image-' + index"
           :key="'image-' + index"
-          v-for="(image_url, index) in item.imageUrls"
+          v-for="(image_url, index) in data.galleryUrls"
           :src="image_url"
           @click="handleImageClick"
         />
@@ -67,39 +73,39 @@ function handleBookmarkClick() {
 
     <div id="details-section">
       <div class="top-bar">
-        <h1>{{ item.title }}</h1>
+        <h1>{{ data.title }}</h1>
         <div id="edit-btn" class="button-slim button-green button-screaming">Rediger</div>
         <div id="bookmark-btn">
           <BookmarkIcon
-            :bookmarked="item.isBookmarked"
-            :class="{ filled: item.isBookmarked }"
+            :bookmarked="tempItem.isBookmarked"
+            :class="{ filled: tempItem.isBookmarked }"
             @toggleBookmark="handleBookmarkClick"
           />
         </div>
       </div>
 
       <div class="price-bar">
-        <h2>{{ item.price / 100 }}kr</h2>
+        <h2>{{ data.price ? data.price / 100 : '-' }}kr</h2>
       </div>
 
       <div class="misc-info-bar">
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
-          <p id="category">{{ item.category }}</p>
+          <p id="category">{{ data.categoryName }}</p>
           <!-- TODO: Button component here -->
           <button class="button button-black button-screaming">Kontakt Seller</button>
         </div>
         <div class="misc-bar-right">
           <h5>Selges av:</h5>
-          <p id="seller">{{ item.seller.name }}</p>
+          <p id="seller">{{ data.seller!.firstName + ' ' + data.seller!.lastName }}</p>
           <h5 id="location-header">Sted:</h5>
-          <p id="location">{{ item.location }}</p>
+          <p id="location">{{ data.locationName }}</p>
         </div>
       </div>
 
       <div class="description-bar">
         <h2>Beskrivelse</h2>
-        <p id="description">{{ item.description }}</p>
+        <p id="description">{{ data.description }}</p>
       </div>
     </div>
   </main>
