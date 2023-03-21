@@ -10,6 +10,7 @@ import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.user.UserRepository;
 import no.ntnu.let.letapi.util.ListingFilter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,12 +35,9 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         return cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%");
     }
 
-    public Page<Listing> findAll(ListingFilter filter, PageRequest pageRequest) {
-        if (filter == null) return listingRepository.findAll(pageRequest);
-
+    private Predicate getFilterPredicate(@NotNull ListingFilter filter) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Listing> cq = cb.createQuery(Listing.class);
-
         Root<Listing> listing = cq.from(Listing.class);
 
         Predicate searchString;
@@ -88,12 +86,26 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
             stateFilter = cb.conjunction();
         }
 
-        Predicate finalFilter = cb.and(searchString, categoryFilter, userIdFilter, favoritesFilter, stateFilter);
-        TypedQuery<Listing> query = entityManager.createQuery(cq.select(listing).where(finalFilter));
+        return cb.and(searchString, categoryFilter, userIdFilter, favoritesFilter, stateFilter);
+    }
 
+    public Page<Listing> findAll(ListingFilter filter, PageRequest pageRequest) {
+        if (filter == null) return listingRepository.findAll(pageRequest);
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        CriteriaQuery<Listing> cq = cb.createQuery(Listing.class);
+        Root<Listing> listing = cq.from(Listing.class);
+
+        Predicate finalFilter = getFilterPredicate(filter);
+        CriteriaQuery<Long> count = countQuery.select(cb.count(countQuery.from(Listing.class)))
+                .where(finalFilter);
+        long countResult = entityManager.createQuery(count).getSingleResult();
+
+        TypedQuery<Listing> query = entityManager.createQuery(cq.select(listing).where(finalFilter));
         query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());
         query.setMaxResults(pageRequest.getPageSize());
         List<Listing> listings = query.getResultList();
-        return PageableExecutionUtils.getPage(listings, pageRequest, () -> query.getResultList().size());
+        return PageableExecutionUtils.getPage(listings, pageRequest, () -> countResult);
     }
 }

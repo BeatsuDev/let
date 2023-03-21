@@ -77,10 +77,10 @@ public class ListingController {
         requestUrl += requestUrl.contains("?") ? "&" : "?";
         String nextUrl = null;
         String prevUrl = null;
-        if (listings.hasNext()) {
+        if (listings.getNumber() < listings.getTotalPages() - 1) {
             nextUrl = requestUrl + "page=" + (page + 1) + "&pageSize=" + pageSize;
         }
-        if (listings.hasPrevious()) {
+        if (listings.getNumber() > 0) {
             prevUrl = requestUrl + "page=" + (page - 1) + "&pageSize=" + pageSize;
         }
 
