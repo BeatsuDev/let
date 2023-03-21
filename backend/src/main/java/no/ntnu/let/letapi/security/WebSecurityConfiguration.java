@@ -27,6 +27,7 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests()
                 .anyRequest().permitAll()
                 .and()
+                .cors().and()
                 .csrf().disable();
         return http.build();
     }
