@@ -1,98 +1,114 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import type { Ref } from "vue";
+import { reactive } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, numeric } from "@vuelidate/validators";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import { InputType } from "@/types/input";
 
-const emit = defineEmits(["createListing"]);
+const listingData = reactive({
+  title: "",
+  price: "",
+  place: "",
+  category: "",
+  summary: "",
+  description: "",
+});
+
+const rules = {
+  title: { required },
+  price: { required, numeric },
+  place: { required },
+  category: { required },
+  summary: { required },
+  description: { required },
+};
+
+const validator = useVuelidate(rules, listingData);
 
 // Emit form data to parent component
-const title = ref("");
-const price = ref("");
-const place = ref("");
-const category = ref("");
-const summary = ref("");
-const description = ref("");
-const images = ref([]) as Ref<File[]>;
+const emit = defineEmits(["createListing"]);
 
-var submitButtonClicked = ref(false);
-
-// Computed refs for checking if each input field is empty
-const imagesEmpty = computed(() => submitButtonClicked.value && images.value.length == 0);
-
-function fileHandler() {
-  const files = (document.getElementById("images") as HTMLInputElement).files;
-  if (!files) return;
-  images.value = Array.from(files);
-}
-
-function submitHandler() {
-  // Check if any data is missing
-  if (
-    title.value == "" ||
-    price.value == "" ||
-    place.value == "" ||
-    category.value == "" ||
-    summary.value == "" ||
-    description.value == "" ||
-    images.value.length == 0
-  ) {
-    submitButtonClicked.value = true;
-    return false;
+async function submitData() {
+  const result = await validator.value.$validate();
+  if (!result) {
+    alert("error");
+    return;
   }
-  let listingData = {
-    title: title.value,
-    price: price.value,
-    place: place.value,
-    category: category.value,
-    summary: summary.value,
-    description: description.value,
-    images: images.value,
-  };
 
+  // TODO: Image validation + upload
+
+  alert("Success!");
   emit("createListing", listingData);
-  return true;
 }
 </script>
 
 <template>
-  <form @submit.prevent="submitHandler">
+  <form @submit.prevent="submitData">
     <div class="row" id="row-1">
-      <ValidatedInput class="input-container" v-model="title" title="Tittel" :submit-button-clicked="submitButtonClicked" placeholder="Rød rose - snart døende"/>
-      <ValidatedInput class="input-container" v-model="price" title="Pris (kr)" :submit-button-clicked="submitButtonClicked" placeholder="249.99"/>
+      <ValidatedInput
+        class="input-container"
+        v-model="listingData.title"
+        title="Tittel"
+        placeholder="Rød rose - snart døende"
+        :error="validator.title.$errors[0]"
+      />
+      <ValidatedInput
+        class="input-container"
+        v-model="listingData.price"
+        title="Pris (kr)"
+        placeholder="249.99"
+        :error="validator.price.$errors[0]"
+      />
     </div>
 
     <div class="row" id="row-2">
-      <ValidatedInput class="input-container" v-model="place" title="Sted" :submit-button-clicked="submitButtonClicked" placeholder="Kardemomme By, Norge"/>
-      <ValidatedInput class="input-container" v-model="category" title="Kategori" :submit-button-clicked="submitButtonClicked" placeholder="Planter"/>
+      <ValidatedInput
+        class="input-container"
+        v-model="listingData.place"
+        title="Sted"
+        placeholder="Kardemomme By, Norge"
+        :error="validator.place.$errors[0]"
+      />
+      <ValidatedInput
+        class="input-container"
+        v-model="listingData.category"
+        title="Kategori"
+        placeholder="Planter"
+        :error="validator.category.$errors[0]"
+      />
     </div>
 
     <div class="row" id="row-3">
-      <ValidatedInput class="input-container" v-model="summary" title="Kort beskrivelse" :submit-button-clicked="submitButtonClicked" :inputType="InputType.TextArea"/>
+      <ValidatedInput
+        class="input-container"
+        v-model="listingData.summary"
+        title="Kort beskrivelse"
+        input-type="textarea"
+        :error="validator.summary.$errors[0]"
+      />
     </div>
 
     <div class="row" id="row-4">
-      <ValidatedInput class="input-container" v-model="description" title="Detaljert beskrivelse" :submit-button-clicked="submitButtonClicked" :inputType="InputType.TextArea"/>
+      <ValidatedInput
+        id="description"
+        class="input-container"
+        v-model="listingData.description"
+        title="Detaljert beskrivelse"
+        input-type="textarea"
+        :error="validator.description.$errors[0]"
+      />
     </div>
 
     <div class="row" id="row-5">
-      <div  class="input-container">
+      <div class="input-container">
         <h3><label for="images">Last opp bilder</label></h3>
-        <input
-          class="input-text"
-          @change="fileHandler"
-          type="file"
-          id="images"
-          multiple
-          :class="{ 'red-border': imagesEmpty }"
-        />
+        <input class="input-text" type="file" id="images" multiple />
       </div>
     </div>
 
     <div class="row" id="row-6">
-      <div  class="input-container">
-        <button class="button button-black button-screaming" type="submit">Publiser annonse</button>
+      <div class="input-container">
+        <button class="button button-black button-screaming" type="submit">Publiser Annonse</button>
       </div>
     </div>
   </form>
@@ -110,7 +126,7 @@ label {
   margin-bottom: 1rem;
 }
 
-.row >  .input-container {
+.row > .input-container {
   grid-column: 1 / 6;
 }
 
@@ -134,7 +150,7 @@ label {
   grid-column: 6 / 6;
 }
 
-#description {
+#description >>> textarea {
   height: 200px;
 }
 

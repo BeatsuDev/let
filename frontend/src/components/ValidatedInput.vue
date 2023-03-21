@@ -1,38 +1,51 @@
 <script setup lang="ts">
-import type { InputType } from "@/types/input";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   title: string;
-  submitButtonClicked: boolean;
-  modelValue: string;  // Data will be updated here
+  modelValue: string; // The data that the user writes in the input will be updated here
+  error: any;
   placeholder?: string;
-  inputType?: InputType;
+  inputType?: "text" | "textarea";
 }>();
-const emit = defineEmits(['update:modelValue']);
+const { title, modelValue, placeholder } = toRefs(props);
+const emit = defineEmits(["update:modelValue"]);
 
 const inputData = computed({
   get() {
-    return props.modelValue;
+    return modelValue.value;
   },
   set(value) {
-    if (value) {
-      document.querySelector('input')?.classList.remove('red-border');
-    }
-    emit('update:modelValue', value);
-  }
+    emit("update:modelValue", value);
+  },
 });
-
-const { title, submitButtonClicked, placeholder, inputType } = toRefs(props);
-
-const isEmpty = computed(() => submitButtonClicked.value && inputData.value == "");
 </script>
 
 <template>
   <div class="wrapper">
-    <h3><label for="title">{{ title }}</label></h3>
-    <textarea v-if="inputType=='textarea'" :class="{'red-border': isEmpty, 'input-text': true}" v-model="inputData"></textarea>
-    <input v-else :class="{'red-border': isEmpty, 'input-text': true}" v-model="inputData" :type="inputType || 'text'" :placeholder="placeholder" />
+    <h3>
+      <label for="title">{{ title }}</label>
+    </h3>
+    <!-- Textarea if the props.inputType is textarea -->
+    <textarea
+      v-if="props.inputType == 'textarea'"
+      :class="{ 'red-border': error }"
+      class="input-text"
+      v-model="inputData"
+      type="text"
+      :placeholder="placeholder"
+    ></textarea>
+
+    <!-- Otherwise it's just a normal input -->
+    <input
+      v-else
+      :class="{ 'red-border': error }"
+      class="input-text"
+      v-model="inputData"
+      type="text"
+      :placeholder="placeholder"
+    />
+    <div v-if="error" id="error">{{ error.$message }}</div>
   </div>
 </template>
 
@@ -53,5 +66,11 @@ input,
 textarea {
   width: 100%;
   resize: none;
+}
+
+#error {
+  color: red;
+  font-size: 0.9rem;
+  font-style: italic;
 }
 </style>
