@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.ntnu.let.letapi.model.listing.Listing;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,4 +33,7 @@ public class User {
 
     @Column(nullable = false)
     private boolean admin;
+
+    @ManyToMany
+    private List<Listing> favorites;
 }

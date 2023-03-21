@@ -2,6 +2,7 @@ package no.ntnu.let.letapi.util;
 
 import no.ntnu.let.letapi.dto.listing.LocationDTO;
 import no.ntnu.let.letapi.model.listing.ListingState;
+import no.ntnu.let.letapi.model.user.User;
 
 import java.util.List;
 
@@ -33,8 +34,8 @@ public class ListingFilterBuilder {
         return this;
     }
 
-    public ListingFilterBuilder favorites(Boolean favorites) {
-        filter.setFavorites(favorites);
+    public ListingFilterBuilder favoritesOf(User user) {
+        filter.setFavoritesOf(user);
         return this;
     }
 

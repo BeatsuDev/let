@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import no.ntnu.let.letapi.dto.listing.LocationDTO;
 import no.ntnu.let.letapi.model.listing.ListingState;
+import no.ntnu.let.letapi.model.user.User;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class ListingFilter {
     private Integer radius = null;
     private List<Integer> categories = null;
     private Long userId = null;
-    private Boolean favorites = null;
+    private User favoritesOf = null;
     private List<ListingState> states = null;
 
     public String toUrlParameters() {
@@ -57,9 +58,8 @@ public class ListingFilter {
             sb.append('&');
         }
 
-        if (favorites != null) {
-            sb.append("favorites=");
-            sb.append(favorites);
+        if (favoritesOf != null) {
+            sb.append("favorites=true");
             sb.append('&');
         }
 
