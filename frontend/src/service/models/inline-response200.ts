@@ -23,7 +23,7 @@ export interface InlineResponse200 {
      * @type {Array<ListingMinimal>}
      * @memberof InlineResponse200
      */
-    items?: Array<ListingMinimal>;
+    listings?: Array<ListingMinimal>;
     /**
      * 
      * @type {string}

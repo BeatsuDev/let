@@ -187,12 +187,12 @@ export const ListingsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {number} [user] 
          * @param {boolean} [favorites] 
          * @param {Array<ListingState>} [state] 
-         * @param {number} [limit] 
-         * @param {number} [offset] 
+         * @param {number} [page] 
+         * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getListings: async (searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getListings: async (searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/listing`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -242,12 +242,12 @@ export const ListingsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['state'] = state;
             }
 
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
             }
 
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
             }
 
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -376,13 +376,13 @@ export const ListingsApiFp = function(configuration?: Configuration) {
          * @param {number} [user] 
          * @param {boolean} [favorites] 
          * @param {Array<ListingState>} [state] 
-         * @param {number} [limit] 
-         * @param {number} [offset] 
+         * @param {number} [page] 
+         * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getListings(searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InlineResponse200>>> {
-            const localVarAxiosArgs = await ListingsApiAxiosParamCreator(configuration).getListings(searchString, location, radius, categories, user, favorites, state, limit, offset, options);
+        async getListings(searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InlineResponse200>>> {
+            const localVarAxiosArgs = await ListingsApiAxiosParamCreator(configuration).getListings(searchString, location, radius, categories, user, favorites, state, page, pageSize, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -451,13 +451,13 @@ export const ListingsApiFactory = function (configuration?: Configuration, baseP
          * @param {number} [user] 
          * @param {boolean} [favorites] 
          * @param {Array<ListingState>} [state] 
-         * @param {number} [limit] 
-         * @param {number} [offset] 
+         * @param {number} [page] 
+         * @param {number} [pageSize] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getListings(searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<AxiosResponse<InlineResponse200>> {
-            return ListingsApiFp(configuration).getListings(searchString, location, radius, categories, user, favorites, state, limit, offset, options).then((request) => request(axios, basePath));
+        async getListings(searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<AxiosResponse<InlineResponse200>> {
+            return ListingsApiFp(configuration).getListings(searchString, location, radius, categories, user, favorites, state, page, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -522,14 +522,14 @@ export class ListingsApi extends BaseAPI {
      * @param {number} [user] 
      * @param {boolean} [favorites] 
      * @param {Array<ListingState>} [state] 
-     * @param {number} [limit] 
-     * @param {number} [offset] 
+     * @param {number} [page] 
+     * @param {number} [pageSize] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ListingsApi
      */
-    public async getListings(searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, limit?: number, offset?: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<InlineResponse200>> {
-        return ListingsApiFp(this.configuration).getListings(searchString, location, radius, categories, user, favorites, state, limit, offset, options).then((request) => request(this.axios, this.basePath));
+    public async getListings(searchString?: string, location?: Location, radius?: number, categories?: Array<number>, user?: number, favorites?: boolean, state?: Array<ListingState>, page?: number, pageSize?: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<InlineResponse200>> {
+        return ListingsApiFp(this.configuration).getListings(searchString, location, radius, categories, user, favorites, state, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
