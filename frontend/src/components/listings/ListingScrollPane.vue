@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <ListingsNotFound v-if="listings.length === 0" />
     <ListingCard
       v-for="listing in props.listings"
       :key="listing.id"
@@ -14,7 +13,6 @@ import ListingCard from "@/components/listings/ListingCard.vue";
 import type { PropType } from "vue";
 import router from "@/router";
 import type { ListingMinimal } from "@/service/models";
-import ListingsNotFound from "@/components/listings/ListingsNotFound.vue";
 
 const props = defineProps({
   listings: {
