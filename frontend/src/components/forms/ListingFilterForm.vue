@@ -8,11 +8,11 @@
   >
     {{ category.name }}
   </div>
-  <h3 class="drawer-item">Søk</h3>
+  <h3 class="item">Søk</h3>
   <input type="search" v-model="value.search" class="input-text"/>
-  <h3 class="drawer-item">Lokasjon</h3>
+  <h3 class="item">Lokasjon</h3>
   <input type="search" class="input-text" v-model="value.search"/>
-  <h3 class="drawer-item">Radius</h3>
+  <h3 class="item">Radius</h3>
   <input
       type="range"
       class="slider"
