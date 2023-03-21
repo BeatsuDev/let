@@ -20,9 +20,8 @@
     <input type="search" v-model="value.search" />
     <div class="item text-sub-header">Lokasjon</div>
     <input type="search" v-model="value.search" />
-    <div class="item text-sub-header">Radius</div>
+    <div class="item text-sub-header">radius: {{ value.radius }}</div>
     <input type="range" v-model="value.radius" style="width: 100%" />
-    <div class="center">{{ props.modelValue.radius }}km</div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -108,11 +107,5 @@ function updateCategory(category: string) {
   color: #282828;
   cursor: pointer;
   background-color: #f1f1f1;
-}
-
-.center {
-  text-align: center;
-  font-family: Inter, sans-serif;
-  width: 100%;
 }
 </style>
