@@ -20,11 +20,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ListingCard } from "@/types/listing";
+import { Listing } from "@/types/listing";
 
 const props = defineProps({
   value: {
-    type: ListingCard,
+    type: Listing,
     required: true,
   },
 });
