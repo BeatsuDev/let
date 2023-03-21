@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import no.ntnu.let.letapi.dto.listing.LocationDTO;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.user.UserRepository;
@@ -12,6 +13,7 @@ import no.ntnu.let.letapi.util.ListingFilter;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.geo.Point;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
@@ -33,6 +35,19 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         return cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%");
     }
 
+    private Double distanceBetweenLocations(double lat1, double lat2, double lon1, double lon2) {
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
+
     public Page<Listing> findAll(ListingFilter filter, PageRequest pageRequest) {
         if (filter == null) return listingRepository.findAll(pageRequest);
 
@@ -50,8 +65,6 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         } else {
             searchString = cb.conjunction();
         }
-
-        // TODO: Add location filter
 
         Predicate categoryFilter;
         if (filter.getCategories() != null) {
@@ -88,8 +101,21 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
 
         Predicate finalFilter = cb.and(searchString, categoryFilter, userIdFilter, favoritesFilter, stateFilter);
         List<Listing> listings = entityManager.createQuery(cq.select(listing).where(finalFilter)).getResultList();
-        long countResult = listings.size();
 
+        if (filter.getLocation() != null) {
+            LocationDTO location = filter.getLocation();
+            int radius = filter.getRadius();
+
+
+            int earthRadius = 6371;
+            listings = listings.stream().filter(l -> {
+                double distance = distanceBetweenLocations(location.getLatitude(), l.getLocation().getLatitude(),
+                        location.getLongitude(), l.getLocation().getLongitude());
+                return distance <= radius;
+            }).toList();
+        }
+
+        long countResult = listings.size();
         listings = listings.stream().skip(pageRequest.getOffset()).limit(pageRequest.getPageSize()).toList();
         return PageableExecutionUtils.getPage(listings, pageRequest, () -> countResult);
     }

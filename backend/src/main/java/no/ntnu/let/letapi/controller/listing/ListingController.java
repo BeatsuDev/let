@@ -34,7 +34,8 @@ public class ListingController {
     @GetMapping
     public ResponseEntity<Object> getListings(
             @RequestParam(required = false) String searchString,
-            @RequestParam(required = false) LocationDTO locationDTO,
+            @RequestParam(required = false) Double longitude,
+            @RequestParam(required = false) Double latitude,
             @RequestParam(required = false) Integer radius,
             @RequestParam(required = false) List<Integer> categories,
             @RequestParam(required = false) Long userId,
@@ -45,6 +46,19 @@ public class ListingController {
             ) {
         // Validate the page number
         if (page <= 0) return ResponseEntity.badRequest().body("Page number must be greater than 0");
+
+        // Validate the page size
+        if (pageSize <= 0) return ResponseEntity.badRequest().body("Page size must be greater than 0");
+
+        // Validate the radius
+        if (radius != null && radius < 0) return ResponseEntity.badRequest().body("Radius must be greater than 0");
+
+        LocationDTO location = null;
+        if (longitude != null && latitude != null) {
+            location = new LocationDTO();
+            location.setLongitude(longitude);
+            location.setLatitude(latitude);
+        }
 
         // If the user wants to see their favorites, set the favoritesOf field
         User favoritesOf = null;
@@ -57,7 +71,7 @@ public class ListingController {
         ListingFilterBuilder filterBuilder = ListingFilter.builder();
         filterBuilder
                 .searchString(searchString)
-                .locationRadius(locationDTO, radius)
+                .locationRadius(location, radius)
                 .categories(categories)
                 .userId(userId)
                 .favoritesOf(favoritesOf)
