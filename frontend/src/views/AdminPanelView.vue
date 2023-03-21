@@ -82,7 +82,6 @@ form input {
 .category-container {
   margin-top: 1rem;
   border: 1px solid black;
-  border-radius: 0.5rem;
   height: 300px;
 }
 
@@ -103,7 +102,6 @@ form input {
 .category #delete-category:hover {
   background-color: red;
   color: white;
-  border-radius: 0;
 }
 
 @media (max-width: 900px) {
