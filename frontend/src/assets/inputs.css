@@ -20,8 +20,8 @@ input:focus {
   background: #d3d3d3;
   outline: none;
   opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
 }
 
 .slider:hover {
@@ -38,6 +38,7 @@ input:focus {
 }
 
 .slider::-moz-range-thumb {
-  background: #4caf50;
+  background: #4CAF50;
   cursor: pointer;
 }
+
