@@ -42,3 +42,24 @@ main {
   margin-top: 0.8rem;
   padding: 0.2rem;
 }
+
+.content {
+  transition: margin-left 0.5s;
+}
+
+.active {
+  margin-left: 20rem;
+}
+
+.collapsed {
+  margin-left: 5rem;
+}
+
+@media screen and (max-width: 600px) {
+  .active {
+    margin-left: 0;
+  }
+  .collapsed {
+    margin-left: 0;
+  }
+}

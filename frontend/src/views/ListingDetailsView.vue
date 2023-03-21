@@ -18,7 +18,7 @@ function handleImageClick(event: MouseEvent) {
 
 const tempItem = {
   isBookmarked: false,
-}
+};
 
 function handleBookmarkClick() {
   tempItem.isBookmarked = !tempItem.isBookmarked;
@@ -27,12 +27,8 @@ function handleBookmarkClick() {
 </script>
 
 <template>
-  <div v-if="!data && !error">
-    Loading...
-  </div>
-  <div v-else-if="error">
-    Error: {{ error }}
-  </div>
+  <div v-if="!data && !error">Loading...</div>
+  <div v-else-if="error">Error: {{ error }}</div>
   <main v-else-if="data">
     <div id="images-section">
       <img :src="data.galleryUrls![0]" id="main-image" />
@@ -61,7 +57,7 @@ function handleBookmarkClick() {
       </div>
 
       <div class="price-bar">
-        <h2>{{ data.price ? data.price / 100 : '-' }}kr</h2>
+        <h2>{{ data.price ? data.price / 100 : "-" }}kr</h2>
       </div>
 
       <div class="misc-info-bar">
@@ -73,7 +69,7 @@ function handleBookmarkClick() {
         </div>
         <div class="misc-bar-right">
           <h5>Selges av:</h5>
-          <p id="seller">{{ data.seller!.firstName + ' ' + data.seller!.lastName }}</p>
+          <p id="seller">{{ data.seller!.firstName + " " + data.seller!.lastName }}</p>
           <h5 id="location-header">Sted:</h5>
           <p id="location">{{ data.locationName }}</p>
         </div>

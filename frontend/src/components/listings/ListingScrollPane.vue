@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <ListingsNotFound v-if="listings.length === 0" />
+    <ListingsNotFound v-if="listings === undefined" />
     <ListingCard
       v-for="listing in props.listings"
       :key="listing.id"

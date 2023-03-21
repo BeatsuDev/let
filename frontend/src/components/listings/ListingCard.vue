@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="$emit('click', props.value.id)">
-    <img class="thumbnail" :src="props.value.thumbnailUrl" alt="thumbnail" />
+    <img class="thumbnail" :src="props.value.thumbnailUrl" loading="lazy" alt="thumbnail" />
     <div class="information">
       <div class="column">
         <div class="row italic row-margin">
@@ -68,5 +68,12 @@ const emit = defineEmits(["click"]);
 .italic {
   font-style: italic;
   color: #222222;
+}
+
+@media screen and (max-width: 60rem) {
+  .card {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 </style>
