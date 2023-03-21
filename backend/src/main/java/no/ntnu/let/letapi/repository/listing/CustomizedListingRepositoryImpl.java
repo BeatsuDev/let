@@ -7,6 +7,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import no.ntnu.let.letapi.model.listing.Listing;
+import no.ntnu.let.letapi.model.user.User;
+import no.ntnu.let.letapi.repository.user.UserRepository;
 import no.ntnu.let.letapi.util.ListingFilter;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -18,11 +20,14 @@ import java.util.List;
 public class CustomizedListingRepositoryImpl implements CustomizedListingRepository {
     private final EntityManager entityManager;
     private final ListingRepository listingRepository;
+    private final UserRepository userRepository;
 
     @Lazy
-    protected CustomizedListingRepositoryImpl(EntityManager entityManager, ListingRepository listingRepository) {
+    protected CustomizedListingRepositoryImpl(EntityManager entityManager, ListingRepository listingRepository,
+                                              UserRepository userRepository) {
         this.entityManager = entityManager;
         this.listingRepository = listingRepository;
+        this.userRepository = userRepository;
     }
 
     private <T> Predicate searchLowerCase(CriteriaBuilder cb, Root<T> root, String field, String value) {
@@ -64,7 +69,17 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
             userIdFilter = cb.conjunction();
         }
 
-        // TODO: Add favorites filter
+        Predicate favoritesFilter;
+        if (filter.getFavoritesOf() != null) {
+            User user = userRepository.findById(filter.getFavoritesOf().getId()).orElse(null);
+            if (user == null) {
+                favoritesFilter = cb.disjunction();
+            } else {
+                favoritesFilter = cb.in(listing.get("id")).value(user.getFavorites().stream().map(Listing::getId).toList());
+            }
+        } else {
+            favoritesFilter = cb.conjunction();
+        }
 
         Predicate stateFilter;
         if (filter.getStates() != null) {
@@ -72,7 +87,8 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         } else {
             stateFilter = cb.conjunction();
         }
-        Predicate finalFilter = cb.and(searchString, categoryFilter, userIdFilter, stateFilter);
+
+        Predicate finalFilter = cb.and(searchString, categoryFilter, userIdFilter, favoritesFilter, stateFilter);
         TypedQuery<Listing> query = entityManager.createQuery(cq.select(listing).where(finalFilter));
 
         query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());

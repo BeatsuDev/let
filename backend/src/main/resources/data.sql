@@ -127,3 +127,7 @@ VALUES (1, 1),
        (11, 6),
        (11, 7);
 
+INSERT INTO "PUBLIC"."USER__FAVORITES"
+VALUES (1, 2),
+       (1, 3),
+       (1, 9);

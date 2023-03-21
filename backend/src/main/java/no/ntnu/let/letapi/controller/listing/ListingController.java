@@ -3,6 +3,8 @@ package no.ntnu.let.letapi.controller.listing;
 import no.ntnu.let.letapi.dto.listing.*;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.ListingState;
+import no.ntnu.let.letapi.model.user.User;
+import no.ntnu.let.letapi.repository.user.UserRepository;
 import no.ntnu.let.letapi.service.ListingService;
 import no.ntnu.let.letapi.util.ListingFilter;
 import no.ntnu.let.letapi.util.ListingFilterBuilder;
@@ -20,13 +22,14 @@ import java.util.List;
 @RequestMapping("/listing")
 public class ListingController {
     private final ListingService listingService;
+    private final UserRepository userRepository;
     private final ListingMapper mapper;
     private final String BASE_URL = UrlUtil.getBaseUrl() + "/listing";
 
-    @Autowired
-    ListingController(ListingMapper mapper, ListingService listingService) {
+    ListingController(ListingMapper mapper, ListingService listingService, UserRepository userRepository) {
         this.mapper = mapper;
         this.listingService = listingService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -44,6 +47,13 @@ public class ListingController {
         // Validate the page number
         if (page <= 0) return ResponseEntity.badRequest().body("Page number must be greater than 0");
 
+        // If the user wants to see their favorites, set the favoritesOf field
+        User favoritesOf = null;
+        User loggedInUser = userRepository.findById(1L).orElse(null);
+        if (favorites != null && favorites && loggedInUser != null) {
+            favoritesOf = loggedInUser;
+        }
+
         // Build the filter
         ListingFilterBuilder filterBuilder = new ListingFilterBuilder();
         filterBuilder
@@ -51,7 +61,7 @@ public class ListingController {
                 .locationRadius(locationDTO, radius)
                 .categories(categories)
                 .userId(userId)
-                .favorites(favorites)
+                .favoritesOf(favoritesOf)
                 .states(states);
         ListingFilter filter = filterBuilder.build();
 
