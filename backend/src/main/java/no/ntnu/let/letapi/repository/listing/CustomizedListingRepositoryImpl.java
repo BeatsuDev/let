@@ -1,7 +1,6 @@
 package no.ntnu.let.letapi.repository.listing;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -10,7 +9,6 @@ import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.user.UserRepository;
 import no.ntnu.let.letapi.util.ListingFilter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +33,9 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         return cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%");
     }
 
-    private Predicate getFilterPredicate(@NotNull ListingFilter filter) {
+    public Page<Listing> findAll(ListingFilter filter, PageRequest pageRequest) {
+        if (filter == null) return listingRepository.findAll(pageRequest);
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Listing> cq = cb.createQuery(Listing.class);
         Root<Listing> listing = cq.from(Listing.class);
@@ -86,26 +86,11 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
             stateFilter = cb.conjunction();
         }
 
-        return cb.and(searchString, categoryFilter, userIdFilter, favoritesFilter, stateFilter);
-    }
+        Predicate finalFilter = cb.and(searchString, categoryFilter, userIdFilter, favoritesFilter, stateFilter);
+        List<Listing> listings = entityManager.createQuery(cq.select(listing).where(finalFilter)).getResultList();
+        long countResult = listings.size();
 
-    public Page<Listing> findAll(ListingFilter filter, PageRequest pageRequest) {
-        if (filter == null) return listingRepository.findAll(pageRequest);
-
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        CriteriaQuery<Listing> cq = cb.createQuery(Listing.class);
-        Root<Listing> listing = cq.from(Listing.class);
-
-        Predicate finalFilter = getFilterPredicate(filter);
-        CriteriaQuery<Long> count = countQuery.select(cb.count(countQuery.from(Listing.class)))
-                .where(finalFilter);
-        long countResult = entityManager.createQuery(count).getSingleResult();
-
-        TypedQuery<Listing> query = entityManager.createQuery(cq.select(listing).where(finalFilter));
-        query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());
-        query.setMaxResults(pageRequest.getPageSize());
-        List<Listing> listings = query.getResultList();
+        listings = listings.stream().skip(pageRequest.getOffset()).limit(pageRequest.getPageSize()).toList();
         return PageableExecutionUtils.getPage(listings, pageRequest, () -> countResult);
     }
 }
