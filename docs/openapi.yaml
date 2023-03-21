@@ -17,7 +17,7 @@ servers:
   - url: https://api.let.no/
 tags:
   - name: listings
-    description: Items for sale
+    description: Listings for sale
   - name: image
     description: Find and create images
   - name: category
@@ -112,7 +112,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  items:
+                  listings:
                     type: array
                     items:
                       $ref: '#/components/schemas/ListingMinimal'
