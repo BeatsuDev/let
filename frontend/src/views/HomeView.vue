@@ -1,10 +1,6 @@
 <template>
   <main>
-    <NavigationDrawer
-      v-model="listingFilter"
-      v-model:collapsed="collapsed"
-      :categories="categories"
-    ></NavigationDrawer>
+    <NavigationDrawer v-model="listingFilter" v-model:collapsed="collapsed"></NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
       <div class="text-title one-line">Hva leter du etter i dag?</div>
       <div class="menu">
@@ -24,33 +20,19 @@
 import ListPagination from "@/components/paginations/ListPagination.vue";
 import { ref } from "vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
-import { Category, ListingCard, ListingFilter } from "@/types/listing";
+import { ListingCard, ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 
 const page = ref(1);
 const listings = ref([] as ListingCard[]);
-const categories = ref([] as Category[]);
 const collapsed = ref(false);
 
 const listingFilter = ref(new ListingFilter());
 
-const listing = new ListingCard(
-  1,
-  "Test",
-  "Test men moren din er styggere ahahhah Lorem ipsum daler dat",
-  1,
-  "test",
-  "test",
-  "test"
-);
-const category = new Category("test");
+const listing = new ListingCard(1, "Test", "Test", 1, "test", "test", "test");
 
 for (let i = 0; i < 20; i++) {
   listings.value.push(listing);
-}
-
-for (let i = 0; i < 5; i++) {
-  categories.value.push(category);
 }
 
 function nextPage() {

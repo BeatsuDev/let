@@ -8,9 +8,9 @@
   >
     <button style="margin-bottom: 1.5rem" @click="collapse">Skjul</button>
     <div class="text-sub-header">Kategori</div>
-    <div v-for="(category, index) in categories" class="text-paragraph hide-overflow" :key="index">
-      {{ category.name }}
-    </div>
+    <div class="text-paragraph hide-overflow">Menu Item 1</div>
+    <div class="text-paragraph hide-overflow">Menu Item 2</div>
+    <div class="text-paragraph hide-overflow">Menu Item 3</div>
     <div class="text-sub-header">Søk</div>
     <input type="search" v-model="value.search" />
     <div class="text-sub-header">Lokasjon</div>
@@ -20,8 +20,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, PropType } from "vue";
-import { Category, ListingFilter } from "@/types/listing";
+import { computed } from "vue";
+import { ListingFilter } from "@/types/listing";
 
 const props = defineProps({
   collapsed: {
@@ -30,10 +30,6 @@ const props = defineProps({
   },
   modelValue: {
     type: ListingFilter,
-    required: true,
-  },
-  categories: {
-    type: [Array] as PropType<Category[]>,
     required: true,
   },
 });
