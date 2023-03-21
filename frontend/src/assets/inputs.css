@@ -4,41 +4,8 @@
   font-size: 1rem;
   padding: 1.2rem;
   border: 0;
-  width: 100%;
 }
 
 input:focus {
   outline: 0;
 }
-
-/* The slider itself */
-.slider {
-  margin: 0;
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-}
-
-.slider:hover {
-  opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1rem;
-  height: 1rem;
-  background: black;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  background: #4CAF50;
-  cursor: pointer;
-}
-
