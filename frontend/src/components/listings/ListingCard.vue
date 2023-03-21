@@ -42,6 +42,7 @@ const emit = defineEmits(["click"]);
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  transition: width 0.5s ease-in-out;
 }
 
 .card:hover {

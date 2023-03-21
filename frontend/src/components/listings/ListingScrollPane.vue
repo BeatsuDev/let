@@ -33,5 +33,6 @@ function goToListing(id: number) {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 20px;
   min-height: 40rem;
+  transition: all ease-in-out 0.5s;
 }
 </style>

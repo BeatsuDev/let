@@ -6,7 +6,7 @@
       'drawer-active': !props.modelValue,
     }"
   >
-    <button style="margin-bottom: 1.5rem" @click="collapse" class="button">
+    <button style="margin-bottom: 1.5rem" @click="collapse" class="button close">
       <CollapseIcon class="button-icon" />
       Skjul
     </button>
@@ -36,7 +36,7 @@ function collapse() {
   position: fixed;
   left: 0;
   top: 0;
-  margin-top: 4rem;
+  margin-top: 7rem;
   padding-top: 8rem;
   padding-left: 3rem;
   padding-right: 3rem;
@@ -56,11 +56,18 @@ function collapse() {
   padding-right: 0;
 }
 
+.close {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
   .sidebar {
     margin-top: 0;
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+  .close {
+    display: block;
   }
 
   .drawer-collapse {
