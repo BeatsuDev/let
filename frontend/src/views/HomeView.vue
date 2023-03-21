@@ -5,49 +5,27 @@
     </NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
       <h1 class="one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
-      <div class="menu">
-        <button @click="collapsed = !collapsed" class="button">
-          <FilterIcon class="button-icon" />
-          Filtre
-        </button>
-        <div class="spacer" />
-        <ListPagination
-          :value="listingFilter.page"
-          @next="nextPage"
-          @previous="previousPage"
-          :pages="totalPages"
-        ></ListPagination>
-      </div>
-      <ListingScrollPane :listings="listings"></ListingScrollPane>
-      <div class="menu">
-        <div class="spacer" />
-        <ListPagination
-          :value="listingFilter.page"
-          :pages="totalPages"
-          @next="nextPage"
-          @previous="previousPage"
-        ></ListPagination>
-      </div>
+      <PaginationView v-model="listingFilter.page" :total-pages="totalPages" @collapse="collapsed = !collapsed" collapse>
+        <ListingScrollPane :listings="listings" />
+      </PaginationView>
     </div>
   </main>
 </template>
 <script setup lang="ts">
-import ListPagination from "@/components/paginations/ListPagination.vue";
 import { ref, watch } from "vue";
-import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import type { Category, ListingMinimal } from "@/service/models";
-import FilterIcon from "@/components/icons/FilterIcon.vue";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
 import { ListingsApi } from "@/service/apis/listings-api";
 import { CategoryApi } from "@/service/apis/category-api";
+import PaginationView from "@/components/paginations/PaginationView.vue";
+import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 
 const listings = ref([] as ListingMinimal[] | undefined);
 const categories = ref([] as Category[]);
 const collapsed = ref(false);
 const totalPages = ref(1);
-
 const listingFilter = ref(new ListingFilter());
 
 const listingApi = new ListingsApi();
@@ -66,14 +44,6 @@ watch(
   },
   { deep: true }
 );
-
-function nextPage() {
-  listingFilter.value.page++;
-}
-
-function previousPage() {
-  listingFilter.value.page--;
-}
 
 function fetchEvents() {
   const filters = listingFilter.value;
@@ -101,10 +71,6 @@ function fetchEvents() {
 }
 </script>
 <style scoped>
-.menu {
-  padding: 2rem;
-  display: flex;
-}
 
 @media screen and (max-width: 1000px) {
   .one-line {
