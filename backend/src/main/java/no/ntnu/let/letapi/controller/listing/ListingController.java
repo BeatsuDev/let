@@ -35,6 +35,7 @@ public class ListingController {
             @RequestParam(required = false) LocationDTO locationDTO,
             @RequestParam(required = false) Integer radius,
             @RequestParam(required = false) List<Integer> categories,
+            @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Boolean favorites,
             @RequestParam(required = false) List<ListingState> states,
             @RequestParam(defaultValue = "1", required = false) Integer page,
@@ -49,6 +50,7 @@ public class ListingController {
                 .searchString(searchString)
                 .locationRadius(locationDTO, radius)
                 .categories(categories)
+                .userId(userId)
                 .favorites(favorites)
                 .states(states);
         ListingFilter filter = filterBuilder.build();

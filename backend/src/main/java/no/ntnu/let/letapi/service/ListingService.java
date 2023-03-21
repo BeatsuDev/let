@@ -18,7 +18,7 @@ public class ListingService {
     }
 
     public Page<Listing> getListings(ListingFilter filter, PageRequest pageRequest) {
-        return listingRepository.findAll(pageRequest);
+        return listingRepository.findAll(filter, pageRequest);
     }
 
     public Listing createListing(Listing listing) {
