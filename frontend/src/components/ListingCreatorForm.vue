@@ -24,14 +24,13 @@ const summaryEmpty = computed(() => submitButtonClicked.value && summary.value =
 const descriptionEmpty = computed(() => submitButtonClicked.value && description.value == "");
 const imagesEmpty = computed(() => submitButtonClicked.value && images.value.length == 0);
 
-
 function fileHandler() {
   const files = (document.getElementById("images") as HTMLInputElement).files;
   if (!files) return;
   images.value = Array.from(files);
 }
 
-function submitHandler() {  
+function submitHandler() {
   // Check if any data is missing
   if (
     title.value == "" ||
@@ -65,43 +64,90 @@ function submitHandler() {
     <div class="row" id="row-1">
       <div class="col">
         <h3><label for="title">Tittel</label></h3>
-        <input class="input-text" v-model="title" type="text" id="title" :class="{'red-border': titleEmpty}" placeholder="Rød rose - snart døende" />
+        <input
+          class="input-text"
+          v-model="title"
+          type="text"
+          id="title"
+          :class="{ 'red-border': titleEmpty }"
+          placeholder="Rød rose - snart døende"
+        />
       </div>
       <div class="col">
         <h3><label for="price">Pris (kr)</label></h3>
-        <input class="input-text" v-model="price" type="text" id="price" :class="{'red-border': priceEmpty}" placeholder="249.99" />
+        <input
+          class="input-text"
+          v-model="price"
+          type="text"
+          id="price"
+          :class="{ 'red-border': priceEmpty }"
+          placeholder="249.99"
+        />
       </div>
     </div>
 
     <div class="row" id="row-2">
       <div class="col">
         <h3><label for="place">Sted</label></h3>
-        <input class="input-text" v-model="place" type="text" id="place" :class="{'red-border': placeEmpty}" placeholder="Kardemomme By, Norge" />
+        <input
+          class="input-text"
+          v-model="place"
+          type="text"
+          id="place"
+          :class="{ 'red-border': placeEmpty }"
+          placeholder="Kardemomme By, Norge"
+        />
       </div>
       <div class="col">
         <h3><label for="category">Kategori</label></h3>
-        <input class="input-text" v-model="category" type="text" id="category" :class="{'red-border': categoryEmpty}" placeholder="Planter" />
+        <input
+          class="input-text"
+          v-model="category"
+          type="text"
+          id="category"
+          :class="{ 'red-border': categoryEmpty }"
+          placeholder="Planter"
+        />
       </div>
     </div>
 
     <div class="row" id="row-3">
       <div class="col">
         <h3><label for="summary">Kort beskrivelse</label></h3>
-        <textarea class="input-text" v-model="summary" name="summary" id="summary" :class="{'red-border': summaryEmpty}"></textarea>
+        <textarea
+          class="input-text"
+          v-model="summary"
+          name="summary"
+          id="summary"
+          :class="{ 'red-border': summaryEmpty }"
+        ></textarea>
       </div>
     </div>
 
     <div class="row" id="row-4">
       <div class="col">
         <h3><label for="description">Detaljert beskrivelse</label></h3>
-        <textarea class="input-text" v-model="description" name="description" id="description" :class="{'red-border': descriptionEmpty}"></textarea>
+        <textarea
+          class="input-text"
+          v-model="description"
+          name="description"
+          id="description"
+          :class="{ 'red-border': descriptionEmpty }"
+        ></textarea>
       </div>
     </div>
 
     <div class="row" id="row-5">
       <div class="col">
         <h3><label for="images">Last opp bilder</label></h3>
-        <input class="input-text" @change="fileHandler" type="file" id="images" multiple :class="{'red-border': imagesEmpty}" />
+        <input
+          class="input-text"
+          @change="fileHandler"
+          type="file"
+          id="images"
+          multiple
+          :class="{ 'red-border': imagesEmpty }"
+        />
       </div>
     </div>
 

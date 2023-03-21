@@ -1,20 +1,9 @@
 export class ListingFilter {
-  category?: string | null;
-  longitute?: number | null;
-  latitude?: number | null;
-  search?: string | null;
-  radius?: number | null;
-  favorites: boolean;
-  page: number;
-
-  constructor() {
-    this.category = null;
-    this.longitute = null;
-    this.latitude = null;
-    this.latitude = null;
-    this.search = null;
-    this.radius = 30;
-    this.favorites = false;
-    this.page = 1;
-  }
+  category?: number | undefined = undefined;
+  longitute?: number | undefined = undefined;
+  latitude?: number | undefined = undefined;
+  search?: string | undefined = undefined;
+  radius?: number | undefined = 30;
+  favorites: boolean = false;
+  page: number = 1;
 }

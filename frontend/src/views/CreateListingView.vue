@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ListingCreatorForm from '@/components/ListingCreatorForm.vue';
+import ListingCreatorForm from "@/components/ListingCreatorForm.vue";
 </script>
 
 <template>

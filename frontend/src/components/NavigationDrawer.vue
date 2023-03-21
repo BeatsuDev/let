@@ -56,7 +56,6 @@ function collapse() {
   padding-right: 0;
 }
 
-
 @media screen and (max-width: 600px) {
   .sidebar {
     margin-top: 0;

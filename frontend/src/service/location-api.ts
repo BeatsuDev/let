@@ -28,7 +28,7 @@ export async function getLocationsFromLongLat(long: number, lat: number) {
  * @param city
  */
 export async function lookUpLocation(country: string | null, city: string | null) {
-  return await Api().get("geocoding", { params: { city: city, county: country } });
+  return await Api().get("geocoding", { params: { city: city, country: country } });
 }
 
 export default Api;
