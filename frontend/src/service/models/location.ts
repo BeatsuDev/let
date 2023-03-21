@@ -12,27 +12,27 @@
  * Do not edit the class manually.
  */
 /**
- *
+ * 
  * @export
  * @interface Location
  */
 export interface Location {
-  /**
-   *
-   * @type {number}
-   * @memberof Location
-   */
-  longitude?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof Location
-   */
-  latitude?: number;
-  /**
-   *
-   * @type {string}
-   * @memberof Location
-   */
-  name?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Location
+     */
+    longitude?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Location
+     */
+    latitude?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Location
+     */
+    name?: string;
 }

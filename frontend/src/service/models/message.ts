@@ -11,23 +11,23 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CreateMessage } from "./create-message";
+import { CreateMessage } from './create-message';
 /**
- *
+ * 
  * @export
  * @interface Message
  */
 export interface Message {
-  /**
-   *
-   * @type {string}
-   * @memberof Message
-   */
-  text?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof Message
-   */
-  chat?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
+    text?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Message
+     */
+    chat?: number;
 }

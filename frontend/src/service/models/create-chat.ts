@@ -12,15 +12,15 @@
  * Do not edit the class manually.
  */
 /**
- *
+ * 
  * @export
  * @interface CreateChat
  */
 export interface CreateChat {
-  /**
-   *
-   * @type {number}
-   * @memberof CreateChat
-   */
-  listingId?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateChat
+     */
+    listingId?: number;
 }

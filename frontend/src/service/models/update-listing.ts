@@ -11,60 +11,60 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CreateListing } from "./create-listing";
-import { Location } from "./location";
+import { CreateListing } from './create-listing';
+import { Location } from './location';
 /**
- *
+ * 
  * @export
  * @interface UpdateListing
  */
 export interface UpdateListing {
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateListing
-   */
-  title?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateListing
-   */
-  summary?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateListing
-   */
-  description?: string;
-  /**
-   * Price in øre
-   * @type {number}
-   * @memberof UpdateListing
-   */
-  price?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof UpdateListing
-   */
-  categoryId?: number;
-  /**
-   *
-   * @type {Location}
-   * @memberof UpdateListing
-   */
-  location?: Location;
-  /**
-   *
-   * @type {number}
-   * @memberof UpdateListing
-   */
-  thumbnailId?: number;
-  /**
-   *
-   * @type {Array<number>}
-   * @memberof UpdateListing
-   */
-  galleryIds?: Array<number>;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateListing
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateListing
+     */
+    summary?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateListing
+     */
+    description?: string;
+    /**
+     * Price in øre
+     * @type {number}
+     * @memberof UpdateListing
+     */
+    price?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateListing
+     */
+    categoryId?: number;
+    /**
+     * 
+     * @type {Location}
+     * @memberof UpdateListing
+     */
+    location?: Location;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateListing
+     */
+    thumbnailId?: number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof UpdateListing
+     */
+    galleryIds?: Array<number>;
 }

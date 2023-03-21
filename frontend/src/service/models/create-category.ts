@@ -12,15 +12,15 @@
  * Do not edit the class manually.
  */
 /**
- *
+ * 
  * @export
  * @interface CreateCategory
  */
 export interface CreateCategory {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCategory
-   */
-  name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCategory
+     */
+    name?: string;
 }

@@ -11,17 +11,17 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CreateCategory } from "./create-category";
+import { CreateCategory } from './create-category';
 /**
- *
+ * 
  * @export
  * @interface Category
  */
 export interface Category {
-  /**
-   *
-   * @type {string}
-   * @memberof Category
-   */
-  name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Category
+     */
+    name?: string;
 }

@@ -12,13 +12,14 @@
  * Do not edit the class manually.
  */
 /**
- *
+ * 
  * @export
  * @enum {string}
  */
 export enum ListingState {
-  Sold = "sold",
-  Archived = "archived",
-  Active = "active",
-  Deleted = "deleted",
+    Sold = 'sold',
+    Archived = 'archived',
+    Active = 'active',
+    Deleted = 'deleted'
 }
+

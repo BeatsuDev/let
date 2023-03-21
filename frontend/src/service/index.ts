@@ -11,28 +11,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-/**
- * 
- * @export
- * @interface UserMinimal
- */
-export interface UserMinimal {
-    /**
-     * 
-     * @type {string}
-     * @memberof UserMinimal
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserMinimal
-     */
-    firstName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserMinimal
-     */
-    lastName?: string;
-}
+export * from "./api";
+export * from "./configuration";
+export * from "./models";
+

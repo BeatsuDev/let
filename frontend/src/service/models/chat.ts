@@ -11,17 +11,17 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CreateChat } from "./create-chat";
+import { CreateChat } from './create-chat';
 /**
- *
+ * 
  * @export
  * @interface Chat
  */
 export interface Chat {
-  /**
-   *
-   * @type {number}
-   * @memberof Chat
-   */
-  listingId?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Chat
+     */
+    listingId?: number;
 }

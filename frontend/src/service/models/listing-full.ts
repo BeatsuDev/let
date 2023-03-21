@@ -11,43 +11,43 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ListingMinimal } from "./listing-minimal";
-import { ListingState } from "./listing-state";
-import { UserMinimal } from "./user-minimal";
+import { ListingMinimal } from './listing-minimal';
+import { ListingState } from './listing-state';
+import { UserMinimal } from './user-minimal';
 /**
- *
+ * 
  * @export
  * @interface ListingFull
  */
 export interface ListingFull extends ListingMinimal {
-  /**
-   *
-   * @type {string}
-   * @memberof ListingFull
-   */
-  description?: string;
-  /**
-   *
-   * @type {ListingState}
-   * @memberof ListingFull
-   */
-  state?: ListingState;
-  /**
-   *
-   * @type {Date}
-   * @memberof ListingFull
-   */
-  created?: Date;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ListingFull
-   */
-  galleryUrls?: Array<string>;
-  /**
-   *
-   * @type {UserMinimal}
-   * @memberof ListingFull
-   */
-  seller?: UserMinimal;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListingFull
+     */
+    description?: string;
+    /**
+     * 
+     * @type {ListingState}
+     * @memberof ListingFull
+     */
+    state?: ListingState;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ListingFull
+     */
+    created?: Date;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ListingFull
+     */
+    galleryUrls?: Array<string>;
+    /**
+     * 
+     * @type {UserMinimal}
+     * @memberof ListingFull
+     */
+    seller?: UserMinimal;
 }

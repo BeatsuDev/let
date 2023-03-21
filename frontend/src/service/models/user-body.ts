@@ -11,35 +11,35 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CreateUser } from "./create-user";
+import { CreateUser } from './create-user';
 /**
- *
+ * 
  * @export
  * @interface UserBody
  */
 export interface UserBody {
-  /**
-   *
-   * @type {string}
-   * @memberof UserBody
-   */
-  email?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserBody
-   */
-  firstName?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserBody
-   */
-  lastName?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserBody
-   */
-  password?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserBody
+     */
+    email?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserBody
+     */
+    firstName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserBody
+     */
+    lastName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserBody
+     */
+    password?: string;
 }
