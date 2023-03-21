@@ -1,4 +1,5 @@
 <template>
+  <h3 class="drawer-item">Kategori</h3>
   <div
     v-for="(category, index) in categories"
     class="category text-paragraph hide-overflow"
