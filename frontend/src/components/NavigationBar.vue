@@ -4,18 +4,24 @@ import AdminIcon from "@/components/icons/AdminIcon.vue";
 import ChatIcon from "@/components/icons/ChatIcon.vue";
 import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
 import ProfileIcon from "@/components/icons/ProfileIcon.vue";
+import {useSessionStore} from "@/stores/sessionStore";
+import {computed} from "vue";
 
-// TODO: Check if the user is an admin and show the admin link if so
+// eslint-disable-next-line no-undef
+const sessionStore = useSessionStore();
+const isAuthenticated = computed(() => sessionStore.isAuthenticated());
+const highestRole = computed(() => sessionStore.getHighestRole());
 </script>
 
 <template>
   <header>
     <RouterLink id="navbar-logo" to="/">letno</RouterLink>
     <nav>
-      <RouterLink to="/admin"> <AdminIcon /> admin </RouterLink>
-      <RouterLink to="/chats"> <ChatIcon /> chats </RouterLink>
-      <RouterLink to="/create-listing"> <CreateListingIcon /> ny Annonse </RouterLink>
-      <RouterLink to="/login"> <ProfileIcon /> profil </RouterLink>
+      <RouterLink v-if="isAuthenticated && highestRole === 'ADMIN'" to="/admin" > <AdminIcon /> admin </RouterLink>
+      <RouterLink v-if="isAuthenticated" to="/chats"> <ChatIcon /> chats </RouterLink>
+      <RouterLink to="/create-listing"> <CreateListingIcon /> ny annonse </RouterLink>
+      <RouterLink v-if="!isAuthenticated" to="/login"> <ProfileIcon /> logg inn </RouterLink>
+      <RouterLink v-if="isAuthenticated" to="/mypage"> <ProfileIcon /> profil </RouterLink>
     </nav>
   </header>
 </template>

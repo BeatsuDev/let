@@ -1,12 +1,18 @@
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
+import {ref} from "vue";
+import {defineStore} from "pinia";
+import type {UserFull} from "@/service";
 
-export const useCounterStore = defineStore("counter", () => {
-  const count = ref(0);
-  const doubleCount = computed(() => count.value * 2);
-  function increment() {
-    count.value++;
-  }
+export const useSessionStore = defineStore("sessionStore", () => {
+    const user = ref({} as UserFull)
 
-  return { count, doubleCount, increment };
+
+    function isAuthenticated() {
+        return true;
+    }
+
+    function getHighestRole() {
+        return "USER";
+    }
+
+    return {isAuthenticated, getHighestRole};
 });
