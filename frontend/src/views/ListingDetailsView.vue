@@ -3,6 +3,7 @@ import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import { useRoute } from "vue-router";
 import { ListingsApi } from "@/service/index";
 import runAxios from "@/service/composable";
+import FullPageLoading from "@/components/FullPageLoading.vue";
 
 const route = useRoute();
 const api = new ListingsApi();
@@ -27,7 +28,7 @@ function handleBookmarkClick() {
 </script>
 
 <template>
-  <div v-if="!data && !error">Loading...</div>
+  <div v-if="!data && !error"><FullPageLoading /></div>
   <div v-else-if="error">Error: {{ error }}</div>
   <main v-else-if="data">
     <div id="images-section">
