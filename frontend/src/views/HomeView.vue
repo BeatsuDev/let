@@ -15,6 +15,7 @@
           :value="listingFilter.page"
           @next="nextPage"
           @previous="previousPage"
+          :pages="totalPages"
         ></ListPagination>
       </div>
       <ListingScrollPane :listings="listings"></ListingScrollPane>
@@ -22,6 +23,7 @@
         <div class="spacer" />
         <ListPagination
           :value="listingFilter.page"
+          :pages="totalPages"
           @next="nextPage"
           @previous="previousPage"
         ></ListPagination>
@@ -38,12 +40,24 @@ import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import type { Category, ListingMinimal } from "@/service/models";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
+import { ListingsApi } from "@/service/apis/listings-api";
+import { CategoryApi } from "@/service/apis/category-api";
 
 const listings = ref([] as ListingMinimal[]);
 const categories = ref([] as Category[]);
 const collapsed = ref(false);
+const totalPages = ref(1);
 
 const listingFilter = ref(new ListingFilter());
+
+const listingApi = new ListingsApi();
+const categoryApi = new CategoryApi();
+
+categoryApi.getCategories().then((response) => {
+  categories.value = response.data;
+});
+
+fetchEvents();
 
 watch(
   listingFilter,
@@ -52,20 +66,6 @@ watch(
   },
   { deep: true }
 );
-
-const listing = {
-  id: 1,
-  title: "Airpods",
-  summary: "Test men moren din er styggere ahahhah Lorem ipsum daler dat",
-  price: 1,
-  thumbnailUrl: "test",
-  locationName: "Oslo, Høybråten",
-  categoryName: "test",
-} as ListingMinimal;
-
-for (let i = 0; i < 20; i++) {
-  listings.value.push(listing);
-}
 
 for (let i = 0; i < 5; i++) {
   categories.value.push({ name: "test" + i } as Category);
@@ -80,7 +80,32 @@ function previousPage() {
 }
 
 function fetchEvents() {
-  console.table(listingFilter.value);
+  const filters = listingFilter.value;
+  listingApi
+    .getListings(
+      filters.search,
+      undefined,
+      undefined,
+      filters.category ? [filters.category] : undefined,
+      undefined,
+      undefined,
+      undefined,
+      filters.page,
+      50
+    )
+    .then((response) => {
+      if (!response.data?.listings) {
+        listings.value = [];
+      } else {
+        listings.value = response.data.listings;
+      }
+      console.table(response.data.listings);
+      if (!response.data.numberOfPages) {
+        totalPages.value = 1;
+      } else {
+        totalPages.value = response.data.numberOfPages + 1;
+      }
+    });
 }
 </script>
 <style scoped>

@@ -11,41 +11,41 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ListingMinimal } from './listing-minimal';
+import { ListingMinimal } from "./listing-minimal";
 /**
- * 
+ *
  * @export
  * @interface InlineResponse200
  */
 export interface InlineResponse200 {
-    /**
-     * 
-     * @type {Array<ListingMinimal>}
-     * @memberof InlineResponse200
-     */
-    listings?: Array<ListingMinimal>;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    next?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    prev?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof InlineResponse200
-     */
-    numberOfPages?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof InlineResponse200
-     */
-    pageNumber?: number;
+  /**
+   *
+   * @type {Array<ListingMinimal>}
+   * @memberof InlineResponse200
+   */
+  listings?: Array<ListingMinimal>;
+  /**
+   *
+   * @type {string}
+   * @memberof InlineResponse200
+   */
+  next?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof InlineResponse200
+   */
+  prev?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof InlineResponse200
+   */
+  numberOfPages?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof InlineResponse200
+   */
+  pageNumber?: number;
 }

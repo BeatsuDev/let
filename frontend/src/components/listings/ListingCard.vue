@@ -1,10 +1,6 @@
 <template>
   <div class="card" @click="$emit('click', props.value.id)">
-    <img
-      class="thumbnail"
-      src="https://assets.api.uizard.io/api/cdn/stream/c2f78838-2c8f-47b4-ad29-7547ae6e294e.jpg"
-      alt="thumbnail"
-    />
+    <img class="thumbnail" :src="props.value.thumbnailUrl" alt="thumbnail" />
     <div class="information">
       <div class="column">
         <div class="row italic row-margin">
@@ -36,7 +32,7 @@ const emit = defineEmits(["click"]);
 </script>
 <style scoped>
 .card {
-  width: 100%;
+  max-width: 20rem;
   font-family: Inter, sans-serif;
   height: fit-content;
   background-color: #fff;

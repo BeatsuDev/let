@@ -11,334 +11,439 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from "axios";
+import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Chat } from '../models';
-import { CreateChat } from '../models';
-import { CreateMessage } from '../models';
-import { Message } from '../models';
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
+import { Chat } from "../models";
+import { CreateChat } from "../models";
+import { CreateMessage } from "../models";
+import { Message } from "../models";
 /**
  * ChatApi - axios parameter creator
  * @export
  */
 export const ChatApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Create a new chat
-         * @summary Create a new chat
-         * @param {CreateChat} [body] A new chat.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChat: async (body?: CreateChat, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/chat`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+  return {
+    /**
+     * Create a new chat
+     * @summary Create a new chat
+     * @param {CreateChat} [body] A new chat.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChat: async (
+      body?: CreateChat,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/chat`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, "https://example.com");
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions: AxiosRequestConfig = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication bearerAuth required
+      // authentication bearerAuth required
 
-            // authentication cookieAuth required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("Authorization")
-                    : await configuration.apiKey;
-                localVarQueryParameter["Authorization"] = localVarApiKeyValue;
-            }
+      // authentication cookieAuth required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === "function"
+            ? await configuration.apiKey("Authorization")
+            : await configuration.apiKey;
+        localVarQueryParameter["Authorization"] = localVarApiKeyValue;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter["Content-Type"] = "application/json";
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+      const query = new URLSearchParams(localVarUrlObj.search);
+      for (const key in localVarQueryParameter) {
+        query.set(key, localVarQueryParameter[key]);
+      }
+      for (const key in options.params) {
+        query.set(key, options.params[key]);
+      }
+      localVarUrlObj.search = new URLSearchParams(query).toString();
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      const needsSerialization =
+        typeof body !== "string" ||
+        localVarRequestOptions.headers["Content-Type"] === "application/json";
+      localVarRequestOptions.data = needsSerialization
+        ? JSON.stringify(body !== undefined ? body : {})
+        : body || "";
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get a chat by ID
-         * @summary Retrieve an existing chat
-         * @param {number} id The id of the chat you are trying to retrieve
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChat: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling getChat.');
-            }
-            const localVarPath = `/chat/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * Get a chat by ID
+     * @summary Retrieve an existing chat
+     * @param {number} id The id of the chat you are trying to retrieve
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getChat: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError(
+          "id",
+          "Required parameter id was null or undefined when calling getChat."
+        );
+      }
+      const localVarPath = `/chat/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, "https://example.com");
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions: AxiosRequestConfig = {
+        method: "GET",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication bearerAuth required
+      // authentication bearerAuth required
 
-            // authentication cookieAuth required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("Authorization")
-                    : await configuration.apiKey;
-                localVarQueryParameter["Authorization"] = localVarApiKeyValue;
-            }
+      // authentication cookieAuth required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === "function"
+            ? await configuration.apiKey("Authorization")
+            : await configuration.apiKey;
+        localVarQueryParameter["Authorization"] = localVarApiKeyValue;
+      }
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+      const query = new URLSearchParams(localVarUrlObj.search);
+      for (const key in localVarQueryParameter) {
+        query.set(key, localVarQueryParameter[key]);
+      }
+      for (const key in options.params) {
+        query.set(key, options.params[key]);
+      }
+      localVarUrlObj.search = new URLSearchParams(query).toString();
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve all chats
-         * @summary Retrieve all chats
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChats: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/chat`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * Retrieve all chats
+     * @summary Retrieve all chats
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getChats: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/chat`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, "https://example.com");
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions: AxiosRequestConfig = {
+        method: "GET",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication bearerAuth required
+      // authentication bearerAuth required
 
-            // authentication cookieAuth required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("Authorization")
-                    : await configuration.apiKey;
-                localVarQueryParameter["Authorization"] = localVarApiKeyValue;
-            }
+      // authentication cookieAuth required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === "function"
+            ? await configuration.apiKey("Authorization")
+            : await configuration.apiKey;
+        localVarQueryParameter["Authorization"] = localVarApiKeyValue;
+      }
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+      const query = new URLSearchParams(localVarUrlObj.search);
+      for (const key in localVarQueryParameter) {
+        query.set(key, localVarQueryParameter[key]);
+      }
+      for (const key in options.params) {
+        query.set(key, options.params[key]);
+      }
+      localVarUrlObj.search = new URLSearchParams(query).toString();
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Send a message to an existing chat
-         * @summary Send a message to an existing chat
-         * @param {number} id The id of the chat to send to
-         * @param {CreateMessage} [body] A new message
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        sendMessage: async (id: number, body?: CreateMessage, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling sendMessage.');
-            }
-            const localVarPath = `/chat/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * Send a message to an existing chat
+     * @summary Send a message to an existing chat
+     * @param {number} id The id of the chat to send to
+     * @param {CreateMessage} [body] A new message
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    sendMessage: async (
+      id: number,
+      body?: CreateMessage,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError(
+          "id",
+          "Required parameter id was null or undefined when calling sendMessage."
+        );
+      }
+      const localVarPath = `/chat/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, "https://example.com");
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions: AxiosRequestConfig = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication bearerAuth required
+      // authentication bearerAuth required
 
-            // authentication cookieAuth required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("Authorization")
-                    : await configuration.apiKey;
-                localVarQueryParameter["Authorization"] = localVarApiKeyValue;
-            }
+      // authentication cookieAuth required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === "function"
+            ? await configuration.apiKey("Authorization")
+            : await configuration.apiKey;
+        localVarQueryParameter["Authorization"] = localVarApiKeyValue;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter["Content-Type"] = "application/json";
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+      const query = new URLSearchParams(localVarUrlObj.search);
+      for (const key in localVarQueryParameter) {
+        query.set(key, localVarQueryParameter[key]);
+      }
+      for (const key in options.params) {
+        query.set(key, options.params[key]);
+      }
+      localVarUrlObj.search = new URLSearchParams(query).toString();
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      const needsSerialization =
+        typeof body !== "string" ||
+        localVarRequestOptions.headers["Content-Type"] === "application/json";
+      localVarRequestOptions.data = needsSerialization
+        ? JSON.stringify(body !== undefined ? body : {})
+        : body || "";
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-    }
+      return {
+        url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+        options: localVarRequestOptions,
+      };
+    },
+  };
 };
 
 /**
  * ChatApi - functional programming interface
  * @export
  */
-export const ChatApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * Create a new chat
-         * @summary Create a new chat
-         * @param {CreateChat} [body] A new chat.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createChat(body?: CreateChat, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Chat>>> {
-            const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).createChat(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Get a chat by ID
-         * @summary Retrieve an existing chat
-         * @param {number} id The id of the chat you are trying to retrieve
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getChat(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Chat>>> {
-            const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).getChat(id, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Retrieve all chats
-         * @summary Retrieve all chats
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getChats(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Chat>>>> {
-            const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).getChats(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Send a message to an existing chat
-         * @summary Send a message to an existing chat
-         * @param {number} id The id of the chat to send to
-         * @param {CreateMessage} [body] A new message
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async sendMessage(id: number, body?: CreateMessage, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Message>>> {
-            const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).sendMessage(id, body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-    }
+export const ChatApiFp = function (configuration?: Configuration) {
+  return {
+    /**
+     * Create a new chat
+     * @summary Create a new chat
+     * @param {CreateChat} [body] A new chat.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createChat(
+      body?: CreateChat,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Chat>>> {
+      const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).createChat(
+        body,
+        options
+      );
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs: AxiosRequestConfig = {
+          ...localVarAxiosArgs.options,
+          url: basePath + localVarAxiosArgs.url,
+        };
+        return axios.request(axiosRequestArgs);
+      };
+    },
+    /**
+     * Get a chat by ID
+     * @summary Retrieve an existing chat
+     * @param {number} id The id of the chat you are trying to retrieve
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getChat(
+      id: number,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Chat>>> {
+      const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).getChat(id, options);
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs: AxiosRequestConfig = {
+          ...localVarAxiosArgs.options,
+          url: basePath + localVarAxiosArgs.url,
+        };
+        return axios.request(axiosRequestArgs);
+      };
+    },
+    /**
+     * Retrieve all chats
+     * @summary Retrieve all chats
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getChats(
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Chat>>>> {
+      const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).getChats(options);
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs: AxiosRequestConfig = {
+          ...localVarAxiosArgs.options,
+          url: basePath + localVarAxiosArgs.url,
+        };
+        return axios.request(axiosRequestArgs);
+      };
+    },
+    /**
+     * Send a message to an existing chat
+     * @summary Send a message to an existing chat
+     * @param {number} id The id of the chat to send to
+     * @param {CreateMessage} [body] A new message
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async sendMessage(
+      id: number,
+      body?: CreateMessage,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Message>>> {
+      const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).sendMessage(
+        id,
+        body,
+        options
+      );
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs: AxiosRequestConfig = {
+          ...localVarAxiosArgs.options,
+          url: basePath + localVarAxiosArgs.url,
+        };
+        return axios.request(axiosRequestArgs);
+      };
+    },
+  };
 };
 
 /**
  * ChatApi - factory interface
  * @export
  */
-export const ChatApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    return {
-        /**
-         * Create a new chat
-         * @summary Create a new chat
-         * @param {CreateChat} [body] A new chat.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createChat(body?: CreateChat, options?: AxiosRequestConfig): Promise<AxiosResponse<Chat>> {
-            return ChatApiFp(configuration).createChat(body, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Get a chat by ID
-         * @summary Retrieve an existing chat
-         * @param {number} id The id of the chat you are trying to retrieve
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Chat>> {
-            return ChatApiFp(configuration).getChat(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve all chats
-         * @summary Retrieve all chats
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Chat>>> {
-            return ChatApiFp(configuration).getChats(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Send a message to an existing chat
-         * @summary Send a message to an existing chat
-         * @param {number} id The id of the chat to send to
-         * @param {CreateMessage} [body] A new message
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async sendMessage(id: number, body?: CreateMessage, options?: AxiosRequestConfig): Promise<AxiosResponse<Message>> {
-            return ChatApiFp(configuration).sendMessage(id, body, options).then((request) => request(axios, basePath));
-        },
-    };
+export const ChatApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance
+) {
+  return {
+    /**
+     * Create a new chat
+     * @summary Create a new chat
+     * @param {CreateChat} [body] A new chat.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createChat(
+      body?: CreateChat,
+      options?: AxiosRequestConfig
+    ): Promise<AxiosResponse<Chat>> {
+      return ChatApiFp(configuration)
+        .createChat(body, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * Get a chat by ID
+     * @summary Retrieve an existing chat
+     * @param {number} id The id of the chat you are trying to retrieve
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Chat>> {
+      return ChatApiFp(configuration)
+        .getChat(id, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * Retrieve all chats
+     * @summary Retrieve all chats
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Chat>>> {
+      return ChatApiFp(configuration)
+        .getChats(options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * Send a message to an existing chat
+     * @summary Send a message to an existing chat
+     * @param {number} id The id of the chat to send to
+     * @param {CreateMessage} [body] A new message
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async sendMessage(
+      id: number,
+      body?: CreateMessage,
+      options?: AxiosRequestConfig
+    ): Promise<AxiosResponse<Message>> {
+      return ChatApiFp(configuration)
+        .sendMessage(id, body, options)
+        .then((request) => request(axios, basePath));
+    },
+  };
 };
 
 /**
@@ -348,48 +453,63 @@ export const ChatApiFactory = function (configuration?: Configuration, basePath?
  * @extends {BaseAPI}
  */
 export class ChatApi extends BaseAPI {
-    /**
-     * Create a new chat
-     * @summary Create a new chat
-     * @param {CreateChat} [body] A new chat.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatApi
-     */
-    public async createChat(body?: CreateChat, options?: AxiosRequestConfig) : Promise<AxiosResponse<Chat>> {
-        return ChatApiFp(this.configuration).createChat(body, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Get a chat by ID
-     * @summary Retrieve an existing chat
-     * @param {number} id The id of the chat you are trying to retrieve
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatApi
-     */
-    public async getChat(id: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<Chat>> {
-        return ChatApiFp(this.configuration).getChat(id, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Retrieve all chats
-     * @summary Retrieve all chats
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatApi
-     */
-    public async getChats(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Chat>>> {
-        return ChatApiFp(this.configuration).getChats(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Send a message to an existing chat
-     * @summary Send a message to an existing chat
-     * @param {number} id The id of the chat to send to
-     * @param {CreateMessage} [body] A new message
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatApi
-     */
-    public async sendMessage(id: number, body?: CreateMessage, options?: AxiosRequestConfig) : Promise<AxiosResponse<Message>> {
-        return ChatApiFp(this.configuration).sendMessage(id, body, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * Create a new chat
+   * @summary Create a new chat
+   * @param {CreateChat} [body] A new chat.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ChatApi
+   */
+  public async createChat(
+    body?: CreateChat,
+    options?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Chat>> {
+    return ChatApiFp(this.configuration)
+      .createChat(body, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+  /**
+   * Get a chat by ID
+   * @summary Retrieve an existing chat
+   * @param {number} id The id of the chat you are trying to retrieve
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ChatApi
+   */
+  public async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Chat>> {
+    return ChatApiFp(this.configuration)
+      .getChat(id, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+  /**
+   * Retrieve all chats
+   * @summary Retrieve all chats
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ChatApi
+   */
+  public async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Chat>>> {
+    return ChatApiFp(this.configuration)
+      .getChats(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+  /**
+   * Send a message to an existing chat
+   * @summary Send a message to an existing chat
+   * @param {number} id The id of the chat to send to
+   * @param {CreateMessage} [body] A new message
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ChatApi
+   */
+  public async sendMessage(
+    id: number,
+    body?: CreateMessage,
+    options?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Message>> {
+    return ChatApiFp(this.configuration)
+      .sendMessage(id, body, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 }

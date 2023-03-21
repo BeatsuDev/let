@@ -10,18 +10,20 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  pages: {
+    type: Number,
+    required: true,
+  },
 });
 
 const emit = defineEmits(["next", "previous"]);
 
 function nextPage() {
-  emit("next");
+  if (props.value < props.pages) emit("next");
 }
 
 function previousPage() {
-  if (props.value > 1) {
-    emit("previous");
-  }
+  if (props.value > 1) emit("previous");
 }
 </script>
 <style>

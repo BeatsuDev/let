@@ -11,29 +11,29 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { UserMinimal } from './user-minimal';
+import { UserMinimal } from "./user-minimal";
 /**
- * 
+ *
  * @export
  * @interface UserFull
  */
 export interface UserFull {
-    /**
-     * 
-     * @type {string}
-     * @memberof UserFull
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserFull
-     */
-    firstName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserFull
-     */
-    lastName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserFull
+   */
+  email?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserFull
+   */
+  firstName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserFull
+   */
+  lastName?: string;
 }
