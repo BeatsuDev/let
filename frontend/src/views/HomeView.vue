@@ -22,7 +22,7 @@
 </template>
 <script setup lang="ts">
 import ListPagination from "@/components/paginations/ListPagination.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import { Category, ListingCard, ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
@@ -36,11 +36,11 @@ const listingFilter = ref(new ListingFilter());
 
 const listing = new ListingCard(
   1,
-  "Airpods",
+  "Test",
   "Test men moren din er styggere ahahhah Lorem ipsum daler dat",
   1,
   "test",
-  "Oslo, Høybråten",
+  "test",
   "test"
 );
 const category = new Category("test");
@@ -72,7 +72,7 @@ function previousPage() {
 }
 
 .active {
-  margin-left: 20rem;
+  margin-left: 15rem;
 }
 
 .collapsed {

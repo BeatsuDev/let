@@ -7,14 +7,10 @@
     />
     <div class="information">
       <div class="column">
-        <div class="row italic row-margin">
-          {{ props.value.locationName }}
-        </div>
-
-        <div class="row row-margin" style="padding-right: 10px">
-          <div class="text-paragraph">{{ props.value.title }}</div>
+        <div class="row">
+          <div class="text-sub-header">{{ props.value.title }}</div>
           <div class="spacer" />
-          <div class="text-paragraph">{{ props.value.price }}kr</div>
+          <div class="text-sub-header">{{ props.value.price }}kr</div>
         </div>
         <div class="row">
           <div class="text-paragraph">{{ props.value.summary }}</div>
@@ -38,9 +34,9 @@ const emit = defineEmits(["click"]);
 <style scoped>
 .card {
   width: 100%;
-  font-family: Inter, sans-serif;
   height: fit-content;
   background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -51,8 +47,6 @@ const emit = defineEmits(["click"]);
 
 .card:hover {
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  background-color: #f8f8f8;
 }
 
 .thumbnail {
@@ -64,14 +58,5 @@ const emit = defineEmits(["click"]);
 .information {
   height: 20%;
   width: 100%;
-}
-
-.row-margin {
-  margin-top: 0.5rem;
-}
-
-.italic {
-  font-style: italic;
-  color: #222222;
 }
 </style>

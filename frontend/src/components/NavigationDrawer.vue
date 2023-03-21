@@ -6,21 +6,16 @@
       'drawer-active': !props.collapsed,
     }"
   >
-    <button style="margin-bottom: 1.5rem" @click="collapse" class="button">Skjul</button>
-    <div class="item text-sub-header">Kategori</div>
-    <div
-      v-for="(category, index) in categories"
-      class="category text-paragraph hide-overflow"
-      :key="index"
-      @click="updateCategory(category.name)"
-    >
+    <button style="margin-bottom: 1.5rem" @click="collapse">Skjul</button>
+    <div class="text-sub-header">Kategori</div>
+    <div v-for="(category, index) in categories" class="text-paragraph hide-overflow" :key="index">
       {{ category.name }}
     </div>
-    <div class="item text-sub-header">Søk</div>
+    <div class="text-sub-header">Søk</div>
     <input type="search" v-model="value.search" />
-    <div class="item text-sub-header">Lokasjon</div>
+    <div class="text-sub-header">Lokasjon</div>
     <input type="search" v-model="value.search" />
-    <div class="item text-sub-header">radius: {{ value.radius }}</div>
+    <div class="text-sub-header">radius: {{ value.radius }}</div>
     <input type="range" v-model="value.radius" style="width: 100%" />
   </div>
 </template>
@@ -51,18 +46,12 @@ const value = computed({
   },
   set(value: string) {
     const newFilter = { ...props.modelValue, [value]: value };
-    console.log(newFilter);
     emit("update:modelValue", newFilter);
   },
 });
 
 function collapse() {
   emit("update:collapsed", true);
-}
-
-function updateCategory(category: string) {
-  const newFilter = { ...props.modelValue, category };
-  emit("update:modelValue", newFilter);
 }
 </script>
 <style scoped>
@@ -80,7 +69,7 @@ function updateCategory(category: string) {
 }
 
 .drawer-active {
-  width: 20rem;
+  width: 15rem;
 }
 
 .drawer-collapse {
@@ -90,22 +79,5 @@ function updateCategory(category: string) {
 
 .hide-overflow {
   overflow: hidden;
-}
-
-.item {
-  margin-top: 0.8rem;
-  padding: 0.2rem;
-}
-
-.category {
-  transition: 0.3s;
-  padding: 0.5rem;
-  font-family: Inter, serif;
-}
-
-.category:hover {
-  color: #282828;
-  cursor: pointer;
-  background-color: #f1f1f1;
 }
 </style>
