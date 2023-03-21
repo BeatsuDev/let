@@ -68,28 +68,25 @@ function updateCategory(category: string) {
 </script>
 <style scoped>
 .sidebar {
+  margin-top: 4rem;
   height: 100%;
   position: fixed;
   left: 0;
   top: 0;
-  margin-top: 4rem;
-  padding-top: 8rem;
+  padding-top: 7.5rem;
   padding-left: 3rem;
-  padding-right: 3rem;
-  transition: 0.3s;
+  transition: width 0.5s;
   overflow: hidden;
   background-color: var(--color-background);
 }
 
 .drawer-active {
   width: 20rem;
-  border-right: 1px solid #e1e1e1;
 }
 
 .drawer-collapse {
   width: 0;
   padding-left: 0;
-  padding-right: 0;
 }
 
 .hide-overflow {
@@ -117,13 +114,5 @@ function updateCategory(category: string) {
   text-align: center;
   font-family: Inter, sans-serif;
   width: 100%;
-}
-
-@media screen and (max-width: 600px) {
-  .sidebar {
-    margin-top: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }
 </style>
