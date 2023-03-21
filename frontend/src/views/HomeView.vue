@@ -22,30 +22,28 @@
 </template>
 <script setup lang="ts">
 import ListPagination from "@/components/paginations/ListPagination.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
-import { ListingFilter } from "@/types/listing";
+import { Category, ListingCard, ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
-import type { Category, ListingMinimal } from "@/service/models";
 
 const page = ref(1);
-const listings = ref([] as ListingMinimal[]);
+const listings = ref([] as ListingCard[]);
 const categories = ref([] as Category[]);
 const collapsed = ref(false);
 
 const listingFilter = ref(new ListingFilter());
 
-const listing = {
-  id: 1,
-  title: "Airpods",
-  summary: "Test men moren din er styggere ahahhah Lorem ipsum daler dat",
-  price: 1,
-  thumbnailUrl: "test",
-  locationName: "Oslo, Høybråten",
-  categoryName: "test",
-} as ListingMinimal;
-
-const category = { name: "test" } as Category;
+const listing = new ListingCard(
+  1,
+  "Airpods",
+  "Test men moren din er styggere ahahhah Lorem ipsum daler dat",
+  1,
+  "test",
+  "Oslo, Høybråten",
+  "test"
+);
+const category = new Category("test");
 
 for (let i = 0; i < 20; i++) {
   listings.value.push(listing);

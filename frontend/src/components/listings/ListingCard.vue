@@ -23,11 +23,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { ListingMinimal } from "@/service/models";
+import { ListingCard } from "@/types/listing";
 
 const props = defineProps({
   value: {
-    type: Object as () => ListingMinimal,
+    type: ListingCard,
     required: true,
   },
 });
