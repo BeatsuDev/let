@@ -1,76 +1,34 @@
 <template>
-  <div class="card" @click="$emit('click', props.value.id)">
+  <div class="card">
     <img
       class="thumbnail"
       src="https://assets.api.uizard.io/api/cdn/stream/c2f78838-2c8f-47b4-ad29-7547ae6e294e.jpg"
       alt="thumbnail"
     />
-    <div class="information">
-      <div class="column">
-        <div class="row italic row-margin">
-          {{ props.value.locationName }}
-        </div>
-        <div class="row row-margin" style="padding-right: 10px">
-          <div>{{ props.value.title }}</div>
-          <div class="spacer" />
-          <div>{{ props.value.price }}kr</div>
-        </div>
-        <div class="row">
-          <div>{{ props.value.summary }}</div>
-        </div>
-      </div>
-    </div>
+    <div class="text-title">{{ props.value.title }}</div>
   </div>
 </template>
 <script lang="ts" setup>
-import type { ListingMinimal } from "@/service/models";
+import { Listing } from "@/types/listing";
 
 const props = defineProps({
   value: {
-    type: Object as () => ListingMinimal,
+    type: Listing,
     required: true,
   },
 });
-
-const emit = defineEmits(["click"]);
 </script>
 <style scoped>
 .card {
-  width: 100%;
-  font-family: Inter, sans-serif;
-  height: fit-content;
+  width: 20rem;
+  height: 20rem;
   background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-}
-
-.card:hover {
-  cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  background-color: #f8f8f8;
-}
-
-.thumbnail {
-  width: 100%;
-  height: 80%;
-  object-fit: cover;
-}
-
-.information {
-  height: 20%;
-  width: 100%;
-}
-
-.row-margin {
-  margin-top: 0.5rem;
-}
-
-.italic {
-  font-style: italic;
-  color: #222222;
 }
 </style>

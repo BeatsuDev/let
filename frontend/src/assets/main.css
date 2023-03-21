@@ -1,4 +1,5 @@
 @import "./base.css";
+@import "./text.css";
 @import "./buttons.css";
 @import "./headers.css";
 @import "./inputs.css";
@@ -18,27 +19,4 @@ main {
 
 .spacer {
   flex: 1;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.center-text {
-  text-align: center;
-  font-family: Inter, sans-serif;
-  width: 100%;
-}
-
-.drawer-item {
-  margin-top: 0.8rem;
-  padding: 0.2rem;
 }
