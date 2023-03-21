@@ -28,6 +28,11 @@ const router = createRouter({
       component: () => import("../views/CreateListingView.vue"),
     },
     {
+      path: "/admin",
+      name: "admin-panel",
+      component: () => import("../views/AdminPanelView.vue"),
+    },
+    {
       path: "/listing/:id",
       name: "listing-details",
       component: () => import("../views/ListingDetailsView.vue"),
