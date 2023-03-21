@@ -1,122 +1,116 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ref, computed } from "vue";
+import type { Ref } from "vue";
 
-onMounted(() => {
-  // Get all input fields
-  const inputs = document.querySelectorAll('input');
-  const textareas = document.querySelectorAll('textarea');
+const emit = defineEmits(["createListing"]);
 
-  // Clear border on change
-  inputs.forEach(input => {
-    input.addEventListener('keyup', () => {
-      if (input.value === '') return;
-      input.style.border = '0';
-    });
-  });
+// Emit form data to parent component
+const title = ref("");
+const price = ref("");
+const place = ref("");
+const category = ref("");
+const summary = ref("");
+const description = ref("");
+const images = ref([]) as Ref<File[]>;
 
-  textareas.forEach(textarea => {
-    textarea.addEventListener('keyup', () => {
-      if (textarea.value === '') return;
-      textarea.style.border = '0';
-    });
-  });
+var submitButtonClicked = ref(false);
 
-  // When the submit button is clicked, but a text field is empty, add a red border
-  const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
-  const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+// Computed refs for checking if each input field is empty
+const titleEmpty = computed(() => submitButtonClicked.value && title.value == "");
+const priceEmpty = computed(() => submitButtonClicked.value && price.value == "");
+const placeEmpty = computed(() => submitButtonClicked.value && place.value == "");
+const categoryEmpty = computed(() => submitButtonClicked.value && category.value == "");
+const summaryEmpty = computed(() => submitButtonClicked.value && summary.value == "");
+const descriptionEmpty = computed(() => submitButtonClicked.value && description.value == "");
+const imagesEmpty = computed(() => submitButtonClicked.value && images.value.length == 0);
 
-  if (!submitButton) {
-    console.error("A submit button was not found. Red border will not be added to empty text fields.");
-    return;
+
+function fileHandler() {
+  const files = (document.getElementById("images") as HTMLInputElement).files;
+  if (!files) return;
+  images.value = Array.from(files);
+}
+
+function submitHandler() {  
+  // Check if any data is missing
+  if (
+    title.value == "" ||
+    price.value == "" ||
+    place.value == "" ||
+    category.value == "" ||
+    summary.value == "" ||
+    description.value == "" ||
+    images.value.length == 0
+  ) {
+    submitButtonClicked.value = true;
+    return false;
   }
+  let listingData = {
+    title: title.value,
+    price: price.value,
+    place: place.value,
+    category: category.value,
+    summary: summary.value,
+    description: description.value,
+    images: images.value,
+  };
 
-  submitButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    inputs.forEach((input) => {
-      if (input.type === 'file') return;
-      if (input.value === '') {
-        input.style.border = '1px solid red';
-      }
-    });
-
-    textareas.forEach((textarea) => {
-      if (textarea.value === '') {
-        textarea.style.border = '1px solid red';
-      }
-    }); 
-
-    if (fileInput.files!.length == 0) {
-      fileInput.style.border = '1px solid red';
-    }
-  });
-
-  if (!fileInput || !fileInput.files) {
-    console.error("A file input was not found. Red border will not be added to empty file input.");
-    return;
-  }
-
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files!.length > 0) {
-      fileInput.style.border = '0';
-    }
-  });
-});
+  emit("createListing", listingData);
+  return true;
+}
 </script>
 
 <template>
-<form>
-      <div class="row" id="row-1">
-        <div class="col">
-          <h3><label for="title">Tittel</label></h3>
-          <input class="input-text" type="text" id="title" placeholder="Rød rose - snart døende" />
-        </div>
-        <div class="col">
-          <h3><label for="price">Pris (kr)</label></h3>
-          <input class="input-text" type="text" id="price" placeholder="249.99" />
-        </div>
+  <form @submit.prevent="submitHandler">
+    <div class="row" id="row-1">
+      <div class="col">
+        <h3><label for="title">Tittel</label></h3>
+        <input class="input-text" v-model="title" type="text" id="title" :class="{'red-border': titleEmpty}" placeholder="Rød rose - snart døende" />
       </div>
+      <div class="col">
+        <h3><label for="price">Pris (kr)</label></h3>
+        <input class="input-text" v-model="price" type="text" id="price" :class="{'red-border': priceEmpty}" placeholder="249.99" />
+      </div>
+    </div>
 
-      <div class="row" id="row-2">
-        <div class="col">
-          <h3><label for="place">Sted</label></h3>
-          <input class="input-text" type="text" id="place" placeholder="Kardemomme By, Norge" />
-        </div>
-        <div class="col">
-          <h3><label for="category">Kategori</label></h3>
-          <input class="input-text" type="text" id="category" placeholder="Planter" />
-        </div>
+    <div class="row" id="row-2">
+      <div class="col">
+        <h3><label for="place">Sted</label></h3>
+        <input class="input-text" v-model="place" type="text" id="place" :class="{'red-border': placeEmpty}" placeholder="Kardemomme By, Norge" />
       </div>
+      <div class="col">
+        <h3><label for="category">Kategori</label></h3>
+        <input class="input-text" v-model="category" type="text" id="category" :class="{'red-border': categoryEmpty}" placeholder="Planter" />
+      </div>
+    </div>
 
-      <div class="row" id="row-3">
-        <div class="col">
-          <h3><label for="summary">Kort beskrivelse</label></h3>
-          <textarea class="input-text" name="summary" id="summary"></textarea>
-        </div>
+    <div class="row" id="row-3">
+      <div class="col">
+        <h3><label for="summary">Kort beskrivelse</label></h3>
+        <textarea class="input-text" v-model="summary" name="summary" id="summary" :class="{'red-border': summaryEmpty}"></textarea>
       </div>
+    </div>
 
-      <div class="row" id="row-4">
-        <div class="col">
-          <h3><label for="description">Detaljert beskrivelse</label></h3>
-          <textarea class="input-text" name="description" id="description"></textarea>
-        </div>
+    <div class="row" id="row-4">
+      <div class="col">
+        <h3><label for="description">Detaljert beskrivelse</label></h3>
+        <textarea class="input-text" v-model="description" name="description" id="description" :class="{'red-border': descriptionEmpty}"></textarea>
       </div>
+    </div>
 
-      <div class="row" id="row-5">
-        <div class="col">
-          <h3><label for="images">Last opp bilder</label></h3>
-          <input class="input-text" type="file" id="images" multiple />
-        </div>
+    <div class="row" id="row-5">
+      <div class="col">
+        <h3><label for="images">Last opp bilder</label></h3>
+        <input class="input-text" @change="fileHandler" type="file" id="images" multiple :class="{'red-border': imagesEmpty}" />
       </div>
+    </div>
 
-      <div class="row" id="row-6">
-        <div class="col">
-          <button class="button button-black button-screaming" type="submit">
-            Publiser annonse
-          </button>
-        </div>
+    <div class="row" id="row-6">
+      <div class="col">
+        <button class="button button-black button-screaming" type="submit">Publiser annonse</button>
       </div>
-    </form>
+    </div>
+  </form>
 </template>
 
 <style scoped>
@@ -171,5 +165,9 @@ textarea {
 
 #images {
   cursor: pointer;
+}
+
+.red-border {
+  border: 1px solid red;
 }
 </style>
