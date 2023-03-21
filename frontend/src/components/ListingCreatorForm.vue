@@ -1,5 +1,67 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 
+onMounted(() => {
+  // Get all input fields
+  const inputs = document.querySelectorAll('input');
+  const textareas = document.querySelectorAll('textarea');
+
+  // Clear border on change
+  inputs.forEach(input => {
+    input.addEventListener('keyup', () => {
+      if (input.value === '') return;
+      input.style.border = '0';
+    });
+  });
+
+  textareas.forEach(textarea => {
+    textarea.addEventListener('keyup', () => {
+      if (textarea.value === '') return;
+      textarea.style.border = '0';
+    });
+  });
+
+  // When the submit button is clicked, but a text field is empty, add a red border
+  const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+  const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+
+  if (!submitButton) {
+    console.error("A submit button was not found. Red border will not be added to empty text fields.");
+    return;
+  }
+
+  submitButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    inputs.forEach((input) => {
+      if (input.type === 'file') return;
+      if (input.value === '') {
+        input.style.border = '1px solid red';
+      }
+    });
+
+    textareas.forEach((textarea) => {
+      if (textarea.value === '') {
+        textarea.style.border = '1px solid red';
+      }
+    }); 
+
+    if (fileInput.files!.length == 0) {
+      fileInput.style.border = '1px solid red';
+    }
+  });
+
+  if (!fileInput || !fileInput.files) {
+    console.error("A file input was not found. Red border will not be added to empty file input.");
+    return;
+  }
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files!.length > 0) {
+      fileInput.style.border = '0';
+    }
+  });
+});
 </script>
 
 <template>
