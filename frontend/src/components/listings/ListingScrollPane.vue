@@ -1,17 +1,12 @@
 <template>
   <div class="main">
-    <ListingCard
-      v-for="listing in props.listings"
-      :key="listing.id"
-      :value="listing"
-      @click="goToListing"
-    />
+    <ListingCard v-for="listing in props.listings" :key="listing.id" :value="listing" />
   </div>
 </template>
 <script lang="ts" setup>
 import ListingCard from "@/components/listings/ListingCard.vue";
+import { Listing } from "@/types/listing";
 import type { PropType } from "vue";
-import router from "@/router";
 
 const props = defineProps({
   listings: {
@@ -19,10 +14,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-function goToListing(id: number) {
-  router.push("/listing/" + id);
-}
 </script>
 <style scoped>
 .main {
