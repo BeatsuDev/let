@@ -7,9 +7,8 @@ import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.user.UserRepository;
 import no.ntnu.let.letapi.service.ListingService;
 import no.ntnu.let.letapi.util.ListingFilter;
-import no.ntnu.let.letapi.util.ListingFilterBuilder;
+import no.ntnu.let.letapi.util.ListingFilter.ListingFilterBuilder;
 import no.ntnu.let.letapi.util.UrlUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -55,7 +54,7 @@ public class ListingController {
         }
 
         // Build the filter
-        ListingFilterBuilder filterBuilder = new ListingFilterBuilder();
+        ListingFilterBuilder filterBuilder = ListingFilter.builder();
         filterBuilder
                 .searchString(searchString)
                 .locationRadius(locationDTO, radius)

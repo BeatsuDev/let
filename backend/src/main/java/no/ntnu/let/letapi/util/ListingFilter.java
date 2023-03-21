@@ -74,4 +74,53 @@ public class ListingFilter {
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
+    public static class ListingFilterBuilder {
+        private final ListingFilter filter = new ListingFilter();
+
+        private ListingFilterBuilder() {
+        }
+
+        public ListingFilterBuilder searchString(String searchString) {
+            filter.setSearchString(searchString);
+            return this;
+        }
+
+        public ListingFilterBuilder locationRadius(LocationDTO location, Integer radius) {
+            if ((location == null) != (radius == null)) {
+                throw new IllegalArgumentException("Location and radius must be both null or both not null");
+            }
+
+            filter.setLocation(location);
+            filter.setRadius(radius);
+            return this;
+        }
+
+        public ListingFilterBuilder categories(List<Integer> categories) {
+            filter.setCategories(categories);
+            return this;
+        }
+
+        public ListingFilterBuilder userId(Long userId) {
+            filter.setUserId(userId);
+            return this;
+        }
+
+        public ListingFilterBuilder favoritesOf(User user) {
+            filter.setFavoritesOf(user);
+            return this;
+        }
+
+        public ListingFilterBuilder states(List<ListingState> states) {
+            filter.setStates(states);
+            return this;
+        }
+
+        public ListingFilter build() {
+            return filter;
+        }
+    }
+
+    public static ListingFilterBuilder builder() {
+        return new ListingFilterBuilder();
+    }
 }
