@@ -40,7 +40,7 @@ function collapse() {
   padding-top: 8rem;
   padding-left: 3rem;
   padding-right: 3rem;
-  transition: 0.3s;
+  transition: 0.5s;
   overflow: hidden;
   background-color: var(--color-background);
 }
@@ -63,6 +63,7 @@ function collapse() {
 @media screen and (max-width: 600px) {
   .sidebar {
     margin-top: 0;
+    padding-top: 11.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
   }
