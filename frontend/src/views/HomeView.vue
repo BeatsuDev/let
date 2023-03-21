@@ -43,7 +43,7 @@ import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
 import { ListingsApi } from "@/service/apis/listings-api";
 import { CategoryApi } from "@/service/apis/category-api";
 
-const listings = ref([] as ListingMinimal[]);
+const listings = ref([] as ListingMinimal[] | undefined);
 const categories = ref([] as Category[]);
 const collapsed = ref(false);
 const totalPages = ref(1);
@@ -94,11 +94,7 @@ function fetchEvents() {
       50
     )
     .then((response) => {
-      if (!response.data?.listings) {
-        listings.value = [];
-      } else {
-        listings.value = response.data.listings;
-      }
+      listings.value = response.data.listings;
       console.table(response.data.listings);
       if (!response.data.numberOfPages) {
         totalPages.value = 1;
@@ -114,28 +110,10 @@ function fetchEvents() {
   display: flex;
 }
 
-.content {
-  transition: margin-left 0.5s;
-}
-
-.active {
-  margin-left: 20rem;
-}
-
-.collapsed {
-  margin-left: 5rem;
-}
-
 @media screen and (max-width: 1000px) {
   .one-line {
     white-space: nowrap;
     font-size: 5vw;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .active {
-    margin-left: 0;
   }
 }
 
