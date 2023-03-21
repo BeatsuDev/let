@@ -2,6 +2,9 @@
 import { ref, computed } from "vue";
 import type { Ref } from "vue";
 
+import ValidatedInput from "@/components/ValidatedInput.vue";
+import { InputType } from "@/types/input";
+
 const emit = defineEmits(["createListing"]);
 
 // Emit form data to parent component
@@ -16,12 +19,6 @@ const images = ref([]) as Ref<File[]>;
 var submitButtonClicked = ref(false);
 
 // Computed refs for checking if each input field is empty
-const titleEmpty = computed(() => submitButtonClicked.value && title.value == "");
-const priceEmpty = computed(() => submitButtonClicked.value && price.value == "");
-const placeEmpty = computed(() => submitButtonClicked.value && place.value == "");
-const categoryEmpty = computed(() => submitButtonClicked.value && category.value == "");
-const summaryEmpty = computed(() => submitButtonClicked.value && summary.value == "");
-const descriptionEmpty = computed(() => submitButtonClicked.value && description.value == "");
 const imagesEmpty = computed(() => submitButtonClicked.value && images.value.length == 0);
 
 function fileHandler() {
@@ -62,83 +59,25 @@ function submitHandler() {
 <template>
   <form @submit.prevent="submitHandler">
     <div class="row" id="row-1">
-      <div class="col">
-        <h3><label for="title">Tittel</label></h3>
-        <input
-          class="input-text"
-          v-model="title"
-          type="text"
-          id="title"
-          :class="{ 'red-border': titleEmpty }"
-          placeholder="Rød rose - snart døende"
-        />
-      </div>
-      <div class="col">
-        <h3><label for="price">Pris (kr)</label></h3>
-        <input
-          class="input-text"
-          v-model="price"
-          type="text"
-          id="price"
-          :class="{ 'red-border': priceEmpty }"
-          placeholder="249.99"
-        />
-      </div>
+      <ValidatedInput class="input-container" v-model="title" title="Tittel" :submit-button-clicked="submitButtonClicked" placeholder="Rød rose - snart døende"/>
+      <ValidatedInput class="input-container" v-model="price" title="Pris (kr)" :submit-button-clicked="submitButtonClicked" placeholder="249.99"/>
     </div>
 
     <div class="row" id="row-2">
-      <div class="col">
-        <h3><label for="place">Sted</label></h3>
-        <input
-          class="input-text"
-          v-model="place"
-          type="text"
-          id="place"
-          :class="{ 'red-border': placeEmpty }"
-          placeholder="Kardemomme By, Norge"
-        />
-      </div>
-      <div class="col">
-        <h3><label for="category">Kategori</label></h3>
-        <input
-          class="input-text"
-          v-model="category"
-          type="text"
-          id="category"
-          :class="{ 'red-border': categoryEmpty }"
-          placeholder="Planter"
-        />
-      </div>
+      <ValidatedInput class="input-container" v-model="place" title="Sted" :submit-button-clicked="submitButtonClicked" placeholder="Kardemomme By, Norge"/>
+      <ValidatedInput class="input-container" v-model="category" title="Kategori" :submit-button-clicked="submitButtonClicked" placeholder="Planter"/>
     </div>
 
     <div class="row" id="row-3">
-      <div class="col">
-        <h3><label for="summary">Kort beskrivelse</label></h3>
-        <textarea
-          class="input-text"
-          v-model="summary"
-          name="summary"
-          id="summary"
-          :class="{ 'red-border': summaryEmpty }"
-        ></textarea>
-      </div>
+      <ValidatedInput class="input-container" v-model="summary" title="Kort beskrivelse" :submit-button-clicked="submitButtonClicked" :inputType="InputType.TextArea"/>
     </div>
 
     <div class="row" id="row-4">
-      <div class="col">
-        <h3><label for="description">Detaljert beskrivelse</label></h3>
-        <textarea
-          class="input-text"
-          v-model="description"
-          name="description"
-          id="description"
-          :class="{ 'red-border': descriptionEmpty }"
-        ></textarea>
-      </div>
+      <ValidatedInput class="input-container" v-model="description" title="Detaljert beskrivelse" :submit-button-clicked="submitButtonClicked" :inputType="InputType.TextArea"/>
     </div>
 
     <div class="row" id="row-5">
-      <div class="col">
+      <div  class="input-container">
         <h3><label for="images">Last opp bilder</label></h3>
         <input
           class="input-text"
@@ -152,7 +91,7 @@ function submitHandler() {
     </div>
 
     <div class="row" id="row-6">
-      <div class="col">
+      <div  class="input-container">
         <button class="button button-black button-screaming" type="submit">Publiser annonse</button>
       </div>
     </div>
@@ -165,43 +104,33 @@ label {
   margin-bottom: 0.2rem;
 }
 
-input,
-textarea {
-  width: 100%;
-  resize: none;
-}
-
-.col {
-  padding: 0 0.4rem;
-}
-
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   margin-bottom: 1rem;
 }
 
-.row > .col {
+.row >  .input-container {
   grid-column: 1 / 6;
 }
 
-#row-1 > .col:first-child {
+#row-1 > .input-container:first-child {
   grid-column: 1 / 5;
 }
 
-#row-1 > .col:last-child {
+#row-1 > .input-container:last-child {
   grid-column: 5 / 5;
 }
 
-#row-2 > .col:first-child {
+#row-2 > .input-container:first-child {
   grid-column: 1 / 4;
 }
 
-#row-2 > .col:last-child {
+#row-2 > .input-container:last-child {
   grid-column: 4 / 6;
 }
 
-#row-6 > .col:first-child {
+#row-6 > .input-container:first-child {
   grid-column: 6 / 6;
 }
 
@@ -209,11 +138,7 @@ textarea {
   height: 200px;
 }
 
-#images {
-  cursor: pointer;
-}
-
-.red-border {
-  border: 1px solid red;
+input {
+  width: 100%;
 }
 </style>
