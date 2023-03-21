@@ -4,7 +4,7 @@
       <ListingFilterForm v-model="listingFilter" :categories="categories" />
     </NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
-      <h1 class="one-line">Hva leter du etter i dag?</h1>
+      <h1 class="one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
       <div class="menu">
         <button @click="collapsed = !collapsed" class="button">
           <FilterIcon class="button-icon" />
@@ -66,10 +66,6 @@ watch(
   },
   { deep: true }
 );
-
-for (let i = 0; i < 5; i++) {
-  categories.value.push({ name: "test" + i } as Category);
-}
 
 function nextPage() {
   listingFilter.value.page++;
