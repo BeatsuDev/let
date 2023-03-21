@@ -90,16 +90,16 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/ListingState'
-        - name: limit
+        - name: page
           in: query
-          example: 50
+          example: 1
           required: false
           explode: true
           schema: 
             type: integer
-        - name: offset
+        - name: pageSize
           in: query
-          example: 0
+          example: 50
           required: false
           explode: true
           schema:
