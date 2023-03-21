@@ -102,9 +102,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  object-fit: contain;
   margin: 0 auto;
 }
 
