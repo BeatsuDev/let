@@ -5,6 +5,8 @@
 </template>
 
 <script lang="ts" setup>
+import PrimaryButton from "@/components/buttons/PrimaryButton.vue";
+
 const props = defineProps({
   value: {
     type: Number,

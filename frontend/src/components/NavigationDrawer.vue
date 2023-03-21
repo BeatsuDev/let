@@ -7,7 +7,7 @@
     }"
   >
     <button style="margin-bottom: 1.5rem" @click="collapse" class="button">Skjul</button>
-    <h3 class="item">Kategori</h3>
+    <div class="item text-sub-header">Kategori</div>
     <div
       v-for="(category, index) in categories"
       class="category text-paragraph hide-overflow"
@@ -16,11 +16,11 @@
     >
       {{ category.name }}
     </div>
-    <h3 class="item">Søk</h3>
+    <div class="item text-sub-header">Søk</div>
     <input type="search" v-model="value.search" />
-    <h3 class="item">Lokasjon</h3>
+    <div class="item text-sub-header">Lokasjon</div>
     <input type="search" v-model="value.search" />
-    <h3 class="item">Radius</h3>
+    <div class="item text-sub-header">Radius</div>
     <input type="range" v-model="value.radius" style="width: 100%" />
     <div class="center">{{ props.modelValue.radius }}km</div>
   </div>
