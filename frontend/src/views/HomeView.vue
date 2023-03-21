@@ -8,7 +8,7 @@
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
       <h1 class="one-line">Hva leter du etter i dag?</h1>
       <div class="menu">
-        <button @click="collapsed = !collapsed" class="button"> <FilterIcon class="button-icon"/>Filtre</button>
+        <button @click="collapsed = !collapsed" class="button">Filtre</button>
         <div class="spacer" />
         <ListPagination :value="page" @next="nextPage" @previous="previousPage"></ListPagination>
       </div>
@@ -27,7 +27,6 @@ import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import type { Category, ListingMinimal } from "@/service/models";
-import FilterIcon from "@/components/icons/FilterIcon.vue";
 
 const page = ref(1);
 const listings = ref([] as ListingMinimal[]);

@@ -31,9 +31,3 @@ main {
   flex-direction: column;
   flex: 1;
 }
-
-.center-text {
-  text-align: center;
-  font-family: Inter, sans-serif;
-  width: 100%;
-}
