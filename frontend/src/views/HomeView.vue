@@ -95,7 +95,6 @@ function fetchEvents() {
     )
     .then((response) => {
       listings.value = response.data.listings;
-      console.table(response.data.listings);
       if (!response.data.numberOfPages) {
         totalPages.value = 1;
       } else {
