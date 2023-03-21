@@ -61,14 +61,16 @@ public class ListingController {
         if (listings.isEmpty()) return ResponseEntity.noContent().build();
 
         // Build the next and previous page URLs
-        String requestUrl = BASE_URL + filter.toUrlParameters();
+        String urlParameters = filter.toUrlParameters();
+        String requestUrl = BASE_URL + urlParameters;
+        requestUrl += requestUrl.contains("?") ? "&" : "?";
         String nextUrl = null;
         String prevUrl = null;
         if (listings.hasNext()) {
-            nextUrl = requestUrl + "&page=" + (page + 1) + "&pageSize=" + pageSize;
+            nextUrl = requestUrl + "page=" + (page + 1) + "&pageSize=" + pageSize;
         }
         if (listings.hasPrevious()) {
-            prevUrl = requestUrl + "&page=" + (page - 1) + "&pageSize=" + pageSize;
+            prevUrl = requestUrl + "page=" + (page - 1) + "&pageSize=" + pageSize;
         }
 
         // Convert the listings to DTOs and return them
