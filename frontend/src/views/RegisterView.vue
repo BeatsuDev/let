@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
+import FullUserDetailsForm from "@/components/FullUserDetailsForm.vue";
 
 // Validate email
 const validateEmail = (email: string) => {
@@ -47,36 +48,9 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
-    <form @submit.prevent="register">
-      <label for="first-name">Fornavn</label>
-      <input class="input-text" type="text" id="first-name" v-model="firstName" placeholder="Ola" />
-      <label for="last-name">Etternavn</label>
-      <input
-        class="input-text"
-        type="text"
-        id="last-name"
-        v-model="lastName"
-        placeholder="Sørmann"
-      />
-      <label for="email">Email</label>
-      <input
-        class="input-text"
-        type="email"
-        id="email"
-        v-model="email"
-        placeholder="ola.sormann@gmail.com"
-      />
-      <label for="password">Passord</label>
-      <input
-        class="input-text"
-        type="password"
-        id="password"
-        v-model="password"
-        placeholder="sikker123"
-      />
-      <button class="button button-black" type="submit">Registrer</button>
-      <RouterLink to="/login">Jeg har en konto!</RouterLink>
-    </form>
+    <FullUserDetailsForm />
+    <button class="button button-black" type="submit">Registrer</button>
+    <RouterLink to="/login">Jeg har en konto!</RouterLink>
   </div>
 </template>
 
