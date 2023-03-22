@@ -38,9 +38,11 @@ main {
   width: 100%;
 }
 
-.drawer-item {
+.nav-title {
   margin-top: 0.8rem;
   padding: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .content {
@@ -79,6 +81,7 @@ main {
   .active {
     margin-left: 0;
   }
+
   .collapsed {
     margin-left: 0;
   }

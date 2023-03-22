@@ -10,7 +10,7 @@
       <CollapseIcon class="button-icon" />
       Skjul
     </button>
-    <h3 class="drawer-item">Kategori</h3>
+    <h3 class="nav-title">Kategori</h3>
     <slot />
   </div>
 </template>

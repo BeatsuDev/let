@@ -8,11 +8,11 @@
   >
     {{ category.name }}
   </div>
-  <h3 class="drawer-item">Søk</h3>
+  <h3 class="nav-title">Søk</h3>
   <input type="text" v-model="searchValue" @input="search" class="input-text" />
-  <h3 class="drawer-item">Lokasjon</h3>
+  <h3 class="nav-title">Lokasjon</h3>
   <LocationPicker />
-  <h3 class="drawer-item">Radius</h3>
+  <h3 class="nav-title">Radius</h3>
   <input
     type="range"
     class="slider"
@@ -79,9 +79,5 @@ function search() {
 .active-category {
   color: #282828;
   background-color: #f1f1f1;
-}
-
-.hide-overflow {
-  overflow: hidden;
 }
 </style>
