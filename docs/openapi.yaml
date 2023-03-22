@@ -42,13 +42,22 @@ paths:
           explode: true
           schema:
            type: string
-        - name: location
+        - name: longitude
           in: query
-          description: The center of the search
+          description: The longitude of the center of the search
           required: false
           explode: true
           schema:
-            $ref: '#/components/schemas/Location'
+            type: number
+            format: double
+        - name: latitude
+          in: query
+          description: The latitude of the center of the search
+          required: false
+          explode: true
+          schema:
+            type: number
+            format: double
         - name: radius
           in: query
           description: The distance from the center of the search
