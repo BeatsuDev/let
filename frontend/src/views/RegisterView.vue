@@ -14,7 +14,6 @@ function register(fullUserData: UserBody) {
     .catch((error) => {
       console.log(error);
     });
-  alert("Registrering vellykket! (ikke egt, det skal fikses)");
 }
 
 const responses = [

@@ -17,6 +17,7 @@ import { Configuration } from "../configuration";
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
 import { CreateUser } from "../models";
+import { LoginUser } from "../models";
 import { UserBody } from "../models";
 import { UserFull } from "../models";
 /**
@@ -141,6 +142,59 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
       };
     },
     /**
+     * Get the currently logged in user
+     * @summary Get current user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getCurrentUser: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/user/session`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, "https://example.com");
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions: AxiosRequestConfig = {
+        method: "GET",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication bearerAuth required
+
+      // authentication cookieAuth required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === "function"
+            ? await configuration.apiKey("Authorization")
+            : await configuration.apiKey;
+        localVarQueryParameter["Authorization"] = localVarApiKeyValue;
+      }
+
+      const query = new URLSearchParams(localVarUrlObj.search);
+      for (const key in localVarQueryParameter) {
+        query.set(key, localVarQueryParameter[key]);
+      }
+      for (const key in options.params) {
+        query.set(key, options.params[key]);
+      }
+      localVarUrlObj.search = new URLSearchParams(query).toString();
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+        options: localVarRequestOptions,
+      };
+    },
+    /**
      *
      * @summary Get user by id
      * @param {string} id The id of the user to retrieve
@@ -193,30 +247,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
     /**
      *
      * @summary Logs user into the system
-     * @param {string} username The user name for login
-     * @param {string} password The password for login in clear text
+     * @param {LoginUser} [body] Created user object
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    loginUser: async (
-      username: string,
-      password: string,
-      options: AxiosRequestConfig = {}
-    ): Promise<RequestArgs> => {
-      // verify required parameter 'username' is not null or undefined
-      if (username === null || username === undefined) {
-        throw new RequiredError(
-          "username",
-          "Required parameter username was null or undefined when calling loginUser."
-        );
-      }
-      // verify required parameter 'password' is not null or undefined
-      if (password === null || password === undefined) {
-        throw new RequiredError(
-          "password",
-          "Required parameter password was null or undefined when calling loginUser."
-        );
-      }
+    loginUser: async (body?: LoginUser, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
       const localVarPath = `/user/session`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, "https://example.com");
@@ -232,13 +267,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      if (username !== undefined) {
-        localVarQueryParameter["username"] = username;
-      }
-
-      if (password !== undefined) {
-        localVarQueryParameter["password"] = password;
-      }
+      localVarHeaderParameter["Content-Type"] = "application/json";
 
       const query = new URLSearchParams(localVarUrlObj.search);
       for (const key in localVarQueryParameter) {
@@ -254,6 +283,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         ...headersFromBaseOptions,
         ...options.headers,
       };
+      const needsSerialization =
+        typeof body !== "string" ||
+        localVarRequestOptions.headers["Content-Type"] === "application/json";
+      localVarRequestOptions.data = needsSerialization
+        ? JSON.stringify(body !== undefined ? body : {})
+        : body || "";
 
       return {
         url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -475,6 +510,26 @@ export const UserApiFp = function (configuration?: Configuration) {
       };
     },
     /**
+     * Get the currently logged in user
+     * @summary Get current user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getCurrentUser(
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<UserFull>>> {
+      const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getCurrentUser(
+        options
+      );
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs: AxiosRequestConfig = {
+          ...localVarAxiosArgs.options,
+          url: basePath + localVarAxiosArgs.url,
+        };
+        return axios.request(axiosRequestArgs);
+      };
+    },
+    /**
      *
      * @summary Get user by id
      * @param {string} id The id of the user to retrieve
@@ -500,19 +555,16 @@ export const UserApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Logs user into the system
-     * @param {string} username The user name for login
-     * @param {string} password The password for login in clear text
+     * @param {LoginUser} [body] Created user object
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async loginUser(
-      username: string,
-      password: string,
+      body?: LoginUser,
       options?: AxiosRequestConfig
     ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<string>>> {
       const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).loginUser(
-        username,
-        password,
+        body,
         options
       );
       return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
@@ -623,6 +675,17 @@ export const UserApiFactory = function (
         .then((request) => request(axios, basePath));
     },
     /**
+     * Get the currently logged in user
+     * @summary Get current user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getCurrentUser(options?: AxiosRequestConfig): Promise<AxiosResponse<UserFull>> {
+      return UserApiFp(configuration)
+        .getCurrentUser(options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
      *
      * @summary Get user by id
      * @param {string} id The id of the user to retrieve
@@ -637,18 +700,16 @@ export const UserApiFactory = function (
     /**
      *
      * @summary Logs user into the system
-     * @param {string} username The user name for login
-     * @param {string} password The password for login in clear text
+     * @param {LoginUser} [body] Created user object
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async loginUser(
-      username: string,
-      password: string,
+      body?: LoginUser,
       options?: AxiosRequestConfig
     ): Promise<AxiosResponse<string>> {
       return UserApiFp(configuration)
-        .loginUser(username, password, options)
+        .loginUser(body, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -728,6 +789,18 @@ export class UserApi extends BaseAPI {
       .then((request) => request(this.axios, this.basePath));
   }
   /**
+   * Get the currently logged in user
+   * @summary Get current user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserApi
+   */
+  public async getCurrentUser(options?: AxiosRequestConfig): Promise<AxiosResponse<UserFull>> {
+    return UserApiFp(this.configuration)
+      .getCurrentUser(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+  /**
    *
    * @summary Get user by id
    * @param {string} id The id of the user to retrieve
@@ -746,19 +819,17 @@ export class UserApi extends BaseAPI {
   /**
    *
    * @summary Logs user into the system
-   * @param {string} username The user name for login
-   * @param {string} password The password for login in clear text
+   * @param {LoginUser} [body] Created user object
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UserApi
    */
   public async loginUser(
-    username: string,
-    password: string,
+    body?: LoginUser,
     options?: AxiosRequestConfig
   ): Promise<AxiosResponse<string>> {
     return UserApiFp(this.configuration)
-      .loginUser(username, password, options)
+      .loginUser(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
   /**

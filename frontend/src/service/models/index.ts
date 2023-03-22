@@ -11,6 +11,7 @@ export * from "./listing-full";
 export * from "./listing-minimal";
 export * from "./listing-state";
 export * from "./location";
+export * from "./login-user";
 export * from "./message";
 export * from "./update-listing";
 export * from "./user-body";

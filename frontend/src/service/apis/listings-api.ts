@@ -20,7 +20,6 @@ import { CreateListing } from "../models";
 import { InlineResponse200 } from "../models";
 import { ListingFull } from "../models";
 import { ListingState } from "../models";
-import { Location } from "../models";
 import { UpdateListing } from "../models";
 /**
  * ListingsApi - axios parameter creator
@@ -219,7 +218,8 @@ export const ListingsApiAxiosParamCreator = function (configuration?: Configurat
      *
      * @summary Retrieve any listings matching a filter
      * @param {string} [searchString] A string to match listings by
-     * @param {Location} [location] The center of the search
+     * @param {number} [longitude] The longitude of the center of the search
+     * @param {number} [latitude] The latitude of the center of the search
      * @param {number} [radius] The distance from the center of the search
      * @param {Array<number>} [categories]
      * @param {number} [user]
@@ -232,7 +232,8 @@ export const ListingsApiAxiosParamCreator = function (configuration?: Configurat
      */
     getListings: async (
       searchString?: string,
-      location?: Location,
+      longitude?: number,
+      latitude?: number,
       radius?: number,
       categories?: Array<number>,
       user?: number,
@@ -272,8 +273,12 @@ export const ListingsApiAxiosParamCreator = function (configuration?: Configurat
         localVarQueryParameter["searchString"] = searchString;
       }
 
-      if (location !== undefined) {
-        localVarQueryParameter["location"] = location;
+      if (longitude !== undefined) {
+        localVarQueryParameter["longitude"] = longitude;
+      }
+
+      if (latitude !== undefined) {
+        localVarQueryParameter["latitude"] = latitude;
       }
 
       if (radius !== undefined) {
@@ -471,7 +476,8 @@ export const ListingsApiFp = function (configuration?: Configuration) {
      *
      * @summary Retrieve any listings matching a filter
      * @param {string} [searchString] A string to match listings by
-     * @param {Location} [location] The center of the search
+     * @param {number} [longitude] The longitude of the center of the search
+     * @param {number} [latitude] The latitude of the center of the search
      * @param {number} [radius] The distance from the center of the search
      * @param {Array<number>} [categories]
      * @param {number} [user]
@@ -484,7 +490,8 @@ export const ListingsApiFp = function (configuration?: Configuration) {
      */
     async getListings(
       searchString?: string,
-      location?: Location,
+      longitude?: number,
+      latitude?: number,
       radius?: number,
       categories?: Array<number>,
       user?: number,
@@ -498,7 +505,8 @@ export const ListingsApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await ListingsApiAxiosParamCreator(configuration).getListings(
         searchString,
-        location,
+        longitude,
+        latitude,
         radius,
         categories,
         user,
@@ -601,7 +609,8 @@ export const ListingsApiFactory = function (
      *
      * @summary Retrieve any listings matching a filter
      * @param {string} [searchString] A string to match listings by
-     * @param {Location} [location] The center of the search
+     * @param {number} [longitude] The longitude of the center of the search
+     * @param {number} [latitude] The latitude of the center of the search
      * @param {number} [radius] The distance from the center of the search
      * @param {Array<number>} [categories]
      * @param {number} [user]
@@ -614,7 +623,8 @@ export const ListingsApiFactory = function (
      */
     async getListings(
       searchString?: string,
-      location?: Location,
+      longitude?: number,
+      latitude?: number,
       radius?: number,
       categories?: Array<number>,
       user?: number,
@@ -627,7 +637,8 @@ export const ListingsApiFactory = function (
       return ListingsApiFp(configuration)
         .getListings(
           searchString,
-          location,
+          longitude,
+          latitude,
           radius,
           categories,
           user,
@@ -716,7 +727,8 @@ export class ListingsApi extends BaseAPI {
    *
    * @summary Retrieve any listings matching a filter
    * @param {string} [searchString] A string to match listings by
-   * @param {Location} [location] The center of the search
+   * @param {number} [longitude] The longitude of the center of the search
+   * @param {number} [latitude] The latitude of the center of the search
    * @param {number} [radius] The distance from the center of the search
    * @param {Array<number>} [categories]
    * @param {number} [user]
@@ -730,7 +742,8 @@ export class ListingsApi extends BaseAPI {
    */
   public async getListings(
     searchString?: string,
-    location?: Location,
+    longitude?: number,
+    latitude?: number,
     radius?: number,
     categories?: Array<number>,
     user?: number,
@@ -743,7 +756,8 @@ export class ListingsApi extends BaseAPI {
     return ListingsApiFp(this.configuration)
       .getListings(
         searchString,
-        location,
+        longitude,
+        latitude,
         radius,
         categories,
         user,
