@@ -4,9 +4,23 @@ import NavigationBar from "./components/NavigationBar.vue";
 </script>
 
 <template>
-  <NavigationBar />
+  <NavigationBar id="navigation-bar"/>
 
-  <RouterView />
+  <RouterView id="main-view"/>
 </template>
 
-<style scoped></style>
+<style scoped>
+#navigation-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #fff;
+  height: 65px;
+}
+
+#main-view {
+  margin-top: 65px;
+}
+</style>
