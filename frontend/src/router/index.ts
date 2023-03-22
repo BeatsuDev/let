@@ -50,7 +50,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const sessionStore = useSessionStore();
-  if (to.meta.requiresAuth && !sessionStore.isAuthenticated()) {
+  if (to.meta.requiresAuth && !sessionStore.isAuthenticated) {
     next({ name: "login" });
   } else if (to.meta.requiresRole && sessionStore.getHighestRole() !== to.meta.requiresRole) {
     next({ name: "not-found" });

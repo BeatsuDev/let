@@ -9,7 +9,6 @@ import { computed } from "vue";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
-const isAuthenticated = computed(() => sessionStore.isAuthenticated());
 const highestRole = computed(() => sessionStore.getHighestRole());
 </script>
 
@@ -19,11 +18,15 @@ const highestRole = computed(() => sessionStore.getHighestRole());
       <nav>
         <RouterLink class="nav-item" style="margin-left: 1rem" to="/">letno</RouterLink>
         <div class="spacer" />
-        <RouterLink class="nav-item" v-if="isAuthenticated && highestRole === 'ADMIN'" to="/admin">
+        <RouterLink
+          class="nav-item"
+          v-if="sessionStore.isAuthenticated && highestRole === 'ADMIN'"
+          to="/admin"
+        >
           <AdminIcon />
           <span>admin</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="isAuthenticated" to="/chats">
+        <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/chats">
           <ChatIcon class="nav-icon" />
           <span>chats</span></RouterLink
         >
@@ -31,11 +34,11 @@ const highestRole = computed(() => sessionStore.getHighestRole());
           <CreateListingIcon class="nav-icon" />
           <span>ny annonse</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="!isAuthenticated" to="/login">
+        <RouterLink class="nav-item" v-if="!sessionStore.isAuthenticated" to="/login">
           <ProfileIcon class="nav-icon" />
           <span>logg inn</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="isAuthenticated" to="/mypage">
+        <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/mypage">
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
