@@ -5,7 +5,12 @@
     </NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
       <h1 class="one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
-      <PaginationView v-model="listingFilter.page" :total-pages="totalPages" @collapse="collapsed = !collapsed" collapse>
+      <PaginationView
+        v-model="listingFilter.page"
+        :total-pages="totalPages"
+        @collapse="collapsed = !collapsed"
+        collapse
+      >
         <ListingScrollPane :listings="listings" />
       </PaginationView>
     </div>
@@ -31,21 +36,24 @@ const listingFilter = ref(new ListingFilter());
 const listingApi = new ListingsApi();
 const categoryApi = new CategoryApi();
 
-categoryApi.getCategories().then((response) => {
-  categories.value = response.data;
-});
-
-fetchEvents();
+fetchCategories();
+fetchListings();
 
 watch(
   listingFilter,
   () => {
-    fetchEvents();
+    fetchListings();
   },
   { deep: true }
 );
 
-function fetchEvents() {
+function fetchCategories() {
+  categoryApi.getCategories().then((response) => {
+    categories.value = response.data;
+  });
+}
+
+function fetchListings() {
   const filters = listingFilter.value;
   console.table(filters);
   listingApi
@@ -71,7 +79,6 @@ function fetchEvents() {
 }
 </script>
 <style scoped>
-
 @media screen and (max-width: 1000px) {
   .one-line {
     white-space: nowrap;
