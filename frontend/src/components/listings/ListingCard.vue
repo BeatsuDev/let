@@ -32,7 +32,7 @@ const emit = defineEmits(["click"]);
 </script>
 <style scoped>
 .card {
-  max-width: 20rem;
+  max-width: 15rem;
   font-family: Inter, sans-serif;
   height: fit-content;
   background-color: #fff;

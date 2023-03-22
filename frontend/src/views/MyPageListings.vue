@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ content: true, active: !props.collapsed, collapsed: props.collapsed }">
-    <h1 class="text-one-line" style="height: 4rem">Dine annonser</h1>
+  <MainContainer :collapsed="collapsed">
+    <h1 class="text-one-line" style="height: 4rem">{{ title }}</h1>
     <PaginationView
       v-model="listingFilter.page"
       :total-pages="totalPages"
@@ -9,15 +9,19 @@
     >
       <ListingScrollPane :listings="listings" />
     </PaginationView>
-  </div>
+  </MainContainer>
 </template>
 <script lang="ts" setup>
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { InlineResponse200 } from "@/service/models";
 import { ListingsApi } from "@/service/apis/listings-api";
 import PaginationView from "@/components/paginations/PaginationView.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
+import router from "@/router";
+import MainContainer from "@/components/MainContainer.vue";
+
+const listingApi = new ListingsApi();
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);
 const listings = computed(() => listingRequest.value.listings);
@@ -29,6 +33,7 @@ const totalPages = computed(() => {
 });
 const listingFilter = ref(new ListingFilter());
 const emit = defineEmits(["update:collapsed"]);
+const title = ref("");
 const props = defineProps({
   collapsed: {
     type: Boolean,
@@ -36,27 +41,32 @@ const props = defineProps({
   },
 });
 
+getTitle();
 fetchListings();
-watch(
-  listingRequest.value,
-  () => {
-    fetchListings();
-  },
-  { deep: true }
-);
 
-const listingApi = new ListingsApi();
+watch(router.currentRoute, () => {
+  fetchListings();
+  getTitle();
+});
+
+function getTitle() {
+  if (router.currentRoute.value.name == "my-listings") {
+    title.value = "Mine annonser";
+  } else if (router.currentRoute.value.name == "my-bookmarked-listings") {
+    title.value = "Bokmerkede annonser";
+  }
+}
 
 function fetchListings() {
   const filters = listingFilter.value;
   listingApi
     .getListings(
-      filters.search,
       undefined,
       undefined,
       undefined,
-      1,
       undefined,
+      router.currentRoute.value.name == "my-listings" ? 1 : undefined,
+      router.currentRoute.value.name == "my-bookmarked-listings" ? true : undefined,
       undefined,
       filters.page,
       50
@@ -66,8 +76,3 @@ function fetchListings() {
     });
 }
 </script>
-<style scoped>
-main {
-  width: 100%;
-}
-</style>

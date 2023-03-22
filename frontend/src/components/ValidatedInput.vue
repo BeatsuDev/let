@@ -28,11 +28,10 @@ const inputData = computed({
     </h3>
     <!-- Textarea if the props.inputType is textarea -->
     <textarea
-      v-if="props.inputType == 'textarea'"
+      v-if="props.inputType === 'textarea'"
       :class="{ 'red-border': error }"
       class="input-text"
       v-model="inputData"
-      type="text"
       :placeholder="placeholder"
     ></textarea>
 
@@ -55,6 +54,7 @@ const inputData = computed({
 }
 
 .red-border {
+  animation: shake 0.2s ease-in-out 0s 2;
   border: 1px solid red;
 }
 
@@ -66,11 +66,27 @@ input,
 textarea {
   width: 100%;
   resize: none;
+  border: 1px solid white;
 }
 
 #error {
   color: red;
   font-size: 0.9rem;
-  font-style: italic;
+  font-family: Inter, sans-serif;
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0;
+  }
+  25% {
+    margin-left: 0.1rem;
+  }
+  75% {
+    margin-left: -0.1rem;
+  }
+  100% {
+    margin-left: 0;
+  }
 }
 </style>
