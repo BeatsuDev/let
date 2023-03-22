@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from "vue";
 
 onMounted(() => {
   // Set the color of the loading circle after 100ms so that the color transition is visible
   // Since the default color is white (same as the background), the transition will make
   // the loading circle appear smoothly
   setTimeout(() => {
-    document.getElementById('loading-circle')!.classList.add('true-color');
+    document.getElementById("loading-circle")!.classList.add("true-color");
   }, 50);
 });
 </script>
 
 <template>
   <main>
-    <div id="loading-circle" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    <div id="loading-circle" class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </main>
 </template>
 
