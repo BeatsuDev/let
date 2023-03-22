@@ -31,7 +31,7 @@ const validator = useVuelidate(rules, listingData);
 
 // Emit form data to parent component
 const emit = defineEmits<{
-  (event: 'createListing', listingData: ListingData): void
+  (event: "createListing", listingData: ListingData): void;
 }>();
 
 async function submitData() {
@@ -50,14 +50,19 @@ async function submitData() {
   );
 
   // Make sure all image responses are successful
-  const imageSuccesses = imageResponses.map((response) => response.status === 200 && response.data.url);
+  const imageSuccesses = imageResponses.map(
+    (response) => response.status === 200 && response.data.url
+  );
 
   if (imageSuccesses.includes(false)) {
-    alert("Noe gikk galt under bildeopplastningen... " + imageResponses.filter((response) => response.status !== 200)[0].data);
+    alert(
+      "Noe gikk galt under bildeopplastningen... " +
+        imageResponses.filter((response) => response.status !== 200)[0].data
+    );
     return;
   }
 
-  const imageUrls = imageResponses.map(image => image.data.url) as string[];
+  const imageUrls = imageResponses.map((image) => image.data.url) as string[];
 
   const listingDataWithImages = {
     ...listingData,

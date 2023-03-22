@@ -14,7 +14,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import ListPagination from "@/components/paginations/Pagination.vue";
+import ListPagination from "@/components/paginations/PaginationComponent.vue";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
 import { computed } from "vue";
 const props = defineProps({

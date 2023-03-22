@@ -11,7 +11,6 @@ export class ListingFilter {
   user: number | undefined = undefined;
 }
 
-
 export default interface NewListingWithImageUrls {
   title: string;
   price: string;
