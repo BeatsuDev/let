@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-
+    private final Long id;
     private final String email;
     private final String password;
     private final String firstName;
@@ -20,6 +20,7 @@ public class UserDetailsImpl implements UserDetails {
     private final boolean admin;
 
     UserDetailsImpl(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.firstName = user.getFirstName();
