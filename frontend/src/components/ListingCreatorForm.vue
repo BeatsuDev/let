@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, numeric } from "@vuelidate/validators";
+import { required, requiredIf, numeric } from "@vuelidate/validators";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
+import axios from "axios";
 
 const listingData = reactive({
   title: "",
@@ -12,7 +13,29 @@ const listingData = reactive({
   category: "",
   summary: "",
   description: "",
+  images: [] as File[],
 });
+
+function imageValidator() : boolean {
+  for (const file of listingData.images) {
+    const result = validateImage(file);
+    if (result !== true) {
+      return false;
+    }
+  }
+  return true;
+};
+
+function validateImage(file: File) {
+  const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+  if (!allowedTypes.includes(file.type)) {
+    return "Bildet må være av typen PNG, JPEG eller JPG";
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    return "Bilder må være mindre enn 10 MB";
+  }
+  return true;
+}
 
 const rules = {
   title: { required },
@@ -21,6 +44,7 @@ const rules = {
   category: { required },
   summary: { required },
   description: { required },
+  images: { required },
 };
 
 const validator = useVuelidate(rules, listingData);
@@ -30,14 +54,18 @@ const emit = defineEmits(["createListing"]);
 
 async function submitData() {
   const result = await validator.value.$validate();
-  if (!result) {
-    return;
-  }
+  if (!result) { return; }
 
   // TODO: Image validation + upload
-
-  alert("Success!");
   emit("createListing", listingData);
+}
+
+function imageFileHandler(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+  if (files) {
+    listingData.images = Array.from(files);
+  }
 }
 </script>
 
@@ -101,7 +129,8 @@ async function submitData() {
     <div class="row" id="row-5">
       <div class="input-container">
         <h3><label for="images">Last opp bilder</label></h3>
-        <input class="input-text" type="file" id="images" multiple />
+        <input :class="{'input-text': true, 'red-border': validator.images.$error}" @change="imageFileHandler" type="file" id="images" multiple />
+        <div v-if="validator.images.$error" id="error">{{ validator.images.$errors[0].$message }}</div>
       </div>
     </div>
 
@@ -155,5 +184,15 @@ label {
 
 input {
   width: 100%;
+}
+
+.red-border {
+  border: 1px solid red;
+}
+
+#error {
+  color: red;
+  font-size: 0.9rem;
+  font-style: italic;
 }
 </style>

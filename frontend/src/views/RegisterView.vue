@@ -1,31 +1,18 @@
 <script lang="ts" setup>
 import FullUserDetailsForm from "@/components/FullUserDetailsForm.vue";
 import type { UserBody } from "@/service";
+import { UserApi } from "@/service/index";
 
-// Validate email
-const validateEmail = (email: string) => {
-  const re = /\S+@\S+\.\S+/;
-  return re.test(email);
-};
-
-// Validate password
-const validatePassword = (password: string) => {
-  const re = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
-  return re.test(password);
-};
+const userApi = new UserApi();
 
 function register(fullUserData: UserBody) {
-  if (!fullUserData.firstName || !fullUserData.lastName) {
-    alert("Navn kan ikke være tomme!");
-    return;
-  }
-
-  if (!validateEmail(fullUserData.email!) || !validatePassword(fullUserData.password!)) {
-    // TODO: Better error handling
-    alert("Invalid email or password");
-    return;
-  }
-
+  userApi.createUser(fullUserData)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   alert("Registrering vellykket! (ikke egt, det skal fikses)");
 }
 
