@@ -17,7 +17,7 @@ const highestRole = computed(() => sessionStore.getHighestRole());
     <div class="row">
       <nav>
         <RouterLink class="nav-item" style="margin-left: 1rem" to="/">letno</RouterLink>
-        <div class="spacer" />
+        <div class="spacer"></div>
         <RouterLink
           class="nav-item"
           v-if="sessionStore.isAuthenticated && highestRole === 'ADMIN'"

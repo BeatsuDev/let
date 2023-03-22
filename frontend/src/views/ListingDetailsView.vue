@@ -40,6 +40,7 @@ function handleBookmarkClick() {
           v-for="(image_url, index) in data.galleryUrls"
           :src="image_url"
           @click="handleImageClick"
+          loading="lazy"
         />
       </div>
     </div>
