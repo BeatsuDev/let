@@ -20,8 +20,10 @@ import PaginationView from "@/components/paginations/PaginationView.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import router from "@/router";
 import MainContainer from "@/components/MainContainer.vue";
+import { useSessionStore } from "@/stores/sessionStore";
 
 const listingApi = new ListingsApi();
+const sessionStore = useSessionStore();
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);
 const listings = computed(() => listingRequest.value.listings);
@@ -65,7 +67,7 @@ function fetchListings() {
       undefined,
       undefined,
       undefined,
-      router.currentRoute.value.name == "my-listings" ? 1 : undefined,
+      router.currentRoute.value.name == "my-listings" ? sessionStore.getUser().id : undefined,
       router.currentRoute.value.name == "my-bookmarked-listings" ? true : undefined,
       undefined,
       filters.page,

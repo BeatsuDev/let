@@ -42,6 +42,10 @@ const highestRole = computed(() => sessionStore.getHighestRole());
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
+        <a class="nav-item" v-if="sessionStore.isAuthenticated" @click="sessionStore.logOut()">
+          <ProfileIcon class="nav-icon" />
+          <span>logg ut</span></a
+        >
       </nav>
     </div>
   </header>

@@ -66,6 +66,7 @@ main {
   align-items: center;
   overflow: hidden;
   width: max-content;
+  cursor: pointer;
 }
 
 .nav-item:hover {

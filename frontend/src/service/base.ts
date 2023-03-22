@@ -62,7 +62,7 @@ export class BaseAPI {
       (response) => response,
       (error) => {
         if (error.response.status === 401 && useSessionStore().isAuthenticated) {
-          useSessionStore().logOut();
+          useSessionStore().timeout();
         }
 
         throw error;

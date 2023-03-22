@@ -1,11 +1,19 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { UserFull } from "@/service";
+import { UserApi } from "@/service/apis/user-api";
 
 export const useSessionStore = defineStore("sessionStore", () => {
   const user = ref(null as UserFull | null);
+  const userApi = new UserApi();
 
   const isAuthenticated = computed(() => {
+    if (user.value == null) {
+      const userFromStorage = localStorage.getItem("user");
+      if (userFromStorage != null) {
+        user.value = JSON.parse(userFromStorage);
+      }
+    }
     return user.value != null;
   });
 
@@ -15,15 +23,23 @@ export const useSessionStore = defineStore("sessionStore", () => {
 
   function authenticate(authentication: UserFull) {
     user.value = authentication;
+    localStorage.setItem("user", JSON.stringify(authentication));
   }
 
-  function logOut() {
+  function timeout() {
+    localStorage.removeItem("user");
     user.value = null;
   }
 
-  function getHighestRole() {
-    return "USER";
+  function logOut() {
+    userApi.logoutUser().then(() => {
+      timeout();
+    });
   }
 
-  return { isAuthenticated, getHighestRole, logOut, getUser, authenticate };
+  function getHighestRole() {
+    return user.value.admin ? "ADMIN" : "USER";
+  }
+
+  return { isAuthenticated, getHighestRole, timeout, getUser, authenticate, logOut };
 });

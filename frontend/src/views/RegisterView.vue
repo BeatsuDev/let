@@ -2,14 +2,18 @@
 import FullUserDetailsForm from "@/components/FullUserDetailsForm.vue";
 import type { UserBody } from "@/service";
 import { UserApi } from "@/service/index";
+import { useSessionStore } from "@/stores/sessionStore";
+import router from "@/router";
 
 const userApi = new UserApi();
+const sessionStore = useSessionStore();
 
 function register(fullUserData: UserBody) {
   userApi
     .createUser(fullUserData)
     .then((response) => {
-      console.log(response);
+      sessionStore.authenticate(response.data);
+      router.push("/");
     })
     .catch((error) => {
       console.log(error);

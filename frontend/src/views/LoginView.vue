@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { ref } from "vue";
+import { useSessionStore } from "@/stores/sessionStore";
+import { UserApi } from "@/service/apis/user-api";
+import router from "@/router";
 
+const userApi = new UserApi();
+const sessionStore = useSessionStore();
 // Validate email
 const validateEmail = (email: string) => {
   const re = /\S+@\S+\.\S+/;
@@ -9,8 +14,9 @@ const validateEmail = (email: string) => {
 
 // Validate password
 const validatePassword = (password: string) => {
-  const re = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
-  return re.test(password);
+  //const re = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
+  //return re.test(password);
+  return true;
 };
 
 function login() {
@@ -19,6 +25,18 @@ function login() {
     alert("Ugyldig epost eller passord");
     return;
   }
+  userApi
+    .loginUser({
+      email: email.value,
+      password: password.value,
+    })
+    .then((response) => {
+      sessionStore.authenticate(response.data);
+      router.push("/");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 // v-models

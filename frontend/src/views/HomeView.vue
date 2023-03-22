@@ -65,7 +65,8 @@ function fetchListings() {
   listingApi
     .getListings(
       filters.search,
-      filters.location,
+      filters.location?.longitude,
+      filters.location?.latitude,
       filters.location == undefined ? undefined : filters.radius,
       filters.category ? [filters.category] : undefined,
       undefined,
