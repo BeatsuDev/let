@@ -30,7 +30,7 @@ const highestRole = computed(() => sessionStore.getHighestRole());
           <ChatIcon class="nav-icon" />
           <span>chats</span></RouterLink
         >
-        <RouterLink class="nav-item" to="/create-listing">
+        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/create-listing">
           <CreateListingIcon class="nav-icon" />
           <span>ny annonse</span></RouterLink
         >

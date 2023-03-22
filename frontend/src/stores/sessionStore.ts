@@ -6,7 +6,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
   const user = ref(null as UserFull | null);
 
   const isAuthenticated = computed(() => {
-    return user.value == null;
+    return user.value != null;
   });
 
   function getUser() {
