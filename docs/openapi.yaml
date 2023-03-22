@@ -535,25 +535,36 @@ paths:
       security:
         - bearerAuth: []
   /user/session:
+    get:
+      tags:
+        - user
+      summary: Get current user
+      description: Get the currently logged in user
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFull'
+        '401':
+          description: User not logged in
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
     post:
       tags:
         - user
       summary: Logs user into the system
       description: ''
       operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
       responses:
         '200':
           description: successful operation
@@ -850,6 +861,16 @@ components:
               format: int64
               example: 10
         - $ref: '#/components/schemas/CreateCategory'
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.org
+        password:
+          type: string
+          example: password123
     CreateUser:
       type: object
       properties:
