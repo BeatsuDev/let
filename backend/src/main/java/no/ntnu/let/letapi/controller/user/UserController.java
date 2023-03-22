@@ -33,7 +33,7 @@ public class UserController {
         User user = userMapper.toUser(userDTO);
         user = userService.createUser(user);
 
-        return ResponseEntity.ok(userMapper.toFullDTO(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toFullDTO(user));
     }
 
     @PutMapping
