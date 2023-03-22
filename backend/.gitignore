@@ -3,4 +3,4 @@ src/main/resources/application.properties
 target
 uploads/images/*
 !uploads/images/dev-*
-
+src/main/resources/certs/*.pem
