@@ -11,9 +11,10 @@
       Skjul
     </button>
     <h3 class="nav-title">Kategori</h3>
-    <slot />
+    <slot></slot>
   </div>
 </template>
+
 <script lang="ts" setup>
 import CollapseIcon from "@/components/icons/CollapseIcon.vue";
 
@@ -30,18 +31,17 @@ function collapse() {
   emit("update:modelValue", true);
 }
 </script>
+
 <style scoped>
 .sidebar {
-  height: 100%;
+  height: calc(100% - 7rem);
   position: fixed;
   left: 0;
   top: 0;
   margin-top: 7rem;
-  padding-top: 8rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  padding: 8rem 3rem 3rem 3rem;
   transition: 0.5s;
-  overflow: hidden;
+  overflow: auto;
   background-color: var(--color-background);
 }
 
