@@ -21,13 +21,14 @@ const router = createRouter({
     {
       path: "/my-page",
       name: "my-page",
+      meta: { requiresAuth: true },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/MyPage.vue"),
       children: [
         {
-          path: "/",
+          path: "",
           name: "my-profile",
           component: () => import("../views/MyPageUser.vue"),
         },

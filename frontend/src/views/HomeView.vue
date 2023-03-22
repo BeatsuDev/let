@@ -3,7 +3,7 @@
     <NavigationDrawer v-model="collapsed">
       <ListingFilterForm v-model="listingFilter" :categories="categories" />
     </NavigationDrawer>
-    <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
+    <MainContainer :collapsed="collapsed">
       <h1 class="text-one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
       <PaginationView
         v-model="listingFilter.page"
@@ -12,8 +12,9 @@
         collapse
       >
         <ListingScrollPane :listings="listings" />
+        <FullUserDetailsForm button-title=""></FullUserDetailsForm>
       </PaginationView>
-    </div>
+    </MainContainer>
   </main>
 </template>
 <script setup lang="ts">
@@ -27,6 +28,7 @@ import { CategoryApi } from "@/service/apis/category-api";
 import PaginationView from "@/components/paginations/PaginationView.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import runAxios from "@/service/composable";
+import MainContainer from "@/components/MainContainer.vue";
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);
 const listings = computed(() => {
@@ -77,8 +79,3 @@ function fetchListings() {
     });
 }
 </script>
-<style scoped>
-main {
-  width: 100%;
-}
-</style>

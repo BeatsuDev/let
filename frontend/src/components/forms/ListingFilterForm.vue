@@ -54,7 +54,6 @@ const value: ListingFilter = computed({
   },
   set(value: string) {
     const newFilter = { ...props.modelValue, [value]: value } as ListingFilter;
-    console.log(newFilter);
     emit("update:modelValue", newFilter);
   },
 });
