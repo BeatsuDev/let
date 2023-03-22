@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -36,6 +37,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfiguration {
     private final RsaKeyProperties rsaKeys;
     private final JwtUserDetailsService jwtUserDetailsService;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,6 +49,9 @@ public class WebSecurityConfiguration {
                 .userDetailsService(jwtUserDetailsService)
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // Filters
+        http.addFilterBefore(jwtTokenFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
 

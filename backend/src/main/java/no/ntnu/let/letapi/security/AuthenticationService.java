@@ -5,6 +5,7 @@ import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,15 @@ public class AuthenticationService {
     public Instant getExpirationDate(String token) {
         return this.decoder.decode(token).getExpiresAt();
     }
+
+    public Authentication getAuthentication(String token) {
+        String email = this.decoder.decode(token).getSubject();
+        User user = this.userService.getUserByEmail(email);
+        UserDetails userDetails = new UserDetailsImpl(user);
+
+        return new UserAuthentication(userDetails);
+    }
+
 
     public User getUser(String token) {
         String email = this.decoder.decode(token).getSubject();
