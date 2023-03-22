@@ -4,7 +4,7 @@
       <ListingFilterForm v-model="listingFilter" :categories="categories" />
     </NavigationDrawer>
     <div :class="{ content: true, active: !collapsed, collapsed: collapsed }">
-      <h1 class="one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
+      <h1 class="text-one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
       <PaginationView
         v-model="listingFilter.page"
         :total-pages="totalPages"
@@ -17,26 +17,36 @@
   </main>
 </template>
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
-import type { Category, ListingMinimal } from "@/service/models";
+import type { InlineResponse200 } from "@/service/models";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
 import { ListingsApi } from "@/service/apis/listings-api";
 import { CategoryApi } from "@/service/apis/category-api";
 import PaginationView from "@/components/paginations/PaginationView.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
+import runAxios from "@/service/composable";
 
-const listings = ref([] as ListingMinimal[] | undefined);
-const categories = ref([] as Category[]);
+const listingRequest = ref({ listings: [] } as InlineResponse200);
+const listings = computed(() => {
+  return listingRequest.value.listings;
+});
 const collapsed = ref(false);
-const totalPages = ref(1);
+const totalPages = computed(() => {
+  if (listingRequest.value.numberOfPages) {
+    return listingRequest.value.numberOfPages;
+  }
+  return 1;
+});
 const listingFilter = ref(new ListingFilter());
 
 const listingApi = new ListingsApi();
 const categoryApi = new CategoryApi();
 
-fetchCategories();
+const { data } = runAxios(categoryApi.getCategories());
+const categories = data;
+
 fetchListings();
 
 watch(
@@ -46,12 +56,6 @@ watch(
   },
   { deep: true }
 );
-
-function fetchCategories() {
-  categoryApi.getCategories().then((response) => {
-    categories.value = response.data;
-  });
-}
 
 function fetchListings() {
   const filters = listingFilter.value;
@@ -69,23 +73,11 @@ function fetchListings() {
       50
     )
     .then((response) => {
-      listings.value = response.data.listings;
-      if (!response.data.numberOfPages) {
-        totalPages.value = 1;
-      } else {
-        totalPages.value = response.data.numberOfPages + 1;
-      }
+      listingRequest.value = response.data;
     });
 }
 </script>
 <style scoped>
-@media screen and (max-width: 1000px) {
-  .one-line {
-    white-space: nowrap;
-    font-size: 5vw;
-  }
-}
-
 main {
   width: 100%;
 }

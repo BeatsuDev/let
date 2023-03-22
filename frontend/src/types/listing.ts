@@ -7,6 +7,8 @@ export class ListingFilter {
   radius?: number | undefined = 30;
   favorites: boolean = false;
   page: number = 1;
+
+  user: number | undefined = undefined;
 }
 
 

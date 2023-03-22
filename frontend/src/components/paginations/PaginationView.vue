@@ -5,24 +5,18 @@
       Meny
     </button>
     <div class="spacer" />
-    <ListPagination
-        v-model="page"
-        :pages="totalPages"
-    ></ListPagination>
+    <ListPagination v-model="page" :pages="totalPages"></ListPagination>
   </div>
   <slot></slot>
   <div class="menu">
     <div class="spacer" />
-    <ListPagination
-        v-model="page"
-        :pages="totalPages"
-    ></ListPagination>
+    <ListPagination v-model="page" :pages="totalPages"></ListPagination>
   </div>
 </template>
 <script setup lang="ts">
 import ListPagination from "@/components/paginations/Pagination.vue";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
-import {computed} from "vue";
+import { computed } from "vue";
 const props = defineProps({
   totalPages: {
     type: Number,
@@ -45,7 +39,7 @@ const page = computed({
   set(value: number) {
     emit("update:modelValue", value);
   },
-})
+});
 
 const emit = defineEmits(["update:modelValue", "collapse"]);
 </script>

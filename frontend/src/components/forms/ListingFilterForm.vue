@@ -5,7 +5,7 @@
     class="category text-paragraph hide-overflow"
     :key="index"
     :class="{ 'active-category': value.category === category.id }"
-    @click="value.category = category.id"
+    @click="selectCategory(category)"
   >
     {{ category.name }}
   </div>
@@ -62,6 +62,14 @@ function search() {
   inputDelay.searchWithDelay(function updateSearchField() {
     value.value.search = searchValue.value;
   });
+}
+
+function selectCategory(category: Category) {
+  if (value.value.category === category.id) {
+    value.value.category = undefined;
+    return;
+  }
+  value.value.category = category.id;
 }
 </script>
 <style>
