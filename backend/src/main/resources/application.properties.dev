@@ -7,3 +7,6 @@ spring.jpa.defer-datasource-initialization=true
 spring.h2.console.enabled=true
 
 logging.level.web=INFO
+
+rsa.private-key=classpath:certs/private.pem
+rsa.public-key=classpath:certs/public.pem
