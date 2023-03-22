@@ -1,19 +1,27 @@
 <script setup lang="ts">
 import type { UserBody } from "@/service";
-import { reactive, type Ref } from "vue";
+import { computed, type Ref } from "vue";
 import ValidatedInput from "./ValidatedInput.vue";
 import { required, email, minLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
 const props = defineProps<{
   buttonTitle: string;
+  modelValue?: Ref<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }>;
 }>();
 
-const fullUserData = reactive({
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
+const fullUserData = computed(() => {
+  return props.modelValue?.value || {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  };
 });
 
 const rules = {
@@ -23,7 +31,7 @@ const rules = {
   password: { required, minLength: minLength(6) },
 };
 
-const validator = useVuelidate(rules, fullUserData);
+const validator = useVuelidate(rules, fullUserData.value as any);
 
 const emit = defineEmits<{
   (event: "submit", fullUserData: UserBody): void;
@@ -32,7 +40,7 @@ const emit = defineEmits<{
 async function submit() {
   let result = await validator.value.$validate();
   if (!result) return;
-  emit("submit", fullUserData);
+  emit("submit", fullUserData.value);
 };
 </script>
 
