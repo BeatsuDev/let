@@ -149,7 +149,7 @@ label {
   grid-column: 6 / 6;
 }
 
-#description >>> textarea {
+#description:deep(textarea) {
   height: 200px;
 }
 

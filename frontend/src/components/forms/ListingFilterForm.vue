@@ -23,7 +23,7 @@
   <div class="center-text">{{ radius }}km</div>
 </template>
 <script lang="ts" setup>
-import { computed, PropType, ref } from "vue";
+import { computed, type PropType, ref } from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { Category } from "@/service/models";
 import LocationPicker from "@/components/forms/LocationPicker.vue";
@@ -47,7 +47,7 @@ const props = defineProps({
 });
 const radius = ref(props.modelValue.radius);
 
-const value = computed({
+const value: ListingFilter = computed({
   get(): ListingFilter {
     return props.modelValue;
   },
@@ -59,7 +59,7 @@ const value = computed({
 });
 function search() {
   inputDelay.searchWithDelay(function updateSearchField() {
-    value.value.search = searchValue.value;
+    value.search = searchValue.value;
   });
 }
 </script>

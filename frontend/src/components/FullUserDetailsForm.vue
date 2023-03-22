@@ -1,27 +1,23 @@
 <script setup lang="ts">
 import type { UserBody } from "@/service";
-import { computed, type Ref } from "vue";
+import { reactive } from "vue";
 import ValidatedInput from "./ValidatedInput.vue";
 import { required, email, minLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
 const props = defineProps<{
   buttonTitle: string;
-  modelValue?: Ref<{
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }>;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
 }>();
 
-const fullUserData = computed(() => {
-  return props.modelValue?.value || {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  };
+const fullUserData = reactive({
+  firstName: props.firstName || "",
+  lastName: props.lastName || "",
+  email: props.email || "",
+  password: props.password || "",
 });
 
 const rules = {
@@ -31,16 +27,17 @@ const rules = {
   password: { required, minLength: minLength(6) },
 };
 
-const validator = useVuelidate(rules, fullUserData.value as any);
+const validator = useVuelidate(rules, fullUserData as any);
 
 const emit = defineEmits<{
   (event: "submit", fullUserData: UserBody): void;
+  (event: "update:modelValue", value: UserBody): void;
 }>();
 
 async function submit() {
   let result = await validator.value.$validate();
   if (!result) return;
-  emit("submit", fullUserData.value);
+  emit("submit", fullUserData);
 };
 </script>
 
@@ -64,23 +61,23 @@ form {
   margin: 0 auto;
 }
 
-form >>> .wrapper {
+form:deep(.wrapper) {
   width: 100%;
   padding: 0;
 }
 
-form >>> label, input {
+form:deep(label, input) {
   display: block;
   width: 100%;
   margin: 0px 0;
   font-family: Inter;
 }
 
-form >>> label {
+form:deep(label) {
   margin-top: 1rem;
 }
 
-form >>> h3 {
+form:deep(h3) {
   font-size: 0.9rem;
 }
 
