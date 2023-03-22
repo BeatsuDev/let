@@ -55,6 +55,26 @@ main {
   margin-left: 5rem;
 }
 
+.nav-item {
+  margin-right: 2rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition-duration: 80ms;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: max-content;
+}
+
+.nav-item:hover {
+  color: var(--color-text-hover);
+}
+
+.nav-icon {
+  height: 1rem !important;
+  margin: 0 0.3rem;
+}
+
 @media screen and (max-width: 600px) {
   .active {
     margin-left: 0;

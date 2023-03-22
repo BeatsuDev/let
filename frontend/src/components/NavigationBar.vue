@@ -14,21 +14,33 @@ const highestRole = computed(() => sessionStore.getHighestRole());
 </script>
 
 <template>
-  <header>
-    <RouterLink id="navbar-logo" to="/">letno</RouterLink>
-    <nav>
-      <RouterLink v-if="isAuthenticated && highestRole === 'ADMIN'" to="/admin">
-        <AdminIcon /><span>admin</span></RouterLink
-      >
-      <RouterLink v-if="isAuthenticated" to="/chats"> <ChatIcon /><span>chats</span></RouterLink>
-      <RouterLink to="/create-listing"> <CreateListingIcon /><span>ny annonse</span></RouterLink>
-      <RouterLink v-if="!isAuthenticated" to="/login">
-        <ProfileIcon /><span>logg inn</span></RouterLink
-      >
-      <RouterLink v-if="isAuthenticated" to="/mypage">
-        <ProfileIcon /><span>profil</span>
-      </RouterLink>
-    </nav>
+  <header class="column">
+    <div class="row">
+      <nav>
+        <RouterLink class="nav-item" to="/">letno</RouterLink>
+        <div class="spacer" />
+        <RouterLink class="nav-item" v-if="isAuthenticated && highestRole === 'ADMIN'" to="/admin">
+          <AdminIcon />
+          <span>admin</span></RouterLink
+        >
+        <RouterLink class="nav-item" v-if="isAuthenticated" to="/chats">
+          <ChatIcon class="nav-icon" />
+          <span>chats</span></RouterLink
+        >
+        <RouterLink class="nav-item" to="/create-listing">
+          <CreateListingIcon class="nav-icon" />
+          <span>ny annonse</span></RouterLink
+        >
+        <RouterLink class="nav-item" v-if="!isAuthenticated" to="/login">
+          <ProfileIcon class="nav-icon" />
+          <span>logg inn</span></RouterLink
+        >
+        <RouterLink class="nav-item" v-if="isAuthenticated" to="/mypage">
+          <ProfileIcon class="nav-icon" />
+          <span>profil</span>
+        </RouterLink>
+      </nav>
+    </div>
   </header>
 </template>
 
@@ -36,7 +48,7 @@ const highestRole = computed(() => sessionStore.getHighestRole());
 header {
   display: flex;
   line-height: 2.5rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
   height: 2.5rem;
   font-size: 1.2rem;
   z-index: 100;
@@ -49,33 +61,11 @@ nav {
   align-items: center;
 }
 
-a {
-  margin-right: 2rem;
-  text-decoration: none;
-  color: var(--color-text);
-  transition-duration: 80ms;
-  display: flex;
-  align-items: center;
-}
-
-a:hover {
-  color: var(--color-text-hover);
-}
-
-#navbar-logo {
-  margin-left: 1rem;
-  text-decoration: none;
-}
-
-svg {
-  height: 1rem !important;
-  margin: 0 0.3rem;
-}
-
 @media screen and (max-width: 600px) {
-  svg {
+  .nav-icon {
     height: 1.2rem !important;
   }
+
   span {
     display: none;
   }
