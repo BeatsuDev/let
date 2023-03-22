@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref } from "vue";
 import FullUserDetailsForm from "@/components/FullUserDetailsForm.vue";
+import type { UserBody } from "@/service";
 
 // Validate email
 const validateEmail = (email: string) => {
@@ -14,13 +14,13 @@ const validatePassword = (password: string) => {
   return re.test(password);
 };
 
-function register() {
-  if (!firstName.value || !lastName.value) {
+function register(fullUserData: UserBody) {
+  if (!fullUserData.firstName || !fullUserData.lastName) {
     alert("Navn kan ikke være tomme!");
     return;
   }
 
-  if (!validateEmail(email.value) || !validatePassword(password.value)) {
+  if (!validateEmail(fullUserData.email!) || !validatePassword(fullUserData.password!)) {
     // TODO: Better error handling
     alert("Invalid email or password");
     return;
@@ -28,12 +28,6 @@ function register() {
 
   alert("Registrering vellykket! (ikke egt, det skal fikses)");
 }
-
-// v-models
-const firstName = ref("");
-const lastName = ref("");
-const email = ref("");
-const password = ref("");
 
 const responses = [
   "På tide å finne ting 🔍",
@@ -48,53 +42,31 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
-    <FullUserDetailsForm />
-    <button class="button button-black" type="submit">Registrer</button>
-    <RouterLink to="/login">Jeg har en konto!</RouterLink>
+    <div class="form-container">
+      <FullUserDetailsForm buttonTitle="Registrer" @submit="register"/>
+      <RouterLink to="/login">Jeg har en konto!</RouterLink>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.wrapper {
+.form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
+  text-align: start;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  text-align: center;
 }
 
 h2 {
-  margin: 2rem 0 3rem 0;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  margin-bottom: 4rem;
-}
-
-label,
-input {
-  display: block;
-  width: 100%;
-  margin: 0px 0;
-  font-family: Inter;
-}
-
-label {
-  margin-top: 1rem;
-}
-
-button {
-  width: 100%;
-  padding: 1.5rem 0;
-  margin-top: 20px;
-  font-size: 1rem;
+  margin: 2rem auto 3rem auto;
 }
 
 a {
@@ -103,5 +75,6 @@ a {
   font-style: italic;
   font-size: 0.8rem;
   align-self: flex-end;
+  margin-right: 0.4rem;
 }
 </style>

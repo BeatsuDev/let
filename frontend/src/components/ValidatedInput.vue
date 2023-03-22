@@ -6,7 +6,7 @@ const props = defineProps<{
   modelValue: string; // The data that the user writes in the input will be updated here
   error: any;
   placeholder?: string;
-  inputType?: "text" | "textarea";
+  inputType?: "text" | "textarea" | "password" | "email";
 }>();
 const { title, modelValue, placeholder } = toRefs(props);
 const emit = defineEmits(["update:modelValue"]);
@@ -42,7 +42,7 @@ const inputData = computed({
       :class="{ 'red-border': error }"
       class="input-text"
       v-model="inputData"
-      type="text"
+      :type="inputType"
       :placeholder="placeholder"
     />
     <div v-if="error" id="error">{{ error.$message }}</div>
