@@ -15,6 +15,7 @@ import { Configuration } from "./configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
 import globalAxios, { AxiosRequestConfig, AxiosInstance } from "axios";
+import { useSessionStore } from "../stores/sessionStore";
 
 export const BASE_PATH = "http://localhost:8080/".replace(/\/+$/, "");
 
@@ -56,6 +57,17 @@ export class BaseAPI {
       this.configuration = configuration;
       this.basePath = configuration.basePath || this.basePath;
     }
+
+    this.axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response.status === 401 && useSessionStore().isAuthenticated) {
+          useSessionStore().logOut();
+        }
+
+        throw error;
+      }
+    );
   }
 }
 
@@ -67,6 +79,7 @@ export class BaseAPI {
  */
 export class RequiredError extends Error {
   name: "RequiredError" = "RequiredError";
+
   constructor(public field: string, msg?: string) {
     super(msg);
   }

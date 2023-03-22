@@ -8,7 +8,7 @@
       @keyup="searchWithDelay"
     />
     <div class="dropdown-content">
-      <div @click="location.value = location" v-for="location in locations" :key="location">
+      <div @click="setValue(location)" v-for="location in locations" :key="location">
         {{ location.country }},
         {{ location.name }}
       </div>
@@ -20,6 +20,7 @@
 import { computed, ref } from "vue";
 import { lookUpLocation } from "@/service/location-api";
 import { InputHandler } from "@/util/input-delay";
+import { Location } from "@/service/models/location";
 
 const locations = ref([]);
 
@@ -44,7 +45,6 @@ const emit = defineEmits(["update:modelValue"]);
 
 const input = ref("");
 
-const selected = ref({});
 const loading = ref(false);
 
 // eslint-disable-next-line no-undef
@@ -56,10 +56,21 @@ function searchWithDelay() {
   inputDelay.searchWithDelay(search);
 }
 
+function setValue(location: Location) {
+  location.value = location;
+  locations.value = [];
+  input.value = location.country + ", " + location.name;
+  emit("update:modelValue", {
+    longitude: location.longitude,
+    latitude: location.latitude,
+  } as Location);
+}
+
 function search() {
   if (input.value == "" || input.value.length < 2) {
     console.log(input.value.length);
     locations.value = [];
+    emit("update:modelValue", undefined);
     return;
   }
   loading.value = true;

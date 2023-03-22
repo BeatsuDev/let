@@ -77,11 +77,12 @@ function previousPage() {
 
 function fetchEvents() {
   const filters = listingFilter.value;
+  console.table(filters);
   listingApi
     .getListings(
       filters.search,
-      undefined,
-      undefined,
+      filters.location,
+      filters.location == undefined ? undefined : filters.radius,
       filters.category ? [filters.category] : undefined,
       undefined,
       undefined,
