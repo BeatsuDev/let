@@ -16,7 +16,7 @@ const listingData = reactive({
   images: [] as File[],
 });
 
-function imageValidator() : boolean {
+function imageValidator(): boolean {
   for (const file of listingData.images) {
     const result = validateImage(file);
     if (result !== true) {
@@ -24,7 +24,7 @@ function imageValidator() : boolean {
     }
   }
   return true;
-};
+}
 
 function validateImage(file: File) {
   const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
@@ -54,7 +54,9 @@ const emit = defineEmits(["createListing"]);
 
 async function submitData() {
   const result = await validator.value.$validate();
-  if (!result) { return; }
+  if (!result) {
+    return;
+  }
 
   // TODO: Image validation + upload
   emit("createListing", listingData);
@@ -129,8 +131,16 @@ function imageFileHandler(event: Event) {
     <div class="row" id="row-5">
       <div class="input-container">
         <h3><label for="images">Last opp bilder</label></h3>
-        <input :class="{'input-text': true, 'red-border': validator.images.$error}" @change="imageFileHandler" type="file" id="images" multiple />
-        <div v-if="validator.images.$error" id="error">{{ validator.images.$errors[0].$message }}</div>
+        <input
+          :class="{ 'input-text': true, 'red-border': validator.images.$error }"
+          @change="imageFileHandler"
+          type="file"
+          id="images"
+          multiple
+        />
+        <div v-if="validator.images.$error" id="error">
+          {{ validator.images.$errors[0].$message }}
+        </div>
       </div>
     </div>
 

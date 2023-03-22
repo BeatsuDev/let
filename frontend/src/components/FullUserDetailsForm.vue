@@ -38,15 +38,37 @@ async function submit() {
   let result = await validator.value.$validate();
   if (!result) return;
   emit("submit", fullUserData);
-};
+}
 </script>
 
 <template>
   <form @submit.prevent="submit">
-    <ValidatedInput v-model="fullUserData.firstName" title="Fornavn" :error="validator.firstName.$errors[0]" placeholder="Ola"/>
-    <ValidatedInput v-model="fullUserData.lastName" title="Etternavn" :error="validator.lastName.$errors[0]" placeholder="Sørmann"/>
-    <ValidatedInput v-model="fullUserData.email" input-type="email" title="Email" :error="validator.email.$errors[0]" placeholder="ola.sormann@gmail.com"/>
-    <ValidatedInput v-model="fullUserData.password" input-type="password" title="Passord" :error="validator.password.$errors[0]" placeholder="sikker123"/>
+    <ValidatedInput
+      v-model="fullUserData.firstName"
+      title="Fornavn"
+      :error="validator.firstName.$errors[0]"
+      placeholder="Ola"
+    />
+    <ValidatedInput
+      v-model="fullUserData.lastName"
+      title="Etternavn"
+      :error="validator.lastName.$errors[0]"
+      placeholder="Sørmann"
+    />
+    <ValidatedInput
+      v-model="fullUserData.email"
+      input-type="email"
+      title="Email"
+      :error="validator.email.$errors[0]"
+      placeholder="ola.sormann@gmail.com"
+    />
+    <ValidatedInput
+      v-model="fullUserData.password"
+      input-type="password"
+      title="Passord"
+      :error="validator.password.$errors[0]"
+      placeholder="sikker123"
+    />
     <button class="button button-black" input-type="submit">{{ props.buttonTitle }}</button>
   </form>
 </template>

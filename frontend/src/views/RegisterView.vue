@@ -6,7 +6,8 @@ import { UserApi } from "@/service/index";
 const userApi = new UserApi();
 
 function register(fullUserData: UserBody) {
-  userApi.createUser(fullUserData)
+  userApi
+    .createUser(fullUserData)
     .then((response) => {
       console.log(response);
     })
@@ -30,7 +31,7 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
     <div class="form-container">
-      <FullUserDetailsForm buttonTitle="Registrer" @submit="register"/>
+      <FullUserDetailsForm buttonTitle="Registrer" @submit="register" />
       <RouterLink to="/login">Jeg har en konto!</RouterLink>
     </div>
   </div>

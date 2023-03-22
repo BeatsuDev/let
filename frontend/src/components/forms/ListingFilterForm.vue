@@ -59,7 +59,7 @@ const value: ListingFilter = computed({
 });
 function search() {
   inputDelay.searchWithDelay(function updateSearchField() {
-    value.search = searchValue.value;
+    value.value.search = searchValue.value;
   });
 }
 </script>

@@ -4,9 +4,9 @@ import NavigationBar from "./components/NavigationBar.vue";
 </script>
 
 <template>
-  <NavigationBar id="navigation-bar"/>
+  <NavigationBar id="navigation-bar" />
 
-  <RouterView id="main-view"/>
+  <RouterView id="main-view" />
 </template>
 
 <style scoped>
