@@ -4,8 +4,8 @@ import AdminIcon from "@/components/icons/AdminIcon.vue";
 import ChatIcon from "@/components/icons/ChatIcon.vue";
 import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
 import ProfileIcon from "@/components/icons/ProfileIcon.vue";
-import {useSessionStore} from "@/stores/sessionStore";
-import {computed} from "vue";
+import { useSessionStore } from "@/stores/sessionStore";
+import { computed } from "vue";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
@@ -17,11 +17,17 @@ const highestRole = computed(() => sessionStore.getHighestRole());
   <header>
     <RouterLink id="navbar-logo" to="/">letno</RouterLink>
     <nav>
-      <RouterLink v-if="isAuthenticated && highestRole === 'ADMIN'" to="/admin" > <AdminIcon /> admin </RouterLink>
-      <RouterLink v-if="isAuthenticated" to="/chats"> <ChatIcon /> chats </RouterLink>
-      <RouterLink to="/create-listing"> <CreateListingIcon /> ny annonse </RouterLink>
-      <RouterLink v-if="!isAuthenticated" to="/login"> <ProfileIcon /> logg inn </RouterLink>
-      <RouterLink v-if="isAuthenticated" to="/mypage"> <ProfileIcon /> profil </RouterLink>
+      <RouterLink v-if="isAuthenticated && highestRole === 'ADMIN'" to="/admin">
+        <AdminIcon /><span>admin</span></RouterLink
+      >
+      <RouterLink v-if="isAuthenticated" to="/chats"> <ChatIcon /><span>chats</span></RouterLink>
+      <RouterLink to="/create-listing"> <CreateListingIcon /><span>ny annonse</span></RouterLink>
+      <RouterLink v-if="!isAuthenticated" to="/login">
+        <ProfileIcon /><span>logg inn</span></RouterLink
+      >
+      <RouterLink v-if="isAuthenticated" to="/mypage">
+        <ProfileIcon /><span>profil</span>
+      </RouterLink>
     </nav>
   </header>
 </template>
@@ -64,5 +70,14 @@ a:hover {
 svg {
   height: 1rem !important;
   margin: 0 0.3rem;
+}
+
+@media screen and (max-width: 600px) {
+  svg {
+    height: 1.2rem !important;
+  }
+  span {
+    display: none;
+  }
 }
 </style>
