@@ -60,6 +60,9 @@ public class ListingController {
             location.setLatitude(latitude);
         }
 
+        if ((location == null) == (radius == null))
+            return ResponseEntity.badRequest().body("Either both longitude and latitude must be specified, or neither");
+
         // If the user wants to see their favorites, set the favoritesOf field
         User favoritesOf = null;
         User loggedInUser = userRepository.findById(1L).orElse(null);
