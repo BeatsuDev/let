@@ -38,6 +38,13 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
     private Double distanceBetweenLocations(double lat1, double lat2, double lon1, double lon2) {
         final int R = 6371; // Radius of the earth
 
+        // Round to 3 decimals for privacy reasons
+        lat1 = Math.round(lat1 * 1000.0) / 1000.0;
+        lat2 = Math.round(lat2 * 1000.0) / 1000.0;
+        lon1 = Math.round(lon1 * 1000.0) / 1000.0;
+        lon2 = Math.round(lon2 * 1000.0) / 1000.0;
+
+        // Haversine formula
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
