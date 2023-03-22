@@ -1,17 +1,29 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { UserFull } from "@/service";
 
 export const useSessionStore = defineStore("sessionStore", () => {
-  const user = ref({} as UserFull);
+  const user = ref(null as UserFull | null);
 
-  function isAuthenticated() {
-    return true;
+  const isAuthenticated = computed(() => {
+    return user.value == null;
+  });
+
+  function getUser() {
+    return user.value;
+  }
+
+  function authenticate(authentication: UserFull) {
+    user.value = authentication;
+  }
+
+  function logOut() {
+    user.value = null;
   }
 
   function getHighestRole() {
     return "USER";
   }
 
-  return { isAuthenticated, getHighestRole };
+  return { isAuthenticated, getHighestRole, logOut, getUser, authenticate };
 });
