@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, requiredIf, numeric } from "@vuelidate/validators";
+import { required, numeric } from "@vuelidate/validators";
+import type ListingData from "@/types/listing";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import axios from "axios";
@@ -16,27 +17,6 @@ const listingData = reactive({
   images: [] as File[],
 });
 
-function imageValidator(): boolean {
-  for (const file of listingData.images) {
-    const result = validateImage(file);
-    if (result !== true) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function validateImage(file: File) {
-  const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-  if (!allowedTypes.includes(file.type)) {
-    return "Bildet må være av typen PNG, JPEG eller JPG";
-  }
-  if (file.size > 10 * 1024 * 1024) {
-    return "Bilder må være mindre enn 10 MB";
-  }
-  return true;
-}
-
 const rules = {
   title: { required },
   price: { required, numeric },
@@ -50,7 +30,9 @@ const rules = {
 const validator = useVuelidate(rules, listingData);
 
 // Emit form data to parent component
-const emit = defineEmits(["createListing"]);
+const emit = defineEmits<{
+  (event: 'createListing', listingData: ListingData): void
+}>();
 
 async function submitData() {
   const result = await validator.value.$validate();
@@ -58,8 +40,31 @@ async function submitData() {
     return;
   }
 
-  // TODO: Image validation + upload
-  emit("createListing", listingData);
+  // Upload images to backend
+  const imageResponses = await Promise.all(
+    listingData.images.map((image) => {
+      const formData = new FormData();
+      formData.append("image", image);
+      return axios.post("http://localhost:8080/image", formData);
+    })
+  );
+
+  // Make sure all image responses are successful
+  const imageSuccesses = imageResponses.map((response) => response.status === 200 && response.data.url);
+
+  if (imageSuccesses.includes(false)) {
+    alert("Noe gikk galt under bildeopplastningen... " + imageResponses.filter((response) => response.status !== 200)[0].data);
+    return;
+  }
+
+  const imageUrls = imageResponses.map(image => image.data.url) as string[];
+
+  const listingDataWithImages = {
+    ...listingData,
+    images: imageUrls,
+  };
+
+  emit("createListing", listingDataWithImages);
 }
 
 function imageFileHandler(event: Event) {

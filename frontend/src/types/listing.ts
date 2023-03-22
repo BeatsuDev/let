@@ -8,3 +8,14 @@ export class ListingFilter {
   favorites: boolean = false;
   page: number = 1;
 }
+
+
+export default interface NewListingWithImageUrls {
+  title: string;
+  price: string;
+  place: string;
+  category: string;
+  summary: string;
+  description: string;
+  images: string[];
+}

@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import ListingCreatorForm from "@/components/ListingCreatorForm.vue";
+import type ListingData from "@/types/listing";
+
+function createListing(listingData: ListingData) {
+  console.log(listingData);
+}
 </script>
 
 <template>
   <div class="wrapper">
     <h1>Lag en ny annonse</h1>
-    <ListingCreatorForm />
+    <ListingCreatorForm @create-listing="createListing" />
   </div>
 </template>
 
