@@ -19,6 +19,31 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
+      path: "/my-page",
+      name: "my-page",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/MyPage.vue"),
+      children: [
+        {
+          path: "/",
+          name: "my-profile",
+          component: () => import("../views/MyPageUser.vue"),
+        },
+        {
+          path: "listings",
+          name: "my-listings",
+          component: () => import("../views/MyPageListings.vue"),
+        },
+        {
+          path: "bookmarked",
+          name: "my-bookmarked-listings",
+          component: () => import("../views/MyPageListings.vue"),
+        },
+      ],
+    },
+    {
       path: "/register",
       name: "register",
       component: () => import("../views/RegisterView.vue"),
