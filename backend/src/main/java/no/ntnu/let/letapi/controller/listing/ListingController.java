@@ -6,20 +6,23 @@ import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.ListingState;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.security.AuthenticationService;
+import no.ntnu.let.letapi.service.CategoryService;
 import no.ntnu.let.letapi.service.ListingService;
 import no.ntnu.let.letapi.service.UserService;
 import no.ntnu.let.letapi.util.ListingFilter;
 import no.ntnu.let.letapi.util.ListingFilter.ListingFilterBuilder;
 import no.ntnu.let.letapi.util.UrlUtil;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/listing")
@@ -28,6 +31,7 @@ public class ListingController {
     private final ListingService listingService;
     private final ListingMapper mapper;
     private final UserService userService;
+    private final CategoryService categoryService;
     private final AuthenticationService authenticationService;
     private final String BASE_URL = UrlUtil.getBaseUrl() + "/listing";
 
@@ -120,12 +124,33 @@ public class ListingController {
 
     @PostMapping
     public ResponseEntity<Object> createListing(@RequestBody ListingCreationDTO listingCreationDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        // Validate the input
+        if (Stream.of(
+                listingCreationDTO.getCategoryId(),
+                listingCreationDTO.getSummary(),
+                listingCreationDTO.getDescription(),
+                listingCreationDTO.getPrice(),
+                listingCreationDTO.getTitle(),
+                listingCreationDTO.getGalleryIds(),
+                listingCreationDTO.getThumbnailId()
+                ).anyMatch(Objects::isNull)
+        ) {
+            return ResponseEntity.badRequest().body("All fields must be specified");
+        }
+
+        Boolean admin = authenticationService.isAdmin();
+        if (admin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (!admin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Listing listing = mapper.toListing(listingCreationDTO);
-        listing.setSeller(userService.getUserByEmail(auth.getName()));
-        Listing savedListing = listingService.createListing(listing);
+        Listing savedListing;
+        try {
+            savedListing = listingService.createListing(listing,
+                    SecurityContextHolder.getContext().getAuthentication().getName());
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("Invalid ID in gallery, thumbnail, or category");
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
     }
 
