@@ -33,7 +33,7 @@ function updateUser(user: UserBody) {
   userApi
     .updateUser(user)
     .then((response) => {
-      sessionStore.setUser(response.data);
+      sessionStore.authenticate(response.data);
       emit("update:collapsed", true);
     })
     .catch((error) => {
