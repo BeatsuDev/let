@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-
+    public static final TemporalAmount TOKEN_DURATION = ChronoUnit.MINUTES.getDuration().multipliedBy(5); // 5 minutes
     private final JwtEncoder encoder;
     private final JwtDecoder decoder;
     private final UserService userService;
@@ -31,7 +32,7 @@ public class AuthenticationService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(5, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(TOKEN_DURATION))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
@@ -44,7 +45,7 @@ public class AuthenticationService {
         JwtClaimsSet newClaims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(5, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(TOKEN_DURATION))
                 .subject(currentClaims.getSubject())
                 .claim("scope", currentClaims.getClaim("scope"))
                 .build();
@@ -65,18 +66,21 @@ public class AuthenticationService {
 
     public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return null;
         String email = auth.getName();
         return this.userService.getUserByEmail(email);
     }
 
     public Boolean isAdminOrAllowed(Predicate<User> allowedTest) {
         User user = this.getLoggedInUser();
-        return user.isAdmin() || allowedTest.test(user);
+        if (user == null) return false;
+        return user.getAdmin() || allowedTest.test(user);
     }
 
     public Boolean isAdmin() {
         User user = this.getLoggedInUser();
-        return user.isAdmin();
+        if (user == null) return null;
+        return user.getAdmin();
     }
 
 
