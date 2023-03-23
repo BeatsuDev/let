@@ -1,7 +1,7 @@
 package no.ntnu.let.letapi.controller.user;
 
-import com.nimbusds.jose.proc.SecurityContext;
-import lombok.Getter;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.dto.user.LoginDTO;
 import no.ntnu.let.letapi.dto.user.UserCreationDTO;
@@ -9,11 +9,10 @@ import no.ntnu.let.letapi.dto.user.UserMapper;
 import no.ntnu.let.letapi.dto.user.UserUpdateDTO;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.security.AuthenticationService;
-import no.ntnu.let.letapi.security.CookieHeaderUtil;
+import no.ntnu.let.letapi.security.CookieFactory;
 import no.ntnu.let.letapi.security.UserAuthentication;
 import no.ntnu.let.letapi.security.UserDetailsImpl;
 import no.ntnu.let.letapi.service.UserService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,19 +33,15 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody UserCreationDTO userDTO) {
+    public ResponseEntity<Object> createUser(@RequestBody UserCreationDTO userDTO, HttpServletResponse response) {
         User user = userMapper.toUser(userDTO);
         user = userService.createUser(user);
 
         UserDetails userDetails = new UserDetailsImpl(user);
         String token = authenticationService.generateToken(new UserAuthentication(userDetails));
 
-        HttpHeaders headers = CookieHeaderUtil.appendAuthorizationHeaders(
-                new HttpHeaders(),
-                token,
-                authenticationService.getExpirationDate(token).toString()
-        );
-        return ResponseEntity.ok().headers(headers).body(userMapper.toFullDTO(user));
+        response.addCookie(CookieFactory.getAuthorizationCookie(token));
+        return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
     @PutMapping
@@ -72,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping("/session")
-    public ResponseEntity<Object> logInUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Object> logInUser(@RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
@@ -83,36 +78,28 @@ public class UserController {
 
         User user = userService.getUserByEmail(loginDTO.getEmail());
         String token = authenticationService.generateToken(authentication);
+        response.addCookie(CookieFactory.getAuthorizationCookie(token));
 
-        HttpHeaders headers = CookieHeaderUtil.appendAuthorizationHeaders(
-                new HttpHeaders(),
-                token,
-                authenticationService.getExpirationDate(token).toString()
-        );
-
-        return ResponseEntity.ok().headers(headers).body(userMapper.toFullDTO(user));
+        return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
     @DeleteMapping("/session")
-    public ResponseEntity<Object> logOutUser() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Set-Cookie", "authorization=; expires=Thu, 01 Jan 1970 00:00:00 GMT");
-        return ResponseEntity.ok().headers(headers).build();
+    public ResponseEntity<Object> logOutUser(HttpServletResponse response) {
+        Cookie cookie = new Cookie("Authorization", null);
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/session")
-    public ResponseEntity<Object> renewSession() {
+    public ResponseEntity<Object> renewSession(HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         String token = authenticationService.generateToken(authentication);
-        HttpHeaders headers = CookieHeaderUtil.appendAuthorizationHeaders(
-                new HttpHeaders(),
-                token,
-                authenticationService.getExpirationDate(token).toString()
-        );
-
-        return ResponseEntity.ok().headers(headers).build();
+        response.addCookie(CookieFactory.getAuthorizationCookie(token));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
