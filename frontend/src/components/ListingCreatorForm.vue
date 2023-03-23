@@ -5,6 +5,7 @@ import { required, numeric } from "@vuelidate/validators"
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import axios from "axios";
 import type { CreateListing } from "@/service/index";
+import CategoryPicker from "./CategoryPicker.vue";
 
 // Variables as they are from the inputs.
 // 
@@ -117,13 +118,7 @@ function imageFileHandler(event: Event) {
         placeholder="Kardemomme By, Norge"
         :error="validator.place.$errors[0]"
       />
-      <ValidatedInput
-        class="input-container"
-        v-model="listingDataInputRefs.category"
-        title="Kategori"
-        placeholder="Planter"
-        :error="validator.category.$errors[0]"
-      />
+      <CategoryPicker class="input-container" title="Kategori" placeholder="Planter" v-model="listingDataInputRefs.category" :validation-error="validator.category.$errors[0]" />
     </div>
 
     <div class="row" id="row-3">
