@@ -80,6 +80,7 @@ main {
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
