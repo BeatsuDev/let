@@ -20,7 +20,9 @@ function login() {
       router.push("/");
     })
     .catch((error) => {
-      errorMessage.value = "Ugyldig mail eller passord";
+      if (error.response.status === 401) {
+        errorMessage.value = "Ugyldig mail eller passord";
+      }
     });
 }
 

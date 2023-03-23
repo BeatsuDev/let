@@ -21,7 +21,7 @@ function register(fullUserData: UserBody) {
       router.push("/");
     })
     .catch((error) => {
-      if (!error.status) {
+      if (error.response.status === 409) {
         errorMessage.value = "Denne eposten er allerede registrert";
       }
     });
