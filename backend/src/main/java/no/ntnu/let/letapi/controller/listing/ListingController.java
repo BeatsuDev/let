@@ -47,7 +47,7 @@ public class ListingController {
             @RequestParam(required = false) List<ListingState> states,
             @RequestParam(defaultValue = "1", required = false) Integer page,
             @RequestParam(defaultValue = "50", required = false) Integer pageSize
-            ) {
+    ) {
         // Validate the page number
         if (page <= 0) return ResponseEntity.badRequest().body("Page number must be greater than 0");
 
@@ -133,7 +133,7 @@ public class ListingController {
                 listingCreationDTO.getTitle(),
                 listingCreationDTO.getGalleryIds(),
                 listingCreationDTO.getThumbnailId()
-                ).anyMatch(Objects::isNull)
+        ).anyMatch(Objects::isNull)
         ) {
             return ResponseEntity.badRequest().body("All fields must be specified");
         }
@@ -190,5 +190,33 @@ public class ListingController {
 
         listingService.deleteListing(listing);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Listing deleted");
+    }
+
+    @PostMapping("/{id}/favorite")
+    public ResponseEntity<Object> favoriteListing(@PathVariable long id) {
+        Listing listing = listingService.getListing(id);
+        if (listing == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
+        }
+
+        User user = authenticationService.getLoggedInUser();
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        userService.favoriteListing(user, listing);
+        return ResponseEntity.ok("Listing favorited");
+    }
+
+    @DeleteMapping("/{id}/favorite")
+    public ResponseEntity<Object> unfavoriteListing(@PathVariable long id) {
+        Listing listing = listingService.getListing(id);
+        if (listing == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
+        }
+
+        User user = authenticationService.getLoggedInUser();
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        userService.unfavoriteListing(user, listing);
+        return ResponseEntity.ok("Listing unfavorited");
     }
 }
