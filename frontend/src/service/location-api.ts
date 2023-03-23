@@ -9,6 +9,7 @@ const Api = () => {
   return axios.create({
     baseURL: "https://api.api-ninjas.com/v1/",
     headers: { "X-Api-Key": import.meta.env.VITE_API_NINJAS_API_KEY },
+    withCredentials: false,
   });
 };
 
