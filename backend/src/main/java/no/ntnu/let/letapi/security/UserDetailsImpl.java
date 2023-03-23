@@ -25,7 +25,7 @@ public class UserDetailsImpl implements UserDetails {
         this.password = user.getPassword();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
-        this.admin = user.isAdmin();
+        this.admin = user.getAdmin();
     }
 
 
