@@ -5,6 +5,7 @@ import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
@@ -62,19 +63,19 @@ public class AuthenticationService {
         return new UserAuthentication(userDetails);
     }
 
-    public Boolean isAdminOrAllowed(Authentication auth, Predicate<User> allowedTest) {
-        if (auth == null) return null;
-
+    public User getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-        User user = this.userService.getUserByEmail(email);
+        return this.userService.getUserByEmail(email);
+    }
+
+    public Boolean isAdminOrAllowed(Predicate<User> allowedTest) {
+        User user = this.getLoggedInUser();
         return user.isAdmin() || allowedTest.test(user);
     }
 
-    public Boolean isAdmin(Authentication auth) {
-        if (auth == null) return null;
-
-        String email = auth.getName();
-        User user = this.userService.getUserByEmail(email);
+    public Boolean isAdmin() {
+        User user = this.getLoggedInUser();
         return user.isAdmin();
     }
 

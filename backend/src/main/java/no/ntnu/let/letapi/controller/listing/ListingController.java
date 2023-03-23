@@ -5,9 +5,7 @@ import no.ntnu.let.letapi.dto.listing.*;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.ListingState;
 import no.ntnu.let.letapi.model.user.User;
-import no.ntnu.let.letapi.repository.user.UserRepository;
 import no.ntnu.let.letapi.security.AuthenticationService;
-import no.ntnu.let.letapi.security.UserDetailsImpl;
 import no.ntnu.let.letapi.service.ListingService;
 import no.ntnu.let.letapi.service.UserService;
 import no.ntnu.let.letapi.util.ListingFilter;
@@ -67,18 +65,14 @@ public class ListingController {
 
         // If the user wants to see their favorites, set the favoritesOf field
         User favoritesOf = null;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if (favorites != null && favorites) {
-            if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            String email = auth.getName();
-            favoritesOf = userService.getUserByEmail(email);
+            favoritesOf = authenticationService.getLoggedInUser();
         }
 
         if (userId != null) {
-            Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(auth, user -> user.getId() == userId);
-            if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            Boolean ownerOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == userId);
+            if (ownerOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            if (!ownerOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         // Build the filter
@@ -139,9 +133,7 @@ public class ListingController {
     public ResponseEntity<Object> updateListing(@RequestBody ListingUpdateDTO listingDTO) {
         Listing oldListing = listingService.getListing(listingDTO.getId());
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(auth,
-                user -> user.getId() == oldListing.getSeller().getId());
+        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == oldListing.getSeller().getId());
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
@@ -167,9 +159,7 @@ public class ListingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
         }
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Boolean ownerOrAdmin = authenticationService.isAdminOrAllowed(auth,
-                user -> user.getId() == listing.getSeller().getId());
+        Boolean ownerOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == listing.getSeller().getId());
         if (ownerOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!ownerOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
