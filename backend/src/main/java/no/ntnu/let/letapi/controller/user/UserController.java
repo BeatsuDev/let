@@ -57,6 +57,9 @@ public class UserController {
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+        // If the user is not an admin, they cannot change their admin status
+        if (!authenticationService.isAdmin()) userDTO.setAdmin(null);
+
         User user = userMapper.toUser(userDTO);
         user = userService.updateUser(user);
         return ResponseEntity.ok(userMapper.toFullDTO(user));
