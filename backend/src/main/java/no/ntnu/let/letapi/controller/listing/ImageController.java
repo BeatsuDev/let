@@ -1,5 +1,7 @@
 package no.ntnu.let.letapi.controller.listing;
 
+import ch.qos.logback.core.LayoutBase;
+import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.dto.listing.ListingMapper;
 import no.ntnu.let.letapi.model.listing.Image;
 import no.ntnu.let.letapi.service.ImageService;
@@ -8,24 +10,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/image")
+@RequiredArgsConstructor
 public class ImageController {
     private final Logger logger = LoggerFactory.getLogger(ImageController.class);
     private final ImageService imageService;
     private final ListingMapper listingMapper;
 
-    @Autowired
-    public ImageController(ImageService imageService, ListingMapper listingMapper) {
-        this.imageService = imageService;
-        this.listingMapper = listingMapper;
-    }
-
     @PostMapping
     public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile file) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         logger.info("Uploading image with name: " + file.getOriginalFilename());
         Image image;
         try {
