@@ -47,6 +47,19 @@ public class ListingService {
     }
 
     public Listing updateListing(Listing listing) {
+        Listing oldListing = listingRepository.findById(listing.getId()).orElse(null);
+        if (oldListing == null) throw new IllegalArgumentException("Listing does not exist in database");
+
+        if (listing.getState() == ListingState.SOLD) listing.setSold(DateUtil.getNow());
+        if (listing.getTitle() == null) listing.setTitle(oldListing.getTitle());
+        if (listing.getSummary() == null) listing.setSummary(oldListing.getSummary());
+        if (listing.getDescription() == null) listing.setDescription(oldListing.getDescription());
+        if (listing.getCategory() == null) listing.setCategory(oldListing.getCategory());
+        if (listing.getLocation() == null) listing.setLocation(oldListing.getLocation());
+        if (listing.getGallery() == null) listing.setGallery(oldListing.getGallery());
+        if (listing.getState() == null) listing.setState(oldListing.getState());
+        if (listing.getSeller() == null) listing.setSeller(oldListing.getSeller());
+
         listing = listingRepository.save(listing);
         return listing;
     }
