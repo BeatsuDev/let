@@ -1,6 +1,5 @@
 package no.ntnu.let.letapi.service;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.ListingState;
@@ -21,7 +20,6 @@ public class ListingService {
     private final ListingRepository listingRepository;
     private final LocationRepository locationRepository;
     private final UserService userService;
-    private final EntityManager entityManager;
 
     public Page<Listing> getListings(ListingFilter filter, PageRequest pageRequest) {
         return listingRepository.findAll(filter, pageRequest);
