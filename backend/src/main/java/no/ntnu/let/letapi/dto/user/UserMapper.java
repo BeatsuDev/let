@@ -21,7 +21,8 @@ public abstract class UserMapper {
         return passwordEncoder.encode(password);
     }
     @Mappings({
-            @Mapping(target = "password", source = "password", qualifiedByName = "encryptPassword")
+            @Mapping(target = "password", source = "password", qualifiedByName = "encryptPassword"),
+            @Mapping(target = "admin", constant = "false")
     })
     public abstract User toUser(UserCreationDTO userCreationDTO);
     @Mappings({
