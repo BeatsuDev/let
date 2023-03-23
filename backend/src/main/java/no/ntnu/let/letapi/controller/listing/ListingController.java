@@ -151,7 +151,7 @@ public class ListingController {
             return ResponseEntity.badRequest().body("Invalid ID in gallery, thumbnail, or category");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingFullDTO(savedListing));
     }
 
     @PutMapping
