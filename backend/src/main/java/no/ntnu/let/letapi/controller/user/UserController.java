@@ -35,7 +35,14 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody UserCreationDTO userDTO, HttpServletResponse response) {
         User user = userMapper.toUser(userDTO);
-        user = userService.createUser(user);
+        if (userService.getUserByEmail(user.getEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        try {
+            user = userService.createUser(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please supply all necessary fields");
+        }
 
         UserDetails userDetails = new UserDetailsImpl(user);
         String token = authenticationService.generateToken(new UserAuthentication(userDetails));
