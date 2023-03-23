@@ -20,29 +20,29 @@ const highestRole = computed(() => sessionStore.getHighestRole());
         <div class="spacer"></div>
         <RouterLink
           class="nav-item"
-          v-if="sessionStore.isAuthenticated && highestRole === 'ADMIN'"
+          v-if="sessionStore.getUser() && highestRole === 'ADMIN'"
           to="/admin"
         >
           <AdminIcon />
           <span>admin</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/chats">
+        <RouterLink class="nav-item" v-if="sessionStore.getUser()" to="/chats">
           <ChatIcon class="nav-icon" />
           <span>chats</span></RouterLink
         >
-        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/create-listing">
+        <RouterLink v-if="sessionStore.getUser()" class="nav-item" to="/create-listing">
           <CreateListingIcon class="nav-icon" />
           <span>ny annonse</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="!sessionStore.isAuthenticated" to="/login">
+        <RouterLink class="nav-item" v-if="!sessionStore.getUser" to="/login">
           <ProfileIcon class="nav-icon" />
           <span>logg inn</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/my-page">
+        <RouterLink class="nav-item" v-if="sessionStore.getUser()" to="/my-page">
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
-        <a class="nav-item" v-if="sessionStore.isAuthenticated" @click="sessionStore.logOut()">
+        <a class="nav-item" v-if="sessionStore.getUser()" @click="sessionStore.logOut()">
           <ProfileIcon class="nav-icon" />
           <span>logg ut</span></a
         >
