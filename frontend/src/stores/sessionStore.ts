@@ -38,8 +38,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
   }
 
   function getHighestRole() {
-    // TODO: Admin will be defined in the future. For now return USER as default
-    return user.value?.admin ? "ADMIN" : "USER";
+    return user.value!.admin ? "ADMIN" : "USER";
   }
 
   return { isAuthenticated, getHighestRole, timeout, getUser, authenticate, logOut };
