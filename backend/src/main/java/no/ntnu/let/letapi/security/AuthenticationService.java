@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +60,22 @@ public class AuthenticationService {
         UserDetails userDetails = new UserDetailsImpl(user);
 
         return new UserAuthentication(userDetails);
+    }
+
+    public Boolean isAdminOrAllowed(Authentication auth, Predicate<User> allowedTest) {
+        if (auth == null) return null;
+
+        String email = auth.getName();
+        User user = this.userService.getUserByEmail(email);
+        return user.isAdmin() || allowedTest.test(user);
+    }
+
+    public Boolean isAdmin(Authentication auth) {
+        if (auth == null) return null;
+
+        String email = auth.getName();
+        User user = this.userService.getUserByEmail(email);
+        return user.isAdmin();
     }
 
 
