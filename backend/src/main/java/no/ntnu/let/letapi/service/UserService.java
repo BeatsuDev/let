@@ -15,6 +15,14 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        User oldUser = repository.findById(user.getId()).orElse(null);
+        if (oldUser == null) throw new IllegalArgumentException("User does not exist in database");
+
+        if (user.getEmail() == null) user.setEmail(oldUser.getEmail());
+        if (user.getFirstName() == null) user.setFirstName(oldUser.getFirstName());
+        if (user.getLastName() == null) user.setLastName(oldUser.getLastName());
+        if (user.getPassword() == null) user.setPassword(oldUser.getPassword());
+
         return repository.save(user);
     }
 
