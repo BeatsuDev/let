@@ -3,6 +3,7 @@ package no.ntnu.let.letapi.service;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.model.listing.Listing;
+import no.ntnu.let.letapi.model.listing.ListingState;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.listing.ListingRepository;
 import no.ntnu.let.letapi.repository.listing.LocationRepository;
@@ -38,6 +39,8 @@ public class ListingService {
 
         if (listing.getLocation().getId() == null)
             listing.setLocation(locationRepository.save(listing.getLocation()));
+        if (listing.getState() == null)
+            listing.setState(ListingState.ACTIVE);
 
         listing = listingRepository.save(listing);
         return listing;
