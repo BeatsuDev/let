@@ -1,9 +1,12 @@
 package no.ntnu.let.letapi.service;
 
 import lombok.RequiredArgsConstructor;
+import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +40,15 @@ public class UserService {
 
     public void deleteUserById(long id) {
         repository.deleteById(id);
+    }
+
+    public void favoriteListing(User user, Listing listing) {
+        user.getFavorites().add(listing);
+        repository.save(user);
+    }
+
+    public void unfavoriteListing(User user, Listing listing) {
+        user.getFavorites().removeIf(l -> Objects.equals(l.getId(), listing.getId()));
+        repository.save(user);
     }
 }
