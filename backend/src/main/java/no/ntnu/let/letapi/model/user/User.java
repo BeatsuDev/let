@@ -32,7 +32,7 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private boolean admin;
+    private Boolean admin;
 
     @ManyToMany
     private List<Listing> favorites;

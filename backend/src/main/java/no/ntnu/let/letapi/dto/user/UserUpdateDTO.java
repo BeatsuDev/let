@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class UserUpdateDTO extends UserCreationDTO {
     private long id;
-    private boolean admin;
+    private Boolean admin;
 }

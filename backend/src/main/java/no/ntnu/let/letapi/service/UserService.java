@@ -22,6 +22,7 @@ public class UserService {
         if (user.getFirstName() == null) user.setFirstName(oldUser.getFirstName());
         if (user.getLastName() == null) user.setLastName(oldUser.getLastName());
         if (user.getPassword() == null) user.setPassword(oldUser.getPassword());
+        if (user.getAdmin() == null) user.setAdmin(oldUser.getAdmin());
 
         return repository.save(user);
     }
