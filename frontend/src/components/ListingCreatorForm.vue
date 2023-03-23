@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, numeric } from "@vuelidate/validators";
-import type ListingData from "@/types/listing";
-
+import { required, numeric } from "@vuelidate/validators"
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import axios from "axios";
+import type { CreateListing } from "@/service/index";
 
-const listingData = reactive({
+// Variables as they are from the inputs.
+// 
+// The price is a string, but it should be a number.
+// Category is a string, but it should be a number.
+// Images is an array of files, but it should be an array of URLs (strings).
+// 
+// These things need to be changed before the createListing event is emitted.
+const listingDataInputRefs = reactive({
   title: "",
   price: "",
   place: "",
@@ -27,14 +33,15 @@ const rules = {
   images: { required },
 };
 
-const validator = useVuelidate(rules, listingData);
+const validator = useVuelidate(rules, listingDataInputRefs);
 
 // Emit form data to parent component
 const emit = defineEmits<{
-  (event: "createListing", listingData: ListingData): void;
+  (event: "createListing", listingData: CreateListing): void;
 }>();
 
 async function submitData() {
+  // Check if inputs follow validation rules
   const result = await validator.value.$validate();
   if (!result) {
     return;
@@ -42,7 +49,7 @@ async function submitData() {
 
   // Upload images to backend
   const imageResponses = await Promise.all(
-    listingData.images.map((image) => {
+    listingDataInputRefs.images.map((image) => {
       const formData = new FormData();
       formData.append("image", image);
       return axios.post("http://localhost:8080/image", formData);
@@ -51,21 +58,23 @@ async function submitData() {
 
   // Make sure all image responses are successful
   const imageSuccesses = imageResponses.map(
-    (response) => response.status === 200 && response.data.url
+    (response) => response.status === 201 && response.data.url
   );
 
   if (imageSuccesses.includes(false)) {
     alert(
       "Noe gikk galt under bildeopplastningen... " +
-        imageResponses.filter((response) => response.status !== 200)[0].data
+        imageResponses.filter((response) => response.status !== 201)[0].data
     );
     return;
   }
 
+  // Get all the urls for the uploaded images
   const imageUrls = imageResponses.map((image) => image.data.url) as string[];
 
   const listingDataWithImages = {
-    ...listingData,
+    ...listingDataInputRefs,
+    price: Number(listingDataInputRefs.price),
     images: imageUrls,
   };
 
@@ -76,7 +85,7 @@ function imageFileHandler(event: Event) {
   const target = event.target as HTMLInputElement;
   const files = target.files;
   if (files) {
-    listingData.images = Array.from(files);
+    listingDataInputRefs.images = Array.from(files);
   }
 }
 </script>
@@ -86,14 +95,14 @@ function imageFileHandler(event: Event) {
     <div class="row" id="row-1">
       <ValidatedInput
         class="input-container"
-        v-model="listingData.title"
+        v-model="listingDataInputRefs.title"
         title="Tittel"
         placeholder="Rød rose - snart døende"
         :error="validator.title.$errors[0]"
       />
       <ValidatedInput
         class="input-container"
-        v-model="listingData.price"
+        v-model="listingDataInputRefs.price"
         title="Pris (kr)"
         placeholder="249.99"
         :error="validator.price.$errors[0]"
@@ -103,14 +112,14 @@ function imageFileHandler(event: Event) {
     <div class="row" id="row-2">
       <ValidatedInput
         class="input-container"
-        v-model="listingData.place"
+        v-model="listingDataInputRefs.place"
         title="Sted"
         placeholder="Kardemomme By, Norge"
         :error="validator.place.$errors[0]"
       />
       <ValidatedInput
         class="input-container"
-        v-model="listingData.category"
+        v-model="listingDataInputRefs.category"
         title="Kategori"
         placeholder="Planter"
         :error="validator.category.$errors[0]"
@@ -120,7 +129,7 @@ function imageFileHandler(event: Event) {
     <div class="row" id="row-3">
       <ValidatedInput
         class="input-container"
-        v-model="listingData.summary"
+        v-model="listingDataInputRefs.summary"
         title="Kort beskrivelse"
         input-type="textarea"
         :error="validator.summary.$errors[0]"
@@ -131,7 +140,7 @@ function imageFileHandler(event: Event) {
       <ValidatedInput
         id="description"
         class="input-container"
-        v-model="listingData.description"
+        v-model="listingDataInputRefs.description"
         title="Detaljert beskrivelse"
         input-type="textarea"
         :error="validator.description.$errors[0]"
