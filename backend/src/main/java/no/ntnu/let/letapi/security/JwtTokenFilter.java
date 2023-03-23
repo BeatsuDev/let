@@ -2,6 +2,7 @@ package no.ntnu.let.letapi.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -27,10 +29,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             @NotNull HttpServletResponse response,
             @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
-        String token = request.getHeader("Authorization");
-        if (token != null) {
-            SecurityContextHolder.getContext().setAuthentication(authenticationService.getAuthentication(token));
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length != 0) {
+            Arrays.stream(cookies)
+                    .filter(cookie -> cookie.getName().equals("Authorization"))
+                    .findFirst().ifPresent(cookie -> {
+                        try {
+                            SecurityContextHolder.getContext().setAuthentication(authenticationService.getAuthentication(cookie.getValue()));
+                        } catch (Exception e) {
+                            SecurityContextHolder.clearContext();
+                        }
+                    });
+        } else {
+            SecurityContextHolder.clearContext();
         }
+
         filterChain.doFilter(request, response);
     }
 }
