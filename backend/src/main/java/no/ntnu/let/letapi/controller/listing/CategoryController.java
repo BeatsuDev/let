@@ -1,5 +1,6 @@
 package no.ntnu.let.letapi.controller.listing;
 
+import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.dto.listing.CategoryCreationDTO;
 import no.ntnu.let.letapi.dto.listing.ListingMapper;
 import no.ntnu.let.letapi.model.listing.Category;
@@ -17,15 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/category")
+@RequiredArgsConstructor
 public class CategoryController {
     private final Logger logger = LoggerFactory.getLogger(CategoryController.class);
     private final CategoryService categoryService;
     private final ListingMapper listingMapper;
-    @Autowired
-    public CategoryController(CategoryService categoryService, ListingMapper listingMapper) {
-        this.categoryService = categoryService;
-        this.listingMapper = listingMapper;
-    }
+
     @GetMapping
     public ResponseEntity<Object> getCategories() {
         var categories = categoryService.getCategories();

@@ -1,5 +1,6 @@
 package no.ntnu.let.letapi.controller.listing;
 
+import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.dto.listing.*;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.ListingState;
@@ -24,20 +25,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/listing")
+@RequiredArgsConstructor
 public class ListingController {
     private final ListingService listingService;
     private final ListingMapper mapper;
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final String BASE_URL = UrlUtil.getBaseUrl() + "/listing";
-
-    ListingController(ListingMapper mapper, ListingService listingService,
-                      AuthenticationService authenticationService, UserService userService) {
-        this.mapper = mapper;
-        this.listingService = listingService;
-        this.authenticationService = authenticationService;
-        this.userService = userService;
-    }
 
     @GetMapping
     public ResponseEntity<Object> getListings(

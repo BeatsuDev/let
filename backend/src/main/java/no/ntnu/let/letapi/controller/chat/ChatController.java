@@ -1,5 +1,6 @@
 package no.ntnu.let.letapi.controller.chat;
 
+import lombok.RequiredArgsConstructor;
 import no.ntnu.let.letapi.dto.chat.ChatDTO;
 import no.ntnu.let.letapi.dto.chat.MessageDTO;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/chat")
+@RequiredArgsConstructor
 public class ChatController {
     @GetMapping
     public ResponseEntity<Object> getChats() {
