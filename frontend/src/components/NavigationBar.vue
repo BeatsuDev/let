@@ -6,6 +6,7 @@ import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
 import ProfileIcon from "@/components/icons/ProfileIcon.vue";
 import { useSessionStore } from "@/stores/sessionStore";
 import { computed } from "vue";
+import LogOutIcon from "@/components/icons/LogOutIcon.vue";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
@@ -43,7 +44,7 @@ const highestRole = computed(() => sessionStore.getHighestRole());
           <span>profil</span>
         </RouterLink>
         <a class="nav-item" v-if="sessionStore.isAuthenticated" @click="sessionStore.logOut()">
-          <ProfileIcon class="nav-icon" />
+          <LogOutIcon class="nav-icon" />
           <span>logg ut</span></a
         >
       </nav>
@@ -68,7 +69,7 @@ nav {
   align-items: center;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .nav-icon {
     height: 1.2rem !important;
   }

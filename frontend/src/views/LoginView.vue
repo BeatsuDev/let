@@ -3,28 +3,13 @@ import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
 import { UserApi } from "@/service/apis/user-api";
 import router from "@/router";
+import Alert from "@/components/forms/Alert.vue";
 
 const userApi = new UserApi();
+const errorMessage = ref("");
 const sessionStore = useSessionStore();
-// Validate email
-const validateEmail = (email: string) => {
-  const re = /\S+@\S+\.\S+/;
-  return re.test(email);
-};
-
-// Validate password
-const validatePassword = (password: string) => {
-  //const re = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
-  //return re.test(password);
-  return true;
-};
 
 function login() {
-  if (!validateEmail(email.value) || !validatePassword(password.value)) {
-    // Better error handling
-    alert("Ugyldig epost eller passord");
-    return;
-  }
   userApi
     .loginUser({
       email: email.value,
@@ -35,7 +20,7 @@ function login() {
       router.push("/");
     })
     .catch((error) => {
-      console.log(error);
+      errorMessage.value = "Ugyldig mail eller passord";
     });
 }
 
@@ -53,6 +38,10 @@ const responses = [
 ];
 
 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+function clearError() {
+  if (errorMessage.value) errorMessage.value = "";
+}
 </script>
 
 <template>
@@ -65,6 +54,7 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         type="email"
         id="email"
         v-model="email"
+        @input="clearError"
         placeholder="ola.sormann@gmail.com"
       />
       <label for="password">Passord</label>
@@ -73,9 +63,11 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         type="password"
         id="password"
         v-model="password"
+        @input="clearError"
         placeholder="sikker123"
       />
       <button class="button button-black" type="submit">Logg in</button>
+      <Alert type="error" :error="errorMessage" v-if="errorMessage !== ''"></Alert>
       <RouterLink to="/register">Har du ikke en konto?</RouterLink>
     </form>
   </div>

@@ -69,7 +69,7 @@ async function submit() {
       :error="validator.password.$errors[0]"
       placeholder="sikker123"
     />
-    <button class="button button-black" input-type="submit">{{ props.buttonTitle }}</button>
+    <button class="button button-black">{{ props.buttonTitle }}</button>
   </form>
 </template>
 
