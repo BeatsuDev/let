@@ -7,26 +7,23 @@ export const useSessionStore = defineStore("sessionStore", () => {
   const user = ref(null as UserFull | null);
   const userApi = new UserApi();
 
+  const isAuthenticated = computed(() => {
+    if (user.value == null) {
+      const userFromStorage = localStorage.getItem("user");
+      if (userFromStorage != null) {
+        user.value = JSON.parse(userFromStorage);
+      }
+    }
+    return user.value != null;
+  });
+
   function getUser() {
     return user.value;
   }
 
-  function fetchUser() {
-    return userApi.getCurrentUser()
-      .then((response) => {
-        user.value = response.data;
-      })
-      .catch(() => {
-        timeout();
-      });
-  }
-
   function authenticate(authentication: UserFull) {
-    userApi.loginUser(authentication)
-      .then(() => {
-        user.value = authentication;
-        localStorage.setItem("user", JSON.stringify(authentication));
-      });
+    user.value = authentication;
+    localStorage.setItem("user", JSON.stringify(authentication));
   }
 
   function timeout() {
@@ -45,5 +42,5 @@ export const useSessionStore = defineStore("sessionStore", () => {
     return user.value?.admin ? "ADMIN" : "USER";
   }
 
-  return { getHighestRole, timeout, getUser, fetchUser, authenticate, logOut };
+  return { isAuthenticated, getHighestRole, timeout, getUser, authenticate, logOut };
 });
