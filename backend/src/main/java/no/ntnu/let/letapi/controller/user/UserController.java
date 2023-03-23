@@ -52,10 +52,10 @@ public class UserController {
     @PutMapping
     public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO userDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        if (userDetails.getId() != userDTO.getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(authentication, user -> user.getId() == userDTO.getId());
+        if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         User user = userMapper.toUser(userDTO);
         user = userService.updateUser(user);
@@ -67,9 +67,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userService.getUserByEmail(userDetails.getUsername());
-
+        User user = userService.getUserByEmail(authentication.getName());
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
@@ -126,10 +124,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        if (userDetails.getId() != id && !userDetails.isAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(authentication, user -> user.getId() == id);
+        if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
