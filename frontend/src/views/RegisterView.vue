@@ -23,6 +23,8 @@ function register(fullUserData: UserBody) {
     .catch((error) => {
       if (error.response.status === 409) {
         errorMessage.value = "Denne eposten er allerede registrert";
+      } else {
+        errorMessage.value = "En uventet feil oppstod, har du internettilgang?";
       }
     });
 }

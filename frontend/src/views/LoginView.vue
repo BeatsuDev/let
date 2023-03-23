@@ -22,6 +22,8 @@ function login() {
     .catch((error) => {
       if (error.response.status === 401) {
         errorMessage.value = "Ugyldig mail eller passord";
+      } else {
+        errorMessage.value = "En uventet feil oppstod, har du internettilgang?";
       }
     });
 }
