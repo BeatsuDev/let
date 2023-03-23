@@ -19,7 +19,7 @@ public class UserDetailsImpl implements UserDetails {
     private final String lastName;
     private final boolean admin;
 
-    UserDetailsImpl(User user) {
+    public UserDetailsImpl(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();

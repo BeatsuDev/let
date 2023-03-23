@@ -9,6 +9,9 @@ import no.ntnu.let.letapi.dto.user.UserMapper;
 import no.ntnu.let.letapi.dto.user.UserUpdateDTO;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.security.AuthenticationService;
+import no.ntnu.let.letapi.security.CookieHeaderUtil;
+import no.ntnu.let.letapi.security.UserAuthentication;
+import no.ntnu.let.letapi.security.UserDetailsImpl;
 import no.ntnu.let.letapi.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,20 +38,39 @@ public class UserController {
         User user = userMapper.toUser(userDTO);
         user = userService.createUser(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toFullDTO(user));
+        UserDetails userDetails = new UserDetailsImpl(user);
+        String token = authenticationService.generateToken(new UserAuthentication(userDetails));
+
+        HttpHeaders headers = CookieHeaderUtil.appendAuthorizationHeaders(
+                new HttpHeaders(),
+                token,
+                authenticationService.getExpirationDate(token).toString()
+        );
+        return ResponseEntity.ok().headers(headers).body(userMapper.toFullDTO(user));
     }
 
     @PutMapping
     public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO userDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if (userDetails.getId() != userDTO.getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         User user = userMapper.toUser(userDTO);
         user = userService.updateUser(user);
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
     @GetMapping("/session")
-    public ResponseEntity<Object> getUsers(@RequestHeader("Authorization") String token) {
-        User authenTicatedUser = authenticationService.getUser(token);
-        return ResponseEntity.ok(userMapper.toFullDTO(authenTicatedUser));
+    public ResponseEntity<Object> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userService.getUserByEmail(userDetails.getUsername());
+
+        return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
     @PostMapping("/session")
@@ -60,13 +84,13 @@ public class UserController {
         }
 
         User user = userService.getUserByEmail(loginDTO.getEmail());
-
         String token = authenticationService.generateToken(authentication);
 
-        // Set cookie with token
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Set-Cookie", "authorization=" + token);
-        headers.set("Expires", authenticationService.getExpirationDate(token).toString());
+        HttpHeaders headers = CookieHeaderUtil.appendAuthorizationHeaders(
+                new HttpHeaders(),
+                token,
+                authenticationService.getExpirationDate(token).toString()
+        );
 
         return ResponseEntity.ok().headers(headers).body(userMapper.toFullDTO(user));
     }
@@ -79,12 +103,16 @@ public class UserController {
     }
 
     @PutMapping("/session")
-    public ResponseEntity<Object> renewSession(@RequestHeader("Authorization") String token) {
-        String newToken = authenticationService.renewToken(token);
+    public ResponseEntity<Object> renewSession() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Set-Cookie", "authorization=" + token);
-        headers.set("Expires", authenticationService.getExpirationDate(token).toString());
+        String token = authenticationService.generateToken(authentication);
+        HttpHeaders headers = CookieHeaderUtil.appendAuthorizationHeaders(
+                new HttpHeaders(),
+                token,
+                authenticationService.getExpirationDate(token).toString()
+        );
 
         return ResponseEntity.ok().headers(headers).build();
     }
@@ -97,7 +125,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if (userDetails.getId() != id && !userDetails.isAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         userService.deleteUserById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
