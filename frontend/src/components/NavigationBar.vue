@@ -23,7 +23,7 @@ const highestRole = computed(() => sessionStore.getHighestRole());
           v-if="sessionStore.isAuthenticated && highestRole === 'ADMIN'"
           to="/admin"
         >
-          <AdminIcon />
+          <AdminIcon class="nav-icon" />
           <span>admin</span></RouterLink
         >
         <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/chats">

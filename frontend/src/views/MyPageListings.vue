@@ -7,7 +7,10 @@
       @collapse="$emit('update:collapsed', !props.collapsed)"
       collapse
     >
-      <ListingScrollPane :listings="listings" />
+      <ListingScrollPane :listings="listings">
+        <NoBookmarkedListings v-if="isBookmarked" />
+        <NoListingsCreated v-else />
+      </ListingScrollPane>
     </PaginationView>
   </MainContainer>
 </template>
@@ -21,9 +24,12 @@ import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import router from "@/router";
 import MainContainer from "@/components/MainContainer.vue";
 import { useSessionStore } from "@/stores/sessionStore";
+import NoBookmarkedListings from "@/components/listings/NoBookmarkedListings.vue";
+import NoListingsCreated from "@/components/listings/NoListingsCreated.vue";
 
 const listingApi = new ListingsApi();
 const sessionStore = useSessionStore();
+const isBookmarked = ref(false);
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);
 const listings = computed(() => listingRequest.value.listings);
@@ -35,7 +41,6 @@ const totalPages = computed(() => {
 });
 const listingFilter = ref(new ListingFilter());
 const emit = defineEmits(["update:collapsed"]);
-const title = ref("");
 const props = defineProps({
   collapsed: {
     type: Boolean,
@@ -43,21 +48,20 @@ const props = defineProps({
   },
 });
 
-getTitle();
 fetchListings();
 
 watch(router.currentRoute, () => {
   fetchListings();
-  getTitle();
+  isBookmarked.value = router.currentRoute.value.name != "my-listings";
 });
 
-function getTitle() {
+const title = computed(() => {
   if (router.currentRoute.value.name == "my-listings") {
-    title.value = "Mine annonser";
+    return "Mine annonser";
   } else if (router.currentRoute.value.name == "my-bookmarked-listings") {
-    title.value = "Bokmerkede annonser";
+    return "Bokmerkede annonser";
   }
-}
+});
 
 function fetchListings() {
   const filters = listingFilter.value;

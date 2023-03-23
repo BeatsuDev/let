@@ -11,8 +11,9 @@
         @collapse="collapsed = !collapsed"
         collapse
       >
-        <ListingScrollPane :listings="listings" />
-        <FullUserDetailsForm button-title=""></FullUserDetailsForm>
+        <ListingScrollPane :listings="listings" :loading="loading">
+          <ListingsNotFound></ListingsNotFound>
+        </ListingScrollPane>
       </PaginationView>
     </MainContainer>
   </main>
@@ -29,8 +30,10 @@ import PaginationView from "@/components/paginations/PaginationView.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import runAxios from "@/service/composable";
 import MainContainer from "@/components/MainContainer.vue";
+import ListingsNotFound from "@/components/listings/ListingsNotFound.vue";
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);
+const loading = ref(false);
 const listings = computed(() => {
   return listingRequest.value.listings;
 });
@@ -61,7 +64,9 @@ watch(
 
 function fetchListings() {
   const filters = listingFilter.value;
-  console.table(filters);
+  let id = setTimeout(() => {
+    loading.value = true;
+  }, 100);
   listingApi
     .getListings(
       filters.search,
@@ -76,6 +81,8 @@ function fetchListings() {
       50
     )
     .then((response) => {
+      clearTimeout(id);
+      loading.value = false;
       listingRequest.value = response.data;
     });
 }

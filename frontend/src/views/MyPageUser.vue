@@ -19,14 +19,13 @@ import { UserApi } from "@/service/apis/user-api";
 import { useSessionStore } from "@/stores/sessionStore";
 import type { UserBody } from "@/service";
 
-
 const sessionStore = useSessionStore();
 const props = defineProps<{
   collapsed: boolean;
 }>();
 const emit = defineEmits(["update:collapsed"]);
 
-const user = sessionStore.getUser() || {} as UserBody;
+const user = sessionStore.getUser() || ({} as UserBody);
 
 function updateUser(user: UserBody) {
   const userApi = new UserApi();
