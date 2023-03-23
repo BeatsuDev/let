@@ -57,6 +57,7 @@ export class BaseAPI {
       this.configuration = configuration;
       this.basePath = configuration.basePath || this.basePath;
     }
+    axios.defaults.withCredentials = true;
 
     this.axios.interceptors.response.use(
       (response) => response,
