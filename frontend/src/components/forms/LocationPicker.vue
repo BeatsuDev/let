@@ -88,12 +88,16 @@ function search() {
 .dropdown {
   box-sizing: border-box;
   display: inline-block;
+  position: relative;
   width: 100%;
 }
 
 .dropdown-content {
   background-color: #f6f6f6;
   overflow: auto;
+  max-height: 300px;
+  width: 100%;
+  position: absolute;
   border: 1px solid #ddd;
   z-index: 1;
 }
