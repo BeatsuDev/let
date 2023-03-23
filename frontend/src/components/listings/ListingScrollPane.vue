@@ -30,7 +30,7 @@ function goToListing(id: number) {
 <style scoped>
 .main {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 20px;
   min-height: 40rem;
   transition: 2s;

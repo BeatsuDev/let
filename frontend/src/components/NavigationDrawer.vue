@@ -61,10 +61,11 @@ function collapse() {
 
 @media screen and (max-width: 600px) {
   .sidebar {
-    margin-top: 0;
     padding-top: 11.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
+    height: 100%;
+    margin-top: 0;
   }
   .close {
     display: block;
