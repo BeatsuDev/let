@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +35,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     .findFirst().ifPresent(cookie -> {
                         try {
                             SecurityContextHolder.getContext().setAuthentication(authenticationService.getAuthentication(cookie.getValue()));
+                            response.addCookie(CookieFactory.getAuthorizationCookie(cookie.getValue()));
                         } catch (Exception e) {
                             SecurityContextHolder.clearContext();
                         }
