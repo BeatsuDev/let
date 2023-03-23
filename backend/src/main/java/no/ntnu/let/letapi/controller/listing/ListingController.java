@@ -157,13 +157,13 @@ public class ListingController {
     @PutMapping
     public ResponseEntity<Object> updateListing(@RequestBody ListingUpdateDTO listingDTO) {
         Listing oldListing = listingService.getListing(listingDTO.getId());
+        if (oldListing == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
 
         Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == oldListing.getSeller().getId());
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        Listing listing = mapper.toListing(listingDTO);
-        Listing savedListing = listingService.updateListing(listing);
+        Listing savedListing = listingService.updateListing(mapper.toListing(listingDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
     }
 
