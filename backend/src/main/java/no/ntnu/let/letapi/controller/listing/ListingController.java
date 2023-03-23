@@ -5,7 +5,10 @@ import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.listing.ListingState;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.repository.user.UserRepository;
+import no.ntnu.let.letapi.security.AuthenticationService;
+import no.ntnu.let.letapi.security.UserDetailsImpl;
 import no.ntnu.let.letapi.service.ListingService;
+import no.ntnu.let.letapi.service.UserService;
 import no.ntnu.let.letapi.util.ListingFilter;
 import no.ntnu.let.letapi.util.ListingFilter.ListingFilterBuilder;
 import no.ntnu.let.letapi.util.UrlUtil;
@@ -13,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +26,17 @@ import java.util.List;
 @RequestMapping("/listing")
 public class ListingController {
     private final ListingService listingService;
-    private final UserRepository userRepository;
     private final ListingMapper mapper;
+    private final UserService userService;
+    private final AuthenticationService authenticationService;
     private final String BASE_URL = UrlUtil.getBaseUrl() + "/listing";
 
-    ListingController(ListingMapper mapper, ListingService listingService, UserRepository userRepository) {
+    ListingController(ListingMapper mapper, ListingService listingService,
+                      AuthenticationService authenticationService, UserService userService) {
         this.mapper = mapper;
         this.listingService = listingService;
-        this.userRepository = userRepository;
+        this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -65,9 +73,18 @@ public class ListingController {
 
         // If the user wants to see their favorites, set the favoritesOf field
         User favoritesOf = null;
-        User loggedInUser = userRepository.findById(1L).orElse(null);
-        if (favorites != null && favorites && loggedInUser != null) {
-            favoritesOf = loggedInUser;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (favorites != null && favorites) {
+            if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            String email = auth.getName();
+            favoritesOf = userService.getUserByEmail(email);
+        }
+
+        if (userId != null) {
+            Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(auth, user -> user.getId() == userId);
+            if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         // Build the filter
@@ -115,13 +132,25 @@ public class ListingController {
 
     @PostMapping
     public ResponseEntity<Object> createListing(@RequestBody ListingCreationDTO listingCreationDTO) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         Listing listing = mapper.toListing(listingCreationDTO);
+        listing.setSeller(userService.getUserByEmail(auth.getName()));
         Listing savedListing = listingService.createListing(listing);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
     }
 
     @PutMapping
     public ResponseEntity<Object> updateListing(@RequestBody ListingUpdateDTO listingDTO) {
+        Listing oldListing = listingService.getListing(listingDTO.getId());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(auth,
+                user -> user.getId() == oldListing.getSeller().getId());
+        if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         Listing listing = mapper.toListing(listingDTO);
         Listing savedListing = listingService.updateListing(listing);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
@@ -143,6 +172,12 @@ public class ListingController {
         if (listing == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
         }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Boolean ownerOrAdmin = authenticationService.isAdminOrAllowed(auth,
+                user -> user.getId() == listing.getSeller().getId());
+        if (ownerOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (!ownerOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         listingService.deleteListing(listing);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Listing deleted");
