@@ -46,9 +46,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO userDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(authentication, user -> user.getId() == userDTO.getId());
+        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == userDTO.getId());
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
@@ -110,9 +108,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(authentication, user -> user.getId() == id);
+        Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == id);
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
