@@ -239,6 +239,49 @@ paths:
       security:
         - cookieAuth: []
         - bearerAuth: []
+  /listing/{id}/favorite:
+    post:
+      tags:
+        - listings
+      summary: Add a listing to a user's favorites
+      description: Add a listing to a user's favorites
+      operationId: addFavorite
+      parameters:
+        - name: id
+          description: The id of the listing you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: Listing not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - listings
+      summary: Remove a listing from a user's favorites
+      description: Remove a listing from a user's favorites
+      operationId: removeFavorite
+      parameters:
+        - name: id
+          description: The id of the listing you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: Listing not found
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
   /image:
     post:
       tags:
