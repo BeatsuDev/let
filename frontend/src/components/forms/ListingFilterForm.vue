@@ -23,19 +23,15 @@
   />
   <div class="center-text">{{ radius }}km</div>
 </template>
+
 <script lang="ts" setup>
-import { computed, type PropType, ref } from "vue";
+import { computed, type PropType, ref, type WritableComputedRef } from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { Category } from "@/service/models";
 import LocationPicker from "@/components/forms/LocationPicker.vue";
 import { InputHandler } from "@/util/input-delay";
 
-const emit = defineEmits(["update:modelValue"]);
-
-const inputDelay = new InputHandler(500);
-
-const searchValue = ref("");
-
+// Define props
 const props = defineProps({
   modelValue: {
     type: ListingFilter,
@@ -46,9 +42,20 @@ const props = defineProps({
     required: true,
   },
 });
+
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", newFilter: ListingFilter): void;
+}>();
+
+// Define refs
+const inputDelay = new InputHandler(500);
+
+const searchValue = ref("");
 const radius = ref(props.modelValue.radius);
 
-const value: ListingFilter = computed({
+// Define computed values
+const value: WritableComputedRef<ListingFilter> = computed({
   get(): ListingFilter {
     return props.modelValue;
   },
@@ -57,6 +64,8 @@ const value: ListingFilter = computed({
     emit("update:modelValue", newFilter);
   },
 });
+
+// Define callback functions
 function search() {
   inputDelay.searchWithDelay(function updateSearchField() {
     value.value.search = searchValue.value;
@@ -71,7 +80,8 @@ function selectCategory(category: Category) {
   value.value.category = category.id;
 }
 </script>
-<style>
+
+<style scoped>
 .category {
   transition: 0.3s;
   padding: 0.5rem;

@@ -3,9 +3,11 @@
     <h3>{{ props.message }}</h3>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { computed, defineProps } from "vue";
 
+// Define props
 const props = defineProps({
   type: {
     type: String,
@@ -16,6 +18,7 @@ const props = defineProps({
   },
 });
 
+// Define computed values
 const css = computed(() => {
   return {
     main: true,
@@ -26,6 +29,7 @@ const css = computed(() => {
   };
 });
 </script>
+
 <style scoped>
 .main {
   width: 100%;
