@@ -1,18 +1,3 @@
-<script lang="ts" setup>
-import { RouterLink } from "vue-router";
-import AdminIcon from "@/components/icons/AdminIcon.vue";
-import ChatIcon from "@/components/icons/ChatIcon.vue";
-import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
-import ProfileIcon from "@/components/icons/ProfileIcon.vue";
-import { useSessionStore } from "@/stores/sessionStore";
-import { computed } from "vue";
-import LogOutIcon from "@/components/icons/LogOutIcon.vue";
-
-// eslint-disable-next-line no-undef
-const sessionStore = useSessionStore();
-const highestRole = computed(() => sessionStore.getHighestRole());
-</script>
-
 <template>
   <header class="column">
     <div class="row">
@@ -51,6 +36,21 @@ const highestRole = computed(() => sessionStore.getHighestRole());
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import { RouterLink } from "vue-router";
+import AdminIcon from "@/components/icons/AdminIcon.vue";
+import ChatIcon from "@/components/icons/ChatIcon.vue";
+import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
+import ProfileIcon from "@/components/icons/ProfileIcon.vue";
+import { useSessionStore } from "@/stores/sessionStore";
+import { computed } from "vue";
+import LogOutIcon from "@/components/icons/LogOutIcon.vue";
+
+// eslint-disable-next-line no-undef
+const sessionStore = useSessionStore();
+const highestRole = computed(() => sessionStore.getHighestRole());
+</script>
 
 <style scoped>
 header {
