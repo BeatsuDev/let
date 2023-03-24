@@ -2,7 +2,7 @@
 import type { UserBody } from "@/service";
 import { reactive } from "vue";
 import ValidatedInput from "./ValidatedInput.vue";
-import { required, email, minLength } from "@vuelidate/validators";
+import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
 const props = defineProps<{
@@ -11,21 +11,43 @@ const props = defineProps<{
   lastName?: string;
   email?: string;
   password?: string;
+  passwordField?: boolean;
 }>();
 
 const fullUserData = reactive({
   firstName: props.firstName || "",
   lastName: props.lastName || "",
   email: props.email || "",
-  password: props.password || "",
+  password: props.password || ("" as string | null),
+  passwordAgain: "" as string | null,
 });
 
 const rules = {
   firstName: { required },
   lastName: { required },
   email: { required, email },
-  password: { required, minLength: minLength(6) },
+  password: validatePassword(),
+  passwordAgain: validatePasswordAgain(),
 };
+
+function validatePassword() {
+  if (props.passwordField) {
+    return {
+      required,
+      minLength: minLength(6),
+    };
+  }
+  return {};
+}
+function validatePasswordAgain() {
+  if (props.passwordField) {
+    return {
+      required,
+      sameAsPassword: sameAs(() => fullUserData.password),
+    };
+  }
+  return {};
+}
 
 const validator = useVuelidate(rules, fullUserData as any);
 
@@ -37,6 +59,10 @@ const emit = defineEmits<{
 async function submit() {
   let result = await validator.value.$validate();
   if (!result) return;
+  if (!props.passwordField) {
+    fullUserData.password = undefined;
+  }
+  fullUserData.passwordAgain = undefined;
   emit("submit", fullUserData);
 }
 </script>
@@ -68,7 +94,19 @@ async function submit() {
       title="Passord"
       :error="validator.password.$errors[0]"
       placeholder="sikker123"
+      class="transition"
+      v-if="passwordField"
     />
+    <ValidatedInput
+      v-model="fullUserData.passwordAgain"
+      input-type="password"
+      title="Gjenta passord"
+      :error="validator.passwordAgain.$errors[0]"
+      placeholder="sikker123"
+      class="transition"
+      v-if="passwordField"
+    />
+
     <button class="button button-black">{{ props.buttonTitle }}</button>
   </form>
 </template>

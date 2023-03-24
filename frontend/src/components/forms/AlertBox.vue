@@ -1,6 +1,6 @@
 <template>
   <div :class="css">
-    <h3>{{ props.error }}</h3>
+    <h3>{{ props.message }}</h3>
   </div>
 </template>
 <script lang="ts" setup>
@@ -11,7 +11,7 @@ const props = defineProps({
     type: String,
     default: "error",
   },
-  error: {
+  message: {
     type: String,
   },
 });
@@ -30,7 +30,7 @@ const css = computed(() => {
 .main {
   width: 100%;
   padding: 1rem;
-  margin: 1rem;
+  margin-top: 1rem;
   font-family: Inter, sans-serif;
 }
 
