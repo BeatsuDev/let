@@ -1,26 +1,3 @@
-<script lang="ts" setup>
-import { computed, toRefs } from "vue";
-
-const props = defineProps<{
-  title: string;
-  modelValue: string; // The data that the user writes in the input will be updated here
-  error: any;
-  placeholder?: string;
-  inputType?: "text" | "textarea" | "password" | "email";
-}>();
-const { title, modelValue, placeholder } = toRefs(props);
-const emit = defineEmits(["update:modelValue"]);
-
-const inputData = computed({
-  get() {
-    return modelValue.value;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
-</script>
-
 <template>
   <div class="wrapper">
     <h3>
@@ -47,6 +24,35 @@ const inputData = computed({
     <div v-if="error" id="error">{{ error.$message }}</div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed, toRefs } from "vue";
+
+// Define props
+const props = defineProps<{
+  title: string;
+  modelValue: string; // The data that the user writes in the input will be updated here
+  error: any;
+  placeholder?: string;
+  inputType?: "text" | "textarea" | "password" | "email";
+}>();
+
+// Define emits
+const emit = defineEmits(["update:modelValue"]);
+
+// Define refs
+const { title, modelValue, placeholder } = toRefs(props);
+
+// Define computed values
+const inputData = computed({
+  get() {
+    return modelValue.value;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
+</script>
 
 <style scoped>
 .wrapper {
