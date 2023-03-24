@@ -40,16 +40,10 @@ public class AuthenticationService {
     }
 
     public String renewToken(String token) {
-        Instant now = Instant.now();
-        Jwt currentClaims = decoder.decode(token);
-        JwtClaimsSet newClaims = JwtClaimsSet.builder()
-                .issuer("self")
-                .issuedAt(now)
-                .expiresAt(now.plus(TOKEN_DURATION))
-                .subject(currentClaims.getSubject())
-                .claim("scope", currentClaims.getClaim("scope"))
-                .build();
-        return encoder.encode(JwtEncoderParameters.from(newClaims)).getTokenValue();
+        User user = this.userService.getUserByEmail(this.decoder.decode(token).getSubject());
+        UserDetails userDetails = new UserDetailsImpl(user);
+        Authentication authentication = new UserAuthentication(userDetails);
+        return this.generateToken(authentication);
     }
 
     public Instant getExpirationDate(String token) {

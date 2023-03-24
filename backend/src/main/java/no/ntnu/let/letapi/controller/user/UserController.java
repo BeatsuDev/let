@@ -96,6 +96,7 @@ public class UserController {
         Cookie cookie = new Cookie("Authorization", null);
         cookie.setMaxAge(0);
 
+        response.reset();
         response.addCookie(cookie);
         return ResponseEntity.ok().build();
     }
