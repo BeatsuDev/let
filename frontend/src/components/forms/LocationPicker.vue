@@ -63,6 +63,7 @@ function setValue(location: Location) {
   emit("update:modelValue", {
     longitude: location.longitude,
     latitude: location.latitude,
+    name: location.name,
   } as Location);
 }
 
