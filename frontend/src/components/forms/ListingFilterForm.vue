@@ -55,7 +55,7 @@ const searchValue = ref("");
 const radius = ref(props.modelValue.radius);
 
 // Define computed values
-const value: WritableComputedRef<ListingFilter> = computed({
+const value = computed({
   get(): ListingFilter {
     return props.modelValue;
   },
