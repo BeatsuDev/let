@@ -61,6 +61,7 @@ const title = computed(() => {
   } else if (router.currentRoute.value.name == "my-bookmarked-listings") {
     return "Bokmerkede annonser";
   }
+  return "Feil URL...";
 });
 
 function fetchListings() {
