@@ -196,7 +196,10 @@ public class ListingController {
         Listing listing = listingService.getListing(id);
         User user = authenticationService.getLoggedInUser();
         ResponseEntity<Object> response = validateListingAccess(listing, user);
-        if (response != null) return response;
+        if (response != null) {
+            if (response.getStatusCode() == HttpStatus.UNAUTHORIZED) return ResponseEntity.ok(false);
+            return response;
+        }
 
         return ResponseEntity.ok(userService.isListingFavorited(user, listing));
     }
