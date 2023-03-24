@@ -60,12 +60,12 @@ export class BaseAPI {
     axios.defaults.withCredentials = true;
 
     this.axios.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        useSessionStore().refreshNotification();
+        return response;
+      },
       (error) => {
-        if (error.response.status === 401 && useSessionStore().isAuthenticated) {
-          useSessionStore().timeout();
-        }
-
+        useSessionStore().refreshNotification();
         throw error;
       }
     );
