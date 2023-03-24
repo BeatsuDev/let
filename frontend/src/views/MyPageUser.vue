@@ -24,9 +24,9 @@
 <script setup lang="ts">
 import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
 import MainContainer from "@/components/containers/MainContainer.vue";
-import { UserApi } from "@/service/apis/user-api";
+import { UserApi } from "@/services/apis/user-api";
 import { useSessionStore } from "@/stores/sessionStore";
-import type { UserBody } from "@/service";
+import type { UserBody } from "@/services";
 import { ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import router from "@/router";

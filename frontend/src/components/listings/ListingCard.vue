@@ -19,7 +19,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { ListingMinimal } from "@/service/models";
+import type { ListingMinimal } from "@/services/models";
 
 const props = defineProps({
   value: {

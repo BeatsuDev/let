@@ -15,7 +15,7 @@
 import ListingCard from "@/components/listings/ListingCard.vue";
 import type { PropType } from "vue";
 import router from "@/router";
-import type { ListingMinimal } from "@/service/models";
+import type { ListingMinimal } from "@/services/models";
 import { computed } from "vue";
 
 const props = defineProps({

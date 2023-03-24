@@ -17,8 +17,8 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
-import type { InlineResponse200 } from "@/service/models";
-import { ListingsApi } from "@/service/apis/listings-api";
+import type { InlineResponse200 } from "@/services/models";
+import { ListingsApi } from "@/services/apis/listings-api";
 import PaginationView from "@/components/paginations/PaginationContainer.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import router from "@/router";

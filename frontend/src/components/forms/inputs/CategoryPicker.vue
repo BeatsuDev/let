@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
-    <h3><label for="category-picker">{{ title }}</label></h3>
+    <h3>
+      <label for="category-picker">{{ title }}</label>
+    </h3>
     <input
       name="category-picker"
       v-model="inputData"
@@ -10,9 +12,7 @@
       @change="filterResults"
     />
     <div class="dropdown">
-      <div v-if="!error && !categories">
-        loading...
-      </div>
+      <div v-if="!error && !categories">loading...</div>
       <div v-else-if="error" class="error">
         {{ error }}
       </div>
@@ -31,12 +31,11 @@
       {{ props.validationError.$message }}
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-import { CategoryApi, type Category } from "@/service";
-import runAxios from "@/service/composable";
+import { CategoryApi, type Category } from "@/services";
+import runAxios from "@/services/composable";
 import { ref, computed, onMounted } from "vue";
 
 // Define apis
@@ -78,7 +77,7 @@ const inputData = computed({
   },
 });
 
-function changeWidth() {  
+function changeWidth() {
   const input = document.querySelector("input[name='category-picker']") as HTMLInputElement;
   const dropdown = document.querySelector(".categories") as HTMLDivElement;
 
@@ -109,12 +108,15 @@ function filterResults() {
   }
 
   // Hide the dropdown if the input matches the only category
-  const categoryNames = categories.value?.map(c => c.name);
+  const categoryNames = categories.value?.map((c) => c.name);
 
-  if ([...categoryDivs].filter(c => c.style.display === "").length <= 1 && categoryNames?.includes(input.value)) {
+  if (
+    [...categoryDivs].filter((c) => c.style.display === "").length <= 1 &&
+    categoryNames?.includes(input.value)
+  ) {
     dropdown.style.display = "none";
   } else {
-    if ([...categoryDivs].filter(c => c.style.display === "").length > 0) {
+    if ([...categoryDivs].filter((c) => c.style.display === "").length > 0) {
       dropdown.style.display = "";
     }
   }

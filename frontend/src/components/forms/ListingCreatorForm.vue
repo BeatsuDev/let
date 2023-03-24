@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, numeric } from "@vuelidate/validators"
+import { required, numeric } from "@vuelidate/validators";
 import ValidatedInput from "@/components/forms/inputs/ValidatedInput.vue";
 import axios from "axios";
-import type { Category, CreateListing } from "@/service";
+import type { Category, CreateListing } from "@/services";
 import CategoryPicker from "./inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/forms/inputs/LocationPicker.vue";
-import type { Location } from "@/service";
+import type { Location } from "@/services";
 
 // Variables as they are from the inputs.
-// 
+//
 // The price is a string, but it should be a number.
 // Category is a string, but it should be a number.
 // Images is an array of files, but it should be an array of URLs (strings).
-// 
+//
 // These things need to be changed before the createListing event is emitted.
 const listingDataInputRefs = reactive({
   title: "",
@@ -55,7 +55,6 @@ async function submitData() {
 
   console.log("Uploading images...");
 
-
   // Upload images to backend
   const imageResponses = await Promise.all(
     listingDataInputRefs.images.map((image) => {
@@ -81,20 +80,19 @@ async function submitData() {
   console.log("Images uploaded. Getting URLs... ");
 
   const imageIds = imageResponses.map((image) => image.data.id) as string[];
-  const {price, location, images, category, ...data} = listingDataInputRefs;
+  const { price, location, images, category, ...data } = listingDataInputRefs;
   const thumbnailId = imageResponses[0].data.id;
 
   const listingDataWithImages = {
     ...data,
     categoryId: category.id,
-    location: {...listingDataInputRefs.location},
+    location: { ...listingDataInputRefs.location },
     price: Number(listingDataInputRefs.price),
     thumbnailId,
     galleryIds: imageIds,
   } as CreateListing;
 
   console.log("Emitting createListing event...");
-  
 
   emit("createListing", listingDataWithImages);
 }
@@ -130,9 +128,16 @@ function imageFileHandler(event: Event) {
     <div class="row" id="row-2">
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
-        <LocationPicker class="input-container" v-model="listingDataInputRefs.location"/>
+        <LocationPicker class="input-container" v-model="listingDataInputRefs.location" />
       </div>
-      <CategoryPicker class="input-container" id="category-picker" title="Kategori" placeholder="Planter" v-model="listingDataInputRefs.category" :validation-error="validator.category.$errors[0]" />
+      <CategoryPicker
+        class="input-container"
+        id="category-picker"
+        title="Kategori"
+        placeholder="Planter"
+        v-model="listingDataInputRefs.category"
+        :validation-error="validator.category.$errors[0]"
+      />
     </div>
 
     <div class="row" id="row-3">
@@ -186,7 +191,8 @@ label {
   margin-bottom: 0.2rem;
 }
 
-#category-picker, #location-picker-wrapper {
+#category-picker,
+#location-picker-wrapper {
   padding: 0 0.4rem;
 }
 

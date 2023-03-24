@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
-import type { CreateListing } from "@/service/index";
-import { ListingsApi } from "@/service/index";
+import type { CreateListing } from "@/services/index";
+import { ListingsApi } from "@/services/index";
 import router from "@/router";
 
 const api = new ListingsApi();
