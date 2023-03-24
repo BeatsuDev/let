@@ -51,4 +51,8 @@ public class UserService {
         user.getFavorites().removeIf(l -> Objects.equals(l.getId(), listing.getId()));
         repository.save(user);
     }
+
+    public boolean isListingFavorited(User user, Listing listing) {
+        return user.getFavorites().stream().anyMatch(l -> Objects.equals(l.getId(), listing.getId()));
+    }
 }

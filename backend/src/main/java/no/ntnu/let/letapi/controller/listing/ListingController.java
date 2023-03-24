@@ -192,15 +192,22 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Listing deleted");
     }
 
+    @GetMapping("/{id}/favorite")
+    public ResponseEntity<Object> isListingFavorited(@PathVariable long id) {
+        Listing listing = listingService.getListing(id);
+        User user = authenticationService.getLoggedInUser();
+        ResponseEntity<Object> response = validateListingAccess(listing, user);
+        if (response != null) return response;
+
+        return ResponseEntity.ok(userService.isListingFavorited(user, listing));
+    }
+
     @PostMapping("/{id}/favorite")
     public ResponseEntity<Object> favoriteListing(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
-        if (listing == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
-        }
-
         User user = authenticationService.getLoggedInUser();
-        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        ResponseEntity<Object> response = validateListingAccess(listing, user);
+        if (response != null) return response;
 
         userService.favoriteListing(user, listing);
         return ResponseEntity.ok("Listing favorited");
@@ -209,14 +216,17 @@ public class ListingController {
     @DeleteMapping("/{id}/favorite")
     public ResponseEntity<Object> unfavoriteListing(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
-        if (listing == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
-        }
-
         User user = authenticationService.getLoggedInUser();
-        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        ResponseEntity<Object> response = validateListingAccess(listing, user);
+        if (response != null) return response;
 
         userService.unfavoriteListing(user, listing);
         return ResponseEntity.ok("Listing unfavorited");
+    }
+
+    private ResponseEntity<Object> validateListingAccess(Listing listing, User user) {
+        if (listing == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return null;
     }
 }
