@@ -21,7 +21,7 @@
           v-for="category in categories"
           :key="category.id"
           class="category"
-          @click="() => inputData = category.name!"
+          @click="() => (inputData = category.name)"
         >
           {{ category.name }}
         </div>
@@ -122,6 +122,7 @@ function filterResults() {
   }
 }
 
+//Vue hooks
 // Code to ensure that the dropdown is the same width as the input element
 onMounted(() => {
   setInterval(changeWidth, 100);
