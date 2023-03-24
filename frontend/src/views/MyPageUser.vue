@@ -39,11 +39,13 @@ const emit = defineEmits(["update:collapsed"]);
 const user = sessionStore.getUser() || ({} as UserBody);
 
 function updateUser(user: UserBody) {
+  user.id = sessionStore.getUser()?.id;
   const userApi = new UserApi();
   userApi
     .updateUser(user)
     .then((response) => {
       success.value = "Brukeren din ble oppdatert";
+
       sessionStore.authenticate(response.data);
       emit("update:collapsed", true);
     })
