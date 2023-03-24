@@ -21,15 +21,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
-import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
 import type { InlineResponse200 } from "@/service/models";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
 import { ListingsApi } from "@/service/apis/listings-api";
 import { CategoryApi } from "@/service/apis/category-api";
-import PaginationView from "@/components/paginations/PaginationView.vue";
+import PaginationView from "@/components/paginations/PaginationContainer.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import runAxios from "@/service/composable";
-import MainContainer from "@/components/MainContainer.vue";
+import MainContainer from "@/components/containers/MainContainer.vue";
 import ListingsNotFound from "@/components/listings/ListingsNotFound.vue";
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);

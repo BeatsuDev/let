@@ -22,13 +22,13 @@
   </MainContainer>
 </template>
 <script setup lang="ts">
-import FullUserDetailsForm from "@/components/FullUserDetailsForm.vue";
-import MainContainer from "@/components/MainContainer.vue";
+import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
+import MainContainer from "@/components/containers/MainContainer.vue";
 import { UserApi } from "@/service/apis/user-api";
 import { useSessionStore } from "@/stores/sessionStore";
 import type { UserBody } from "@/service";
 import { ref } from "vue";
-import AlertBox from "@/components/forms/AlertBox.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
 import router from "@/router";
 
 const success = ref("");

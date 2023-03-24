@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ListingCreatorForm from "@/components/ListingCreatorForm.vue";
+import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
 import type { CreateListing } from "@/service/index";
 import { ListingsApi } from "@/service/index";
 import router from "@/router";
@@ -8,9 +8,10 @@ const api = new ListingsApi();
 
 function createListing(listingData: CreateListing) {
   console.log(listingData);
-  api.createListing(listingData)
+  api
+    .createListing(listingData)
     .then((response) => {
-      router.push({ name: "listing-details", params: { id: response.data.id } })
+      router.push({ name: "listing-details", params: { id: response.data.id } });
     })
     .catch((error) => {
       alert(error.message);

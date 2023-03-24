@@ -2,7 +2,7 @@
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import { useRoute } from "vue-router";
 import { ListingFull, ListingsApi } from "@/service/index";
-import FullPageLoading from "@/components/FullPageLoading.vue";
+import FullPageLoading from "@/components/containers/FullPageLoading.vue";
 import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
 
@@ -25,11 +25,14 @@ api
   });
 
 const isBookmarked = ref(false);
-api.checkFavorite(id).then((response) => {
-  isBookmarked.value = response.data;
-}).catch((e) => {
-  error.value = e;
-});
+api
+  .checkFavorite(id)
+  .then((response) => {
+    isBookmarked.value = response.data;
+  })
+  .catch((e) => {
+    error.value = e;
+  });
 
 function handleBookmarkClick() {
   if (isBookmarked.value) {

@@ -9,7 +9,7 @@
   </main>
 </template>
 <script setup lang="ts">
-import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
 import { ref } from "vue";
 
 const collapsed = ref(false);
