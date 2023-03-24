@@ -10,10 +10,17 @@ import AlertBox from "@/components/forms/AlertBox.vue";
 const userApi = new UserApi();
 const errorMessage = ref("");
 const sessionStore = useSessionStore();
+const user = sessionStore.getUser() || ({} as UserBody);
 
-function register(fullUserData: UserBody) {
+const userEdit = ref({
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+} as UserBody);
+function register() {
   userApi
-    .createUser(fullUserData)
+    .createUser(userEdit.value)
     .then((response) => {
       sessionStore.authenticate(response.data);
       console.log(response);
@@ -42,7 +49,12 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
     <div class="form-container">
-      <FullUserDetailsForm buttonTitle="Registrer" @submit="register" password-field />
+      <FullUserDetailsForm
+        v-model="user"
+        buttonTitle="Registrer"
+        @submit="register"
+        password-field
+      />
       <AlertBox v-if="errorMessage" :message="errorMessage" />
       <RouterLink to="/login">Jeg har en konto!</RouterLink>
     </div>
