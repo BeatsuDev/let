@@ -31,6 +31,7 @@ const css = computed(() => {
   width: 100%;
   padding: 1rem;
   margin-top: 1rem;
+  margin-left: 0;
   font-family: Inter, sans-serif;
 }
 

@@ -14,8 +14,8 @@
     <button class="button" style="margin-top: 1rem" @click="changePassword = !changePassword">
       Vil du bytte passord også?
     </button>
-    <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error"></AlertBox>
-    <AlertBox v-if="success !== ''" :message="success" type="success"></AlertBox>
+    <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error" />
+    <AlertBox v-if="success !== ''" :message="success" type="success" />
   </MainContainer>
 </template>
 <script setup lang="ts">
