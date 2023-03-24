@@ -96,18 +96,14 @@ public class UserController {
         Cookie cookie = new Cookie("Authorization", null);
         cookie.setMaxAge(0);
 
-        response.reset();
         response.addCookie(cookie);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/session")
-    public ResponseEntity<Object> renewSession(HttpServletResponse response) {
+    public ResponseEntity<Object> renewSession() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
-        String token = authenticationService.generateToken(authentication);
-        response.addCookie(CookieFactory.getAuthorizationCookie(token));
         return ResponseEntity.ok().build();
     }
 

@@ -29,6 +29,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             @NotNull HttpServletResponse response,
             @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
+        // Allow users to login and logout without a token
+        if (request.getRequestURI().endsWith("/user/session") && request.getMethod().equals("DELETE")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length != 0) {
             Arrays.stream(cookies)
