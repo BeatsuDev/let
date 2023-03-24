@@ -1,6 +1,6 @@
 <template>
+  <slot class="no-listing" v-if="listings === undefined && !loading" />
   <div class="main">
-    <slot class="no-listing" v-if="listings === undefined && !loading" />
     <h1 v-if="loading" class="loading center-text">Laster inn</h1>
     <ListingCard
       v-else
@@ -39,7 +39,7 @@ function goToListing(id: number) {
 }
 .main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 20px;
   min-height: 40rem;
   width: 100%;
