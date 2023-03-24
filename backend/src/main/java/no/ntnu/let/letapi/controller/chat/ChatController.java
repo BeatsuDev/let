@@ -1,7 +1,8 @@
 package no.ntnu.let.letapi.controller.chat;
 
 import lombok.RequiredArgsConstructor;
-import no.ntnu.let.letapi.dto.chat.ChatDTO;
+import no.ntnu.let.letapi.dto.chat.ChatCreationDTO;
+import no.ntnu.let.letapi.dto.chat.MessageCreationDTO;
 import no.ntnu.let.letapi.dto.chat.MessageDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createChat(ChatDTO chatDTO) {
+    public ResponseEntity<Object> createChat(ChatCreationDTO chatCreation) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
@@ -27,7 +28,7 @@ public class ChatController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Object> sendMessage(@PathVariable String id, MessageDTO messageDTO) {
+    public ResponseEntity<Object> sendMessage(@PathVariable String id, MessageCreationDTO messageCreation) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 }
