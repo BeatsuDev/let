@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
 import { UserApi } from "@/service/apis/user-api";
 import router from "@/router";
-import Alert from "@/components/forms/AlertBox.vue";
-import AlertBox from "@/components/forms/AlertBox.vue";
+import Alert from "@/components/dialogs/AlertBox.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
 
 const userApi = new UserApi();
 const errorMessage = ref("");

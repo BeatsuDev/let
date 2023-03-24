@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UserBody, UserFull } from "@/service";
 import { computed, reactive, ref } from "vue";
-import ValidatedInput from "./ValidatedInput.vue";
+import ValidatedInput from "./inputs/ValidatedInput.vue";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
