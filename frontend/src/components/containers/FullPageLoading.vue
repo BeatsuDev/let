@@ -1,19 +1,28 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
+// define refs
+const loading = ref(true);
+
+// Vue hooks
 onMounted(() => {
-  // Set the color of the loading circle after 100ms so that the color transition is visible
-  // Since the default color is white (same as the background), the transition will make
-  // the loading circle appear smoothly
   setTimeout(() => {
-    document.getElementById("loading-circle")!.classList.add("true-color");
+    loading.value = false;
   }, 50);
 });
+
+// Other script logic
+function getCssClasses() {
+  return {
+    "lds-ellipsis": true,
+    "true-color": loading,
+  };
+}
 </script>
 
 <template>
   <main>
-    <div id="loading-circle" class="lds-ellipsis">
+    <div :class="getCssClasses">
       <div></div>
       <div></div>
       <div></div>
@@ -51,6 +60,7 @@ main {
   width: var(--size);
   height: var(--size);
 }
+
 .lds-ellipsis div {
   position: absolute;
   top: calc(33 / 80 * var(--size));
@@ -61,22 +71,27 @@ main {
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
   transition-duration: var(--transition-duration);
 }
+
 .lds-ellipsis div:nth-child(1) {
   left: calc(8 / 80 * var(--size));
   animation: lds-ellipsis1 calc(0.6s / var(--speed)) infinite;
 }
+
 .lds-ellipsis div:nth-child(2) {
   left: calc(8 / 80 * var(--size));
   animation: lds-ellipsis2 calc(0.6s / var(--speed)) infinite;
 }
+
 .lds-ellipsis div:nth-child(3) {
   left: calc(32 / 80 * var(--size));
   animation: lds-ellipsis2 calc(0.6s / var(--speed)) infinite;
 }
+
 .lds-ellipsis div:nth-child(4) {
   left: calc(56 / 80 * var(--size));
   animation: lds-ellipsis3 calc(0.6s / var(--speed)) infinite;
 }
+
 @keyframes lds-ellipsis1 {
   0% {
     transform: scale(0);
@@ -85,6 +100,7 @@ main {
     transform: scale(1);
   }
 }
+
 @keyframes lds-ellipsis3 {
   0% {
     transform: scale(1);
@@ -93,6 +109,7 @@ main {
     transform: scale(0);
   }
 }
+
 @keyframes lds-ellipsis2 {
   0% {
     transform: translate(0, 0);
