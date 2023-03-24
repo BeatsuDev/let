@@ -3,18 +3,20 @@
     <h1>Rediger profilen din</h1>
     <button class="button no" @click="$emit('update:collapsed', !collapsed)">Meny</button>
     <FullUserDetailsForm
-      :first-name="user.firstName"
-      :last-name="user.lastName"
-      :email="user.email"
       button-title="ENDRE"
-      v-model="user"
-      @update="clearMessages"
+      @input="clearMessages"
+      v-model="userEdit"
       @submit="updateUser"
       :password-field="changePassword"
     />
     <button class="button" style="margin-top: 1rem" @click="changePassword = !changePassword">
       Vil du bytte passord også?
     </button>
+    <AlertBox
+      v-if="user.email !== userEdit.email"
+      type="warning"
+      message="Du må logge inn på nytt etter å ha endret eposten din."
+    />
     <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error" />
     <AlertBox v-if="success !== ''" :message="success" type="success" />
   </MainContainer>
@@ -27,6 +29,7 @@ import { useSessionStore } from "@/stores/sessionStore";
 import type { UserBody } from "@/service";
 import { ref } from "vue";
 import AlertBox from "@/components/forms/AlertBox.vue";
+import router from "@/router";
 
 const success = ref("");
 const errorMessage = ref("");
@@ -38,17 +41,25 @@ const props = defineProps<{
 const emit = defineEmits(["update:collapsed"]);
 
 const user = sessionStore.getUser() || ({} as UserBody);
+const userEdit = ref({
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  password: "",
+  id: user.id,
+} as UserBody);
 
-function updateUser(user: UserBody) {
-  user.id = sessionStore.getUser()?.id;
+function updateUser() {
   const userApi = new UserApi();
   userApi
-    .updateUser(user)
+    .updateUser(userEdit.value)
     .then((response) => {
       success.value = "Brukeren din ble oppdatert";
-      setTimeout(() => {
-        success.value = "";
-      }, 5000);
+      if (user.email !== userEdit.value.email) {
+        sessionStore.logOut();
+        router.push("/login");
+        return;
+      }
 
       sessionStore.authenticate(response.data);
       changePassword.value = false;
@@ -63,10 +74,14 @@ function updateUser(user: UserBody) {
       } else {
         errorMessage.value = "En uventet feil oppstod. Prøv igjen senere";
       }
-      setTimeout(() => {
-        errorMessage.value = "";
-      }, 10000);
     });
 }
 
+function clearMessages() {
+  console.log("hei");
+  if (errorMessage.value !== "" || success.value !== "") {
+    errorMessage.value = "";
+    success.value = "";
+  }
+}
 </script>
