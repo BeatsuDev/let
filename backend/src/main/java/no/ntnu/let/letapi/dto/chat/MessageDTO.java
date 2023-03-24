@@ -13,8 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDTO {
-    private long id;
-    private long chatId;
     private Date timestamp;
     private Sender sender;
     private String content;
