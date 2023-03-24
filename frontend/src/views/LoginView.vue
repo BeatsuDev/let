@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
-import { UserApi } from "@/service/apis/user-api";
+import { UserApi } from "@/services/apis/user-api";
 import router from "@/router";
 import Alert from "@/components/dialogs/AlertBox.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";

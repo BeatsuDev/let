@@ -18,9 +18,9 @@
 </template>
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { lookUpLocation } from "@/service/location-api";
+import { lookUpLocation } from "@/services/location-api";
 import { InputHandler } from "@/util/input-delay";
-import { Location } from "@/service/models/location";
+import { Location } from "@/services/models/location";
 
 const locations = ref([]);
 

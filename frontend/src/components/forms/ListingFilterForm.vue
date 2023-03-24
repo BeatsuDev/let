@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import { computed, type PropType, ref, type WritableComputedRef } from "vue";
 import { ListingFilter } from "@/types/listing";
-import type { Category } from "@/service/models";
+import type { Category } from "@/services/models";
 import LocationPicker from "@/components/forms/inputs/LocationPicker.vue";
 import { InputHandler } from "@/util/input-delay";
 

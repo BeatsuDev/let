@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import type { UserFull } from "@/service";
-import { UserApi } from "@/service/apis/user-api";
+import type { UserFull } from "@/services";
+import { UserApi } from "@/services/apis/user-api";
 import router from "@/router";
 
 export const useSessionStore = defineStore("sessionStore", () => {

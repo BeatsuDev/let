@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserBody, UserFull } from "@/service";
+import type { UserBody, UserFull } from "@/services";
 import { computed, reactive, ref } from "vue";
 import ValidatedInput from "./inputs/ValidatedInput.vue";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";

@@ -1,4 +1,4 @@
-import type { Location } from "@/service/models";
+import type { Location } from "@/services/models";
 
 export class ListingFilter {
   category?: number | undefined = undefined;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import { useRoute } from "vue-router";
-import { ListingFull, ListingsApi } from "@/service/index";
+import { ListingFull, ListingsApi } from "@/services/index";
 import FullPageLoading from "@/components/containers/FullPageLoading.vue";
 import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";

@@ -22,13 +22,13 @@
 import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
-import type { InlineResponse200 } from "@/service/models";
+import type { InlineResponse200 } from "@/services/models";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
-import { ListingsApi } from "@/service/apis/listings-api";
-import { CategoryApi } from "@/service/apis/category-api";
+import { ListingsApi } from "@/services/apis/listings-api";
+import { CategoryApi } from "@/services/apis/category-api";
 import PaginationView from "@/components/paginations/PaginationContainer.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
-import runAxios from "@/service/composable";
+import runAxios from "@/services/composable";
 import MainContainer from "@/components/containers/MainContainer.vue";
 import ListingsNotFound from "@/components/listings/ListingsNotFound.vue";
 
