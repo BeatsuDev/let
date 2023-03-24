@@ -18,6 +18,7 @@ public abstract class UserMapper {
 
     @Named("encryptPassword")
     public String encryptPassword(String password) {
+        if (password == null) return null;
         return passwordEncoder.encode(password);
     }
     @Mappings({
