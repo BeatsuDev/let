@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import ListingCreatorForm from "@/components/ListingCreatorForm.vue";
-import type ListingData from "@/types/listing";
+import type { CreateListing } from "@/service/index";
 
-function createListing(listingData: ListingData) {
+function createListing(listingData: CreateListing) {
   console.log(listingData);
 }
 </script>
