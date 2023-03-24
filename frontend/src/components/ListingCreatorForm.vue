@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, numeric } from "@vuelidate/validators"
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import axios from "axios";
-import type { CreateListing } from "@/service/index";
+import type { Category, CreateListing } from "@/service/index";
 import CategoryPicker from "./CategoryPicker.vue";
+import LocationPicker from "@/components/forms/LocationPicker.vue";
+import type { Location } from "@/service/index";
+
+const location = ref({} as Location);
 
 // Variables as they are from the inputs.
 // 
@@ -17,8 +21,8 @@ import CategoryPicker from "./CategoryPicker.vue";
 const listingDataInputRefs = reactive({
   title: "",
   price: "",
-  place: "",
-  category: "",
+  place: {} as Location,
+  category: {} as Category,
   summary: "",
   description: "",
   images: [] as File[],
@@ -42,6 +46,8 @@ const emit = defineEmits<{
 }>();
 
 async function submitData() {
+  console.log("submitting data");
+
   // Check if inputs follow validation rules
   const result = await validator.value.$validate();
   if (!result) {
@@ -73,11 +79,15 @@ async function submitData() {
   // Get all the urls for the uploaded images
   const imageUrls = imageResponses.map((image) => image.data.url) as string[];
 
+  const {price, place, images, category, ...data} = listingDataInputRefs;
+
   const listingDataWithImages = {
-    ...listingDataInputRefs,
+    ...data,
+    categoryId: category.id,
+    location: listingDataInputRefs.place,
     price: Number(listingDataInputRefs.price),
     images: imageUrls,
-  };
+  } as CreateListing;
 
   emit("createListing", listingDataWithImages);
 }
@@ -111,14 +121,11 @@ function imageFileHandler(event: Event) {
     </div>
 
     <div class="row" id="row-2">
-      <ValidatedInput
-        class="input-container"
-        v-model="listingDataInputRefs.place"
-        title="Sted"
-        placeholder="Kardemomme By, Norge"
-        :error="validator.place.$errors[0]"
-      />
-      <CategoryPicker class="input-container" title="Kategori" placeholder="Planter" v-model="listingDataInputRefs.category" :validation-error="validator.category.$errors[0]" />
+      <div id="location-picker-wrapper" class="input-container">
+        <h3><label for="location-picker">Sted</label></h3>
+        <LocationPicker class="input-container" v-model="location"/>
+      </div>
+      <CategoryPicker class="input-container" id="category-picker" title="Kategori" placeholder="Planter" v-model="listingDataInputRefs.category" :validation-error="validator.category.$errors[0]" />
     </div>
 
     <div class="row" id="row-3">
@@ -172,6 +179,14 @@ label {
   margin-bottom: 0.2rem;
 }
 
+#category-picker, #location-picker-wrapper {
+  padding: 0 0.4rem;
+}
+
+#location-picker-wrapper > h3 > label {
+  margin-bottom: 0;
+}
+
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -188,6 +203,10 @@ label {
 
 #row-1 > .input-container:last-child {
   grid-column: 5 / 5;
+}
+
+#location-picker-wrapper > .input-container {
+  position: relative;
 }
 
 #row-2 > .input-container:first-child {
