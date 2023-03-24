@@ -42,11 +42,12 @@ function handleBookmarkClick() {
       .catch((e) => {
         error.value = e;
       });
-    }
   }
+}
 
 // Other script logic
-api.getListing(id)
+api
+  .getListing(id)
   .then((response) => {
     data.value = response.data;
     mainImage.value = response.data.galleryUrls[0];
@@ -55,7 +56,8 @@ api.getListing(id)
     error.value = e;
   });
 
-api.checkFavorite(id)
+api
+  .checkFavorite(id)
   .then((response) => {
     isBookmarked.value = response.data;
   })
