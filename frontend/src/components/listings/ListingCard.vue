@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 import type { ListingMinimal } from "@/services/models";
 
+// Define props
 const props = defineProps({
   value: {
     type: Object as () => ListingMinimal,
@@ -28,8 +29,10 @@ const props = defineProps({
   },
 });
 
+// Define emits
 const emit = defineEmits(["click"]);
 </script>
+
 <style scoped>
 .card {
   max-width: 15rem;
