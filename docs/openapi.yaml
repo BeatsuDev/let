@@ -240,6 +240,28 @@ paths:
         - cookieAuth: []
         - bearerAuth: []
   /listing/{id}/favorite:
+    get:
+      tags:
+        - listings
+      summary: Check if a listing is in a user's favorites
+      description: Check if a listing is in a user's favorites
+      operationId: checkFavorite
+      parameters:
+        - name: id
+          description: The id of the listing you are trying to retrieve
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '404':
+          description: Listing not found
     post:
       tags:
         - listings
