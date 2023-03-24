@@ -1,79 +1,3 @@
-<script lang="ts" setup>
-import type { UserBody, UserFull } from "@/services";
-import { computed, ref } from "vue";
-import ValidatedInput from "../inputs/ValidatedInput.vue";
-import { helpers, minLength, required } from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
-
-const passwordRepeat = ref("" as string | undefined);
-const props = defineProps<{
-  modelValue: UserBody;
-  passwordField: boolean;
-  buttonTitle: string;
-}>();
-
-const user = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value: any) {
-    const newUser = { ...props.modelValue, [value]: value };
-    emit("update:modelValue", newUser);
-  },
-});
-
-const inputFields = computed(() => {
-  return { ...(user.value as UserFull), passwordRepeat: passwordRepeat.value };
-});
-const validatePassword = computed(() => {
-  if (props.passwordField) {
-    return {
-      required: helpers.withMessage("Passord er påkrevd", required),
-      minLength: helpers.withMessage("Passord må være minst 8 tegn", minLength(8)),
-    };
-  }
-  return {};
-});
-
-const validatePasswordRepeat = computed(() => {
-  console.log(user.value.password, passwordRepeat.value);
-  if (props.passwordField) {
-    return {
-      required,
-      sameAsPassword: helpers.withMessage("Passordene må være like", () => {
-        return user.value.password === passwordRepeat.value;
-      }),
-    };
-  }
-  return {};
-});
-
-const rules = {
-  firstName: { required: helpers.withMessage("Fornavn er påkrevd", required) },
-  lastName: { required: helpers.withMessage("Etternavn er påkrevd", required) },
-  email: { required: helpers.withMessage("E-post er påkrevd", required) },
-  password: validatePassword,
-  passwordRepeat: validatePasswordRepeat,
-};
-
-const validator = useVuelidate(rules, inputFields as any);
-
-const emit = defineEmits<{
-  (event: "submit"): void;
-  (event: "update:modelValue", value: UserBody): void;
-}>();
-
-async function submit() {
-  let result = await validator.value.$validate();
-  if (!result) return;
-  if (!props.passwordField) {
-    user.value.password = undefined;
-    passwordRepeat.value = undefined;
-  }
-  emit("submit");
-}
-</script>
-
 <template>
   <form @submit.prevent="submit">
     <ValidatedInput
@@ -118,6 +42,90 @@ async function submit() {
   </form>
 </template>
 
+<script setup lang="ts">
+import type { UserBody, UserFull } from "@/services";
+import { computed, ref } from "vue";
+import ValidatedInput from "../inputs/ValidatedInput.vue";
+import { helpers, minLength, required } from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+
+// Define props
+const props = defineProps<{
+  modelValue: UserBody;
+  passwordField: boolean;
+  buttonTitle: string;
+}>();
+
+// Define emits
+const emit = defineEmits<{
+  (event: "submit"): void;
+  (event: "update:modelValue", value: UserBody): void;
+}>();
+
+// Define refs
+const passwordRepeat = ref("" as string | undefined);
+
+// Define computed values
+const user = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: any) {
+    const newUser = { ...props.modelValue, [value]: value };
+    emit("update:modelValue", newUser);
+  },
+});
+
+const inputFields = computed(() => {
+  return { ...(user.value as UserFull), passwordRepeat: passwordRepeat.value };
+});
+
+const rules = computed(() => {
+  return {
+    firstName: { required: helpers.withMessage("Fornavn er påkrevd", required) },
+    lastName: { required: helpers.withMessage("Etternavn er påkrevd", required) },
+    email: { required: helpers.withMessage("E-post er påkrevd", required) },
+    password: passwordValidators,
+    passwordRepeat: passwordRepeatValidators,
+  };
+});
+
+const passwordValidators = computed(() => {
+  if (props.passwordField) {
+    return {
+      required: helpers.withMessage("Passord er påkrevd", required),
+      minLength: helpers.withMessage("Passord må være minst 8 tegn", minLength(8)),
+    };
+  }
+  return {};
+});
+
+const passwordRepeatValidators = computed(() => {
+  if (props.passwordField) {
+    return {
+      required,
+      sameAsPassword: helpers.withMessage("Passordene må være like", () => {
+        return user.value.password === passwordRepeat.value;
+      }),
+    };
+  }
+  return {};
+});
+
+// Define callback functions
+async function submit() {
+  let result = await validator.value.$validate();
+  if (!result) return;
+  if (!props.passwordField) {
+    user.value.password = undefined;
+    passwordRepeat.value = undefined;
+  }
+  emit("submit");
+}
+
+const validator = useVuelidate(rules.value, inputFields as any);
+</script>
+
 <style scoped>
 form {
   display: flex;
@@ -136,8 +144,8 @@ form:deep(.wrapper) {
 form:deep(label, input) {
   display: block;
   width: 100%;
-  margin: 0px 0;
-  font-family: Inter;
+  margin: 0;
+  font-family: Inter, sans-serif;
 }
 
 form:deep(label) {
