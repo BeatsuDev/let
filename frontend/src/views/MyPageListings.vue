@@ -72,6 +72,7 @@ function fetchListings() {
       undefined,
       undefined,
       undefined,
+      undefined,
       router.currentRoute.value.name == "my-listings" ? sessionStore.getUser().id : undefined,
       router.currentRoute.value.name == "my-bookmarked-listings" ? true : undefined,
       undefined,
