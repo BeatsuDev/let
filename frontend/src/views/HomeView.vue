@@ -30,7 +30,7 @@ import PaginationView from "@/components/paginations/PaginationContainer.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import runAxios from "@/services/composable";
 import MainContainer from "@/components/containers/MainContainer.vue";
-import ListingsNotFound from "@/components/listings/ListingsNotFound.vue";
+import ListingsNotFound from "@/components/listings/NoListingsFound.vue";
 
 const listingRequest = ref({ listings: [] } as InlineResponse200);
 const loading = ref(false);

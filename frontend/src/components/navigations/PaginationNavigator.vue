@@ -5,7 +5,8 @@
   <span v-if="pages > 1" class="total">av {{ props.pages }}</span>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+// Define props and emits
 const props = defineProps({
   modelValue: {
     type: Number,
@@ -17,8 +18,10 @@ const props = defineProps({
   },
 });
 
+// Define emits
 const emit = defineEmits(["update:modelValue"]);
 
+// Define callback functions
 function nextPage() {
   if (props.modelValue < props.pages) emit("update:modelValue", props.modelValue + 1);
 }
@@ -27,6 +30,7 @@ function previousPage() {
   if (props.modelValue > 1) emit("update:modelValue", props.modelValue - 1);
 }
 </script>
+
 <style>
 .mono {
   min-width: 3rem;

@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import CollapseIcon from "@/components/icons/CollapseIcon.vue";
 
 const props = defineProps({
