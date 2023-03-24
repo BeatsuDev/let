@@ -4,8 +4,8 @@
     <PaginationView
       v-model="listingFilter.page"
       :total-pages="totalPages"
-      @collapse="$emit('update:collapsed', !props.collapsed)"
       collapse
+      @collapse="$emit('update:collapsed', !props.collapsed)"
     >
       <ListingScrollPane :listings="listings">
         <NoBookmarkedListings v-if="isBookmarked" />

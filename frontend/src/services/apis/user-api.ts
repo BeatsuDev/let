@@ -11,15 +11,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from "axios";
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
-import { CreateUser } from "../models";
-import { LoginUser } from "../models";
-import { UserBody } from "../models";
-import { UserFull } from "../models";
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import { CreateUser, LoginUser, UserBody, UserFull } from "../models";
+
 /**
  * UserApi - axios parameter creator
  * @export
@@ -775,6 +773,7 @@ export class UserApi extends BaseAPI {
       .createUser(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * This can only be done by the logged in user or admin
    * @summary Delete user
@@ -788,6 +787,7 @@ export class UserApi extends BaseAPI {
       .deleteUser(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Get the currently logged in user
    * @summary Get current user
@@ -800,6 +800,7 @@ export class UserApi extends BaseAPI {
       .getCurrentUser(options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Get user by id
@@ -816,6 +817,7 @@ export class UserApi extends BaseAPI {
       .getUserById(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Logs user into the system
@@ -832,6 +834,7 @@ export class UserApi extends BaseAPI {
       .loginUser(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Logs out current logged in user session
@@ -844,6 +847,7 @@ export class UserApi extends BaseAPI {
       .logoutUser(options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Renew session
@@ -856,6 +860,7 @@ export class UserApi extends BaseAPI {
       .renewSession(options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * This can only be done by the logged in user or admin
    * @summary Update user

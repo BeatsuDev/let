@@ -1,5 +1,5 @@
-import { ref } from "vue";
 import type { Ref } from "vue";
+import { ref } from "vue";
 import { AxiosResponse } from "axios";
 
 export default function runAxios<T>(promise: Promise<AxiosResponse<T>>) {

@@ -14,6 +14,7 @@
 import { ListingMinimal } from "./listing-minimal";
 import { ListingState } from "./listing-state";
 import { UserMinimal } from "./user-minimal";
+
 /**
  *
  * @export

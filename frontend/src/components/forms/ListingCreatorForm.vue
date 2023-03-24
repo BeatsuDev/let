@@ -1,13 +1,12 @@
-<script setup lang="ts">
-import { ref, reactive } from "vue";
+<script lang="ts" setup>
+import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, numeric } from "@vuelidate/validators";
+import { numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
 import axios from "axios";
-import type { Category, CreateListing } from "@/services";
+import type { Category, CreateListing, Location } from "@/services";
 import CategoryPicker from "../inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
-import type { Location } from "@/services";
 
 // Variables as they are from the inputs.
 //
@@ -108,68 +107,68 @@ function imageFileHandler(event: Event) {
 
 <template>
   <form @submit.prevent="submitData">
-    <div class="row" id="row-1">
+    <div id="row-1" class="row">
       <ValidatedInput
-        class="input-container"
         v-model="listingDataInputRefs.title"
-        title="Tittel"
-        placeholder="Rød rose - snart døende"
         :error="validator.title.$errors[0]"
+        class="input-container"
+        placeholder="Rød rose - snart døende"
+        title="Tittel"
       />
       <ValidatedInput
-        class="input-container"
         v-model="listingDataInputRefs.price"
-        title="Pris (kr)"
-        placeholder="249.99"
         :error="validator.price.$errors[0]"
+        class="input-container"
+        placeholder="249.99"
+        title="Pris (kr)"
       />
     </div>
 
-    <div class="row" id="row-2">
+    <div id="row-2" class="row">
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
-        <LocationPicker class="input-container" v-model="listingDataInputRefs.location" />
+        <LocationPicker v-model="listingDataInputRefs.location" class="input-container" />
       </div>
       <CategoryPicker
-        class="input-container"
         id="category-picker"
-        title="Kategori"
-        placeholder="Planter"
         v-model="listingDataInputRefs.category"
         :validation-error="validator.category.$errors[0]"
-      />
-    </div>
-
-    <div class="row" id="row-3">
-      <ValidatedInput
         class="input-container"
-        v-model="listingDataInputRefs.summary"
-        title="Kort beskrivelse"
-        input-type="textarea"
-        :error="validator.summary.$errors[0]"
+        placeholder="Planter"
+        title="Kategori"
       />
     </div>
 
-    <div class="row" id="row-4">
+    <div id="row-3" class="row">
+      <ValidatedInput
+        v-model="listingDataInputRefs.summary"
+        :error="validator.summary.$errors[0]"
+        class="input-container"
+        input-type="textarea"
+        title="Kort beskrivelse"
+      />
+    </div>
+
+    <div id="row-4" class="row">
       <ValidatedInput
         id="description"
-        class="input-container"
         v-model="listingDataInputRefs.description"
-        title="Detaljert beskrivelse"
-        input-type="textarea"
         :error="validator.description.$errors[0]"
+        class="input-container"
+        input-type="textarea"
+        title="Detaljert beskrivelse"
       />
     </div>
 
-    <div class="row" id="row-5">
+    <div id="row-5" class="row">
       <div class="input-container">
         <h3><label for="images">Last opp bilder</label></h3>
         <input
-          :class="{ 'input-text': true, 'red-border': validator.images.$error }"
-          @change="imageFileHandler"
-          type="file"
           id="images"
+          :class="{ 'input-text': true, 'red-border': validator.images.$error }"
           multiple
+          type="file"
+          @change="imageFileHandler"
         />
         <div v-if="validator.images.$error" id="error">
           {{ validator.images.$errors[0].$message }}
@@ -177,7 +176,7 @@ function imageFileHandler(event: Event) {
       </div>
     </div>
 
-    <div class="row" id="row-6">
+    <div id="row-6" class="row">
       <div class="input-container">
         <button class="button button-black button-screaming" type="submit">Publiser Annonse</button>
       </div>

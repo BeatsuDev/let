@@ -5,6 +5,6 @@
     <p>Vi fant dessverre ingen treff på søket ditt. Prøv å endre søkeordene eller søkeområdet.</p>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 </script>

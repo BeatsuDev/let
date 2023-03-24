@@ -8,8 +8,8 @@
       <PaginationView
         v-model="listingFilter.page"
         :total-pages="totalPages"
-        @collapse="collapsed = !collapsed"
         collapse
+        @collapse="collapsed = !collapsed"
       >
         <ListingScrollPane :listings="listings" :loading="loading">
           <ListingsNotFound></ListingsNotFound>
@@ -18,7 +18,7 @@
     </MainContainer>
   </main>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";

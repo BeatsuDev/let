@@ -12,6 +12,7 @@
  * Do not edit the class manually.
  */
 import { Location } from "./location";
+
 /**
  *
  * @export

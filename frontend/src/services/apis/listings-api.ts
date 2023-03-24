@@ -11,16 +11,19 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from "axios";
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
-import { CreateListing } from "../models";
-import { InlineResponse200 } from "../models";
-import { ListingFull } from "../models";
-import { ListingState } from "../models";
-import { UpdateListing } from "../models";
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import {
+  CreateListing,
+  InlineResponse200,
+  ListingFull,
+  ListingState,
+  UpdateListing,
+} from "../models";
+
 /**
  * ListingsApi - axios parameter creator
  * @export
@@ -974,6 +977,7 @@ export class ListingsApi extends BaseAPI {
       .addFavorite(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Check if a listing is in a user's favorites
    * @summary Check if a listing is in a user's favorites
@@ -990,6 +994,7 @@ export class ListingsApi extends BaseAPI {
       .checkFavorite(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Create a new listing.
@@ -1006,6 +1011,7 @@ export class ListingsApi extends BaseAPI {
       .createListing(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Delete a listing by ID.
    * @summary Delete an existing listing.
@@ -1022,6 +1028,7 @@ export class ListingsApi extends BaseAPI {
       .deleteListing(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Get a listing by ID
    * @summary Retrieve an existing listing
@@ -1038,6 +1045,7 @@ export class ListingsApi extends BaseAPI {
       .getListing(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Retrieve any listings matching a filter
@@ -1084,6 +1092,7 @@ export class ListingsApi extends BaseAPI {
       )
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Remove a listing from a user's favorites
    * @summary Remove a listing from a user's favorites
@@ -1100,6 +1109,7 @@ export class ListingsApi extends BaseAPI {
       .removeFavorite(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    *
    * @summary Update a listing

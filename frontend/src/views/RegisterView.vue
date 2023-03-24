@@ -18,6 +18,7 @@ const userEdit = ref({
   email: "",
   password: "",
 } as UserBody);
+
 function register() {
   userApi
     .createUser(userEdit.value)
@@ -52,8 +53,8 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
       <FullUserDetailsForm
         v-model="user"
         buttonTitle="Registrer"
-        @submit="register"
         password-field
+        @submit="register"
       />
       <AlertBox v-if="errorMessage" :message="errorMessage" />
       <RouterLink to="/login">Jeg har en konto!</RouterLink>

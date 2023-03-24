@@ -1,6 +1,6 @@
 <template>
   <div class="menu">
-    <button v-if="collapse" @click="$emit('collapse')" class="button">
+    <button v-if="collapse" class="button" @click="$emit('collapse')">
       <FilterIcon class="button-icon" />
       Meny
     </button>
@@ -13,10 +13,11 @@
     <ListPagination v-model="page" :pages="totalPages"></ListPagination>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import ListPagination from "@/components/navigations/PaginationNavigator.vue";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
 import { computed } from "vue";
+
 const props = defineProps({
   totalPages: {
     type: Number,

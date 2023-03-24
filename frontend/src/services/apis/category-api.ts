@@ -11,13 +11,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from "axios";
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
-import { Category } from "../models";
-import { CreateCategory } from "../models";
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import { Category, CreateCategory } from "../models";
+
 /**
  * CategoryApi - axios parameter creator
  * @export
@@ -434,6 +434,7 @@ export class CategoryApi extends BaseAPI {
       .createCategory(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Delete a category by ID
    * @summary Delete an existing category
@@ -450,6 +451,7 @@ export class CategoryApi extends BaseAPI {
       .deleteCategory(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Retrieve all categories
    * @summary Retrieve all categories
@@ -464,6 +466,7 @@ export class CategoryApi extends BaseAPI {
       .getCategories(options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Get a category by ID
    * @summary Retrieve an existing category

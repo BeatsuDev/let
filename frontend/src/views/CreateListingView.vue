@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
 import type { CreateListing } from "@/services/index";
 import { ListingsApi } from "@/services/index";

@@ -11,8 +11,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CreateListing } from "./create-listing";
 import { Location } from "./location";
+
 /**
  *
  * @export

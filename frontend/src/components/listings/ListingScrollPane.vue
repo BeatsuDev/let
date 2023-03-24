@@ -1,10 +1,10 @@
 <template>
-  <slot class="no-listing" v-if="listings === undefined && !loading" />
+  <slot v-if="listings === undefined && !loading" class="no-listing" />
   <div class="main">
     <h1 v-if="loading" class="loading center-text">Laster inn</h1>
     <ListingCard
-      v-else
       v-for="listing in props.listings"
+      v-else
       :key="listing.id"
       :value="listing"
       @click="goToListing"
@@ -16,7 +16,6 @@ import ListingCard from "@/components/listings/ListingCard.vue";
 import type { PropType } from "vue";
 import router from "@/router";
 import type { ListingMinimal } from "@/services/models";
-import { computed } from "vue";
 
 const props = defineProps({
   listings: {
@@ -28,6 +27,7 @@ const props = defineProps({
     default: false,
   },
 });
+
 function goToListing(id: number) {
   router.push("/listing/" + id);
 }
@@ -37,6 +37,7 @@ function goToListing(id: number) {
   margin-top: 10rem;
   margin-bottom: auto;
 }
+
 .main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -45,6 +46,7 @@ function goToListing(id: number) {
   width: 100%;
   transition: 2s;
 }
+
 .loading {
   margin: auto;
 }

@@ -3,25 +3,25 @@
     <h1>Rediger profilen din</h1>
     <button class="button no" @click="$emit('update:collapsed', !collapsed)">Meny</button>
     <FullUserDetailsForm
+      v-model="userEdit"
+      :password-field="changePassword"
       button-title="ENDRE"
       @input="clearMessages"
-      v-model="userEdit"
       @submit="updateUser"
-      :password-field="changePassword"
     />
     <button class="button" style="margin-top: 1rem" @click="changePassword = !changePassword">
       Vil du bytte passord også?
     </button>
     <AlertBox
       v-if="user.email !== userEdit.email"
-      type="warning"
       message="Du må logge inn på nytt etter å ha endret eposten din."
+      type="warning"
     />
     <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error" />
     <AlertBox v-if="success !== ''" :message="success" type="success" />
   </MainContainer>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
 import MainContainer from "@/components/containers/MainContainer.vue";
 import { UserApi } from "@/services/apis/user-api";

@@ -2,30 +2,30 @@
   <h3 class="drawer-item">Kategori</h3>
   <div
     v-for="(category, index) in categories"
-    class="category text-paragraph hide-overflow"
     :key="index"
     :class="{ 'active-category': value.category === category.id }"
+    class="category text-paragraph hide-overflow"
     @click="selectCategory(category)"
   >
     {{ category.name }}
   </div>
   <h3 class="nav-title">Søk</h3>
-  <input type="text" v-model="searchValue" @input="search" class="input-text" />
+  <input v-model="searchValue" class="input-text" type="text" @input="search" />
   <h3 class="nav-title">Lokasjon</h3>
   <LocationPicker v-model="value.location" />
   <h3 class="nav-title">Radius</h3>
   <input
-    type="range"
-    class="slider"
     v-model="radius"
-    @mouseup="value.radius = radius"
+    class="slider"
     style="width: 100%"
+    type="range"
+    @mouseup="value.radius = radius"
   />
   <div class="center-text">{{ radius }}km</div>
 </template>
 
 <script lang="ts" setup>
-import { computed, type PropType, ref, type WritableComputedRef } from "vue";
+import { computed, type PropType, ref } from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { Category } from "@/services/models";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import { useRoute } from "vue-router";
 import { ListingFull, ListingsApi } from "@/services/index";
@@ -64,14 +64,14 @@ function handleBookmarkClick() {
   <div v-else-if="error">Error: {{ error }}</div>
   <main v-else-if="data">
     <div id="images-section">
-      <img :src="mainImage" id="main-image" />
+      <img id="main-image" :src="mainImage" />
       <div id="other-images">
         <img
-          :key="index"
           v-for="(image_url, index) in data.galleryUrls"
+          :key="index"
           :src="image_url"
-          @click="mainImage = data.galleryUrls[index]"
           loading="lazy"
+          @click="mainImage = data.galleryUrls[index]"
         />
       </div>
     </div>

@@ -1,11 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { UserBody, UserFull } from "@/services";
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import ValidatedInput from "../inputs/ValidatedInput.vue";
-import { required, email, minLength, sameAs } from "@vuelidate/validators";
+import { helpers, minLength, required } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
-import { helpers } from "@vuelidate/validators";
 const passwordRepeat = ref("" as string | undefined);
 const props = defineProps<{
   modelValue: UserBody;
@@ -79,40 +78,40 @@ async function submit() {
   <form @submit.prevent="submit">
     <ValidatedInput
       v-model="user.firstName"
-      title="Fornavn"
       :error="validator.firstName.$errors[0]"
       placeholder="Ola"
+      title="Fornavn"
     />
     <ValidatedInput
       v-model="user.lastName"
-      title="Etternavn"
       :error="validator.lastName.$errors[0]"
       placeholder="Sørmann"
+      title="Etternavn"
     />
     <ValidatedInput
       v-model="user.email"
-      input-type="email"
-      title="Email"
       :error="validator.email.$errors[0]"
+      input-type="email"
       placeholder="ola.sormann@gmail.com"
+      title="Email"
     />
     <ValidatedInput
+      v-if="passwordField"
       v-model="user.password"
-      input-type="password"
-      title="Passord"
       :error="validator.password.$errors[0]"
-      placeholder="sikker123"
       class="transition"
-      v-if="passwordField"
+      input-type="password"
+      placeholder="sikker123"
+      title="Passord"
     />
     <ValidatedInput
-      v-model="passwordRepeat"
-      input-type="password"
-      title="Gjenta passord"
-      :error="validator.passwordRepeat.$errors[0]"
-      placeholder="sikker123"
-      class="transition"
       v-if="passwordField"
+      v-model="passwordRepeat"
+      :error="validator.passwordRepeat.$errors[0]"
+      class="transition"
+      input-type="password"
+      placeholder="sikker123"
+      title="Gjenta passord"
     />
 
     <button class="button button-black">{{ props.buttonTitle }}</button>

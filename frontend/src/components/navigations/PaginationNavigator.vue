@@ -1,8 +1,8 @@
 <template>
-  <button @click="previousPage" class="button">Forrige</button>
-  <button disabled class="button button-black mono">{{ props.modelValue }}</button>
-  <button @click="nextPage" class="button">Neste</button
-  ><span class="total" v-if="pages > 1">av {{ props.pages }}</span>
+  <button class="button" @click="previousPage">Forrige</button>
+  <button class="button button-black mono" disabled>{{ props.modelValue }}</button>
+  <button class="button" @click="nextPage">Neste</button>
+  <span v-if="pages > 1" class="total">av {{ props.pages }}</span>
 </template>
 
 <script lang="ts" setup>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
@@ -29,20 +29,20 @@ const inputData = computed({
     <!-- Textarea if the props.inputType is textarea -->
     <textarea
       v-if="props.inputType === 'textarea'"
-      :class="{ 'red-border': error }"
-      class="input-text"
       v-model="inputData"
+      :class="{ 'red-border': error }"
       :placeholder="placeholder"
+      class="input-text"
     ></textarea>
 
     <!-- Otherwise it's just a normal input -->
     <input
       v-else
-      :class="{ 'red-border': error }"
-      class="input-text"
       v-model="inputData"
-      :type="inputType"
+      :class="{ 'red-border': error }"
       :placeholder="placeholder"
+      :type="inputType"
+      class="input-text"
     />
     <div v-if="error" id="error">{{ error.$message }}</div>
   </div>
