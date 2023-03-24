@@ -1,110 +1,3 @@
-<script lang="ts" setup>
-import { reactive } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { numeric, required } from "@vuelidate/validators";
-import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
-import axios from "axios";
-import type { Category, CreateListing, Location } from "@/services";
-import CategoryPicker from "../inputs/CategoryPicker.vue";
-import LocationPicker from "@/components/inputs/LocationPicker.vue";
-
-// Variables as they are from the inputs.
-//
-// The price is a string, but it should be a number.
-// Category is a string, but it should be a number.
-// Images is an array of files, but it should be an array of URLs (strings).
-//
-// These things need to be changed before the createListing event is emitted.
-const listingDataInputRefs = reactive({
-  title: "",
-  price: "",
-  location: {} as Location,
-  category: {} as Category,
-  summary: "",
-  description: "",
-  images: [] as File[],
-});
-
-const rules = {
-  title: { required },
-  price: { required, numeric },
-  location: { required },
-  category: { required },
-  summary: { required },
-  description: { required },
-  images: { required },
-};
-
-const validator = useVuelidate(rules, listingDataInputRefs);
-
-// Emit form data to parent component
-const emit = defineEmits<{
-  (event: "createListing", listingData: CreateListing): void;
-}>();
-
-async function submitData() {
-  console.log("submitting data");
-
-  // Check if inputs follow validation rules
-  const result = await validator.value.$validate();
-  if (!result) {
-    console.error("Validation failed: ", validator.value.$errors);
-    return;
-  }
-
-  console.log("Uploading images...");
-
-  // Upload images to backend
-  const imageResponses = await Promise.all(
-    listingDataInputRefs.images.map((image) => {
-      const formData = new FormData();
-      formData.append("image", image);
-      return axios.post("http://localhost:8080/image", formData);
-    })
-  );
-
-  // Make sure all image responses are successful
-  const imageSuccesses = imageResponses.map(
-    (response) => response.status === 201 && response.data.url
-  );
-
-  if (imageSuccesses.includes(false)) {
-    alert(
-      "Noe gikk galt under bildeopplastningen... " +
-        imageResponses.filter((response) => response.status !== 201)[0].data
-    );
-    return;
-  }
-
-  console.log("Images uploaded. Getting URLs... ");
-
-  const imageIds = imageResponses.map((image) => image.data.id) as string[];
-  const { price, location, images, category, ...data } = listingDataInputRefs;
-  const thumbnailId = imageResponses[0].data.id;
-
-  const listingDataWithImages = {
-    ...data,
-    categoryId: category.id,
-    location: { ...listingDataInputRefs.location },
-    price: Number(listingDataInputRefs.price),
-    thumbnailId,
-    galleryIds: imageIds,
-  } as CreateListing;
-
-  console.log("Emitting createListing event...");
-
-  emit("createListing", listingDataWithImages);
-}
-
-function imageFileHandler(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const files = target.files;
-  if (files) {
-    listingDataInputRefs.images = Array.from(files);
-  }
-}
-</script>
-
 <template>
   <form @submit.prevent="submitData">
     <div id="row-1" class="row">
@@ -145,7 +38,7 @@ function imageFileHandler(event: Event) {
         :error="validator.summary.$errors[0]"
         class="input-container"
         input-type="textarea"
-        title="Kort beskrivelse"
+        title="Kort beskrivelse (Maks 100 tegn)"
       />
     </div>
 
@@ -181,8 +74,123 @@ function imageFileHandler(event: Event) {
         <button class="button button-black button-screaming" type="submit">Publiser Annonse</button>
       </div>
     </div>
+    <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
   </form>
 </template>
+
+<script setup lang="ts">
+import { reactive, ref } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
+import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
+import axios from "axios";
+import type { Category, CreateListing, Location } from "@/services";
+import CategoryPicker from "../inputs/CategoryPicker.vue";
+import LocationPicker from "@/components/inputs/LocationPicker.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
+
+// Variables as they are from the inputs.
+//
+// The price is a string, but it should be a number.
+// Category is a string, but it should be a number.
+// Images is an array of files, but it should be an array of URLs (strings).
+//
+// These things need to be changed before the createListing event is emitted.
+
+// Emit form data to parent component
+const emit = defineEmits<{
+  (event: "createListing", listingData: CreateListing): void;
+}>();
+
+// Define refs
+const errorMessage = ref("" as string);
+const listingDataInputRefs = reactive({
+  title: "",
+  price: "",
+  location: {} as Location,
+  category: {} as Category,
+  summary: "",
+  description: "",
+  images: [] as File[],
+});
+
+const rules = {
+  title: { required: helpers.withMessage("Tittel er påkrevd", required) },
+  price: {
+    required: helpers.withMessage("Pris er pekrevd", required),
+    numeric: helpers.withMessage("Pris må være et tall", numeric),
+  },
+  location: { required: helpers.withMessage("Lokasjon er påkrevd", required) },
+  category: { required: helpers.withMessage("Kategori er påkrevd", required) },
+  summary: {
+    required: helpers.withMessage("Sammendrag er påkrevd", required),
+    maxLength: helpers.withMessage("Sammendrag kan ikke være lengre enn 100 tegn", maxLength(100)),
+  },
+  description: { required: helpers.withMessage("Beskrivelse er påkrevd", required) },
+  images: {
+    required: helpers.withMessage("Bilder er påkrevd", required),
+    images: helpers.withMessage("Bilder må være mindre enn 5 MB", (images: File[]) =>
+      images.every((image) => image.size < 1024 * 1024)
+    ),
+  },
+};
+
+const validator = useVuelidate(rules, listingDataInputRefs);
+
+//Define callback functions
+async function submitData() {
+  // Check if inputs follow validation rules
+  const result = await validator.value.$validate();
+  if (!result) {
+    return;
+  }
+
+  // Upload images to backend
+  const imageResponses = await Promise.all(
+    listingDataInputRefs.images.map((image) => {
+      const formData = new FormData();
+      formData.append("image", image);
+      return axios.post("http://localhost:8080/image", formData);
+    })
+  );
+
+  // Make sure all image responses are successful
+  const imageSuccesses = imageResponses.map(
+    (response) => response.status === 201 && response.data.url
+  );
+
+  if (imageSuccesses.includes(false)) {
+    errorMessage.value =
+      "Noe gikk galt under bildeopplastningen... " +
+      imageResponses.filter((response) => response.status !== 201)[0].data;
+    return;
+  }
+
+  const imageIds = imageResponses.map((image) => image.data.id) as string[];
+  const { price, location, images, category, ...data } = listingDataInputRefs;
+  const thumbnailId = imageResponses[0].data.id;
+
+  const listingDataWithImages = {
+    ...data,
+    categoryId: category.id,
+    location: { ...listingDataInputRefs.location },
+    price: Math.round(Number(listingDataInputRefs.price) * 100),
+    thumbnailId,
+    galleryIds: imageIds,
+  } as unknown as CreateListing;
+
+  emit("createListing", listingDataWithImages);
+}
+
+//Other script logic
+function imageFileHandler(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+  if (files) {
+    listingDataInputRefs.images = Array.from(files);
+  }
+}
+</script>
 
 <style scoped>
 label {
