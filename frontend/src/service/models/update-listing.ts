@@ -38,7 +38,7 @@ export interface UpdateListing {
    */
   description?: string;
   /**
-   * Price in Ã¸re
+   * Price in øre
    * @type {number}
    * @memberof UpdateListing
    */
