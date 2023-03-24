@@ -1,39 +1,28 @@
 <script lang="ts" setup>
-import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
-import { useRoute } from "vue-router";
-import { ListingFull, ListingsApi } from "@/services/index";
-import FullPageLoading from "@/components/containers/FullPageLoading.vue";
 import { ref } from "vue";
+import router from "@/router";
+
+import { ListingsApi } from "@/services/index";
+import type { ListingFull } from "@/services/index";
 import { useSessionStore } from "@/stores/sessionStore";
 
-const route = useRoute();
+import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
+import FullPageLoading from "@/components/containers/FullPageLoading.vue";
+
+// Define APIs
 const api = new ListingsApi();
-const mainImage = ref(null as string | null);
-const id = Number(route.params.id);
-const data = ref(null as ListingFull | null);
+
+// Define variables
+const id = Number(router.currentRoute.value.params.id);
 const sessionStore = useSessionStore();
+
+// Define refs
+const isBookmarked = ref(false);
+const mainImage = ref(null as string | null);
+const data = ref(null as ListingFull | null);
 const error = ref(null as Error | null);
 
-api
-  .getListing(id)
-  .then((response) => {
-    data.value = response.data;
-    mainImage.value = response.data.galleryUrls[0] || null;
-  })
-  .catch((e) => {
-    error.value = e;
-  });
-
-const isBookmarked = ref(false);
-api
-  .checkFavorite(id)
-  .then((response) => {
-    isBookmarked.value = response.data;
-  })
-  .catch((e) => {
-    error.value = e;
-  });
-
+// Define callbacks
 function handleBookmarkClick() {
   if (isBookmarked.value) {
     api
@@ -53,8 +42,26 @@ function handleBookmarkClick() {
       .catch((e) => {
         error.value = e;
       });
+    }
   }
-}
+
+// Other script logic
+api.getListing(id)
+  .then((response) => {
+    data.value = response.data;
+    mainImage.value = response.data.galleryUrls[0];
+  })
+  .catch((e) => {
+    error.value = e;
+  });
+
+api.checkFavorite(id)
+  .then((response) => {
+    isBookmarked.value = response.data;
+  })
+  .catch((e) => {
+    error.value = e;
+  });
 </script>
 
 <template>
