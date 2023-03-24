@@ -8,6 +8,7 @@
       :email="user.email"
       button-title="ENDRE"
       v-model="user"
+      @update="clearMessages"
       @submit="updateUser"
       :password-field="changePassword"
     />
@@ -45,9 +46,12 @@ function updateUser(user: UserBody) {
     .updateUser(user)
     .then((response) => {
       success.value = "Brukeren din ble oppdatert";
+      setTimeout(() => {
+        success.value = "";
+      }, 5000);
 
       sessionStore.authenticate(response.data);
-      emit("update:collapsed", true);
+      changePassword.value = false;
     })
     .catch((error) => {
       if (error.response.status === 400) {
@@ -59,6 +63,10 @@ function updateUser(user: UserBody) {
       } else {
         errorMessage.value = "En uventet feil oppstod. Prøv igjen senere";
       }
+      setTimeout(() => {
+        errorMessage.value = "";
+      }, 10000);
     });
 }
+
 </script>
