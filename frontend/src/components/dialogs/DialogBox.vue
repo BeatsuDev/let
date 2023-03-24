@@ -9,6 +9,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
+// define props
 const props = defineProps({
   type: {
     type: String,
@@ -23,6 +24,7 @@ const props = defineProps({
   },
 });
 
+// define computed values
 const getCssClasses = computed(() => {
   return {
     main: true,
