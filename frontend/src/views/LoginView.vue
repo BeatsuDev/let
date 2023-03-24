@@ -4,6 +4,7 @@ import { useSessionStore } from "@/stores/sessionStore";
 import { UserApi } from "@/service/apis/user-api";
 import router from "@/router";
 import Alert from "@/components/forms/AlertBox.vue";
+import AlertBox from "@/components/forms/AlertBox.vue";
 
 const userApi = new UserApi();
 const errorMessage = ref("");
@@ -71,7 +72,7 @@ function clearError() {
         placeholder="sikker123"
       />
       <button class="button button-black" type="submit">Logg in</button>
-      <Alert type="error" :error="errorMessage" v-if="errorMessage !== ''"></Alert>
+      <AlertBox type="error" :message="errorMessage" v-if="errorMessage !== ''"></AlertBox>
       <RouterLink to="/register">Har du ikke en konto?</RouterLink>
     </form>
   </div>

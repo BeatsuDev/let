@@ -49,7 +49,7 @@ const listingFilter = ref(new ListingFilter());
 const listingApi = new ListingsApi();
 const categoryApi = new CategoryApi();
 
-const { data } = runAxios(categoryApi.getCategories());
+const { data, error } = runAxios(categoryApi.getCategories());
 const categories = data;
 
 fetchListings();

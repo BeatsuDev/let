@@ -5,7 +5,6 @@ import { UserApi } from "@/service/index";
 import { useSessionStore } from "@/stores/sessionStore";
 import router from "@/router";
 import { ref } from "vue";
-import Alert from "@/components/forms/AlertBox.vue";
 import AlertBox from "@/components/forms/AlertBox.vue";
 
 const userApi = new UserApi();
@@ -43,8 +42,8 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
     <div class="form-container">
-      <FullUserDetailsForm buttonTitle="Registrer" @submit="register" />
-      <AlertBox v-if="errorMessage" :error="errorMessage" />
+      <FullUserDetailsForm buttonTitle="Registrer" @submit="register" password-field />
+      <AlertBox v-if="errorMessage" :message="errorMessage" />
       <RouterLink to="/login">Jeg har en konto!</RouterLink>
     </div>
   </div>
