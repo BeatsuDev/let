@@ -28,8 +28,8 @@
 import { computed, type PropType, ref, type WritableComputedRef } from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { Category } from "@/services/models";
-import LocationPicker from "@/components/forms/inputs/LocationPicker.vue";
-import { InputHandler } from "@/util/input-delay";
+import LocationPicker from "@/components/inputs/LocationPicker.vue";
+import { InputHandler } from "@/utils/input-delay";
 
 // Define props
 const props = defineProps({

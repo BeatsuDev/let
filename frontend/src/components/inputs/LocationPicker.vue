@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { lookUpLocation } from "@/services/location-api";
-import { InputHandler } from "@/util/input-delay";
+import { InputHandler } from "@/utils/input-delay";
 import { Location } from "@/services/models/location";
 
 const locations = ref([]);

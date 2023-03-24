@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { CategoryApi, type Category } from "@/services";
+import { CategoryApi, type Category } from "@/services/index";
 import runAxios from "@/services/composable";
 import { ref, computed, onMounted } from "vue";
 
