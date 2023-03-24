@@ -144,7 +144,6 @@ main {
 #other-images {
   margin-top: 1rem;
   display: flex;
-  justify-content: center;
   white-space: nowrap;
   max-width: 100%;
   overflow-x: auto;
