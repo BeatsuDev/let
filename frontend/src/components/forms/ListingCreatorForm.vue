@@ -2,11 +2,11 @@
 import { ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, numeric } from "@vuelidate/validators";
-import ValidatedInput from "@/components/forms/inputs/ValidatedInput.vue";
+import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
 import axios from "axios";
 import type { Category, CreateListing } from "@/services";
-import CategoryPicker from "./inputs/CategoryPicker.vue";
-import LocationPicker from "@/components/forms/inputs/LocationPicker.vue";
+import CategoryPicker from "../inputs/CategoryPicker.vue";
+import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import type { Location } from "@/services";
 
 // Variables as they are from the inputs.
