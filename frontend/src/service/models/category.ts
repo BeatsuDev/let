@@ -24,4 +24,11 @@ export interface Category {
    * @memberof Category
    */
   name?: string;
+
+  /**
+   * 
+   * @type {string}
+   * @memberof Category
+   */
+  id?: number;
 }
