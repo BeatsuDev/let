@@ -46,7 +46,7 @@ const categoryApi = new CategoryApi();
 const props = defineProps<{
   title: string;
   validationError?: any;
-  modelValue?: string; // The data that the user writes in the input will be updated here
+  modelValue?: Category; // The data that the user writes in the input will be updated here
   placeholder?: string;
 }>();
 
