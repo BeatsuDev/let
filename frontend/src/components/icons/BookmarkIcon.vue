@@ -9,11 +9,9 @@ const emits = defineEmits<{
   (event: "toggleBookmark", newValue: boolean): void;
 }>();
 
-const { bookmarked } = toRefs(props);
-
 function bookmarkClickHandler(event: MouseEvent) {
   event.stopPropagation();
-  emits("toggleBookmark", !bookmarked.value);
+  emits("toggleBookmark", !props.bookmarked);
 }
 </script>
 

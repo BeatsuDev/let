@@ -1,45 +1,73 @@
 <script setup lang="ts">
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import { useRoute } from "vue-router";
-import { ListingsApi } from "@/service/index";
-import runAxios from "@/service/composable";
+import { ListingFull, ListingsApi } from "@/service/index";
 import FullPageLoading from "@/components/FullPageLoading.vue";
+import { ref } from "vue";
+import { useSessionStore } from "@/stores/sessionStore";
 
 const route = useRoute();
 const api = new ListingsApi();
-
+const mainImage = ref(null as string | null);
 const id = Number(route.params.id);
-const { data, error } = runAxios(api.getListing(id));
+const data = ref(null as ListingFull | null);
+const sessionStore = useSessionStore();
+const error = ref(null as Error | null);
 
-function handleImageClick(event: MouseEvent) {
-  const image = event.target as HTMLImageElement;
-  const mainImage = document.getElementById("main-image") as HTMLImageElement;
-  mainImage.src = image.src;
-}
+api
+  .getListing(id)
+  .then((response) => {
+    data.value = response.data;
+    mainImage.value = response.data.galleryUrls[0] || null;
+  })
+  .catch((e) => {
+    error.value = e;
+  });
 
-const tempItem = {
-  isBookmarked: false,
-};
+const isBookmarked = ref(false);
+api.checkFavorite(id).then((response) => {
+  isBookmarked.value = response.data;
+}).catch((e) => {
+  error.value = e;
+});
 
 function handleBookmarkClick() {
-  tempItem.isBookmarked = !tempItem.isBookmarked;
-  console.log(tempItem.isBookmarked);
+  if (isBookmarked.value) {
+    api
+      .removeFavorite(id)
+      .then(() => {
+        isBookmarked.value = false;
+      })
+      .catch((e) => {
+        error.value = e;
+      });
+  } else {
+    api
+      .addFavorite(id)
+      .then(() => {
+        isBookmarked.value = true;
+      })
+      .catch((e) => {
+        error.value = e;
+      });
+  }
 }
 </script>
 
 <template>
-  <div v-if="!data && !error"><FullPageLoading /></div>
+  <div v-if="!data && !error">
+    <FullPageLoading />
+  </div>
   <div v-else-if="error">Error: {{ error }}</div>
   <main v-else-if="data">
     <div id="images-section">
-      <img :src="data.galleryUrls![0]" id="main-image" />
+      <img :src="mainImage" id="main-image" />
       <div id="other-images">
         <img
-          :id="'image-' + index"
-          :key="'image-' + index"
+          :key="index"
           v-for="(image_url, index) in data.galleryUrls"
           :src="image_url"
-          @click="handleImageClick"
+          @click="mainImage = data.galleryUrls[index]"
           loading="lazy"
         />
       </div>
@@ -48,11 +76,17 @@ function handleBookmarkClick() {
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ data.title }}</h1>
-        <div id="edit-btn" class="button-slim button-green button-screaming">Rediger</div>
+        <div
+          v-if="sessionStore.getUser()?.id === data.seller.id"
+          id="edit-btn"
+          class="button-slim button-green button-screaming"
+        >
+          Rediger
+        </div>
         <div id="bookmark-btn">
           <BookmarkIcon
-            :bookmarked="tempItem.isBookmarked"
-            :class="{ filled: tempItem.isBookmarked }"
+            :bookmarked="isBookmarked"
+            :class="{ filled: isBookmarked }"
             @toggleBookmark="handleBookmarkClick"
           />
         </div>
