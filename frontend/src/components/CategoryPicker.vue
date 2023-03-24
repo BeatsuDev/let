@@ -9,9 +9,6 @@
       @keyup="filterResults"
       @change="filterResults"
     />
-    <div v-if="props.validationError" id="error">
-      {{ props.validationError }}
-    </div>
     <div class="dropdown">
       <div v-if="!error && !categories">
         loading...
@@ -30,12 +27,15 @@
         </div>
       </div>
     </div>
+    <div v-if="props.validationError" id="error">
+      {{ props.validationError.$message }}
+    </div>
   </div>
 
 </template>
 
 <script setup lang="ts">
-import { CategoryApi } from "@/service/index";
+import { CategoryApi, type Category } from "@/service/index";
 import runAxios from "@/service/composable";
 import { ref, computed, onMounted } from "vue";
 
@@ -52,7 +52,7 @@ const props = defineProps<{
 
 // Define emits
 const emit = defineEmits<{
-  (event: "update:modelValue", value: string): void;
+  (event: "update:modelValue", value: Category): void;
 }>();
 
 // Define refs;
@@ -71,9 +71,9 @@ const inputData = computed({
     const category = categories.value?.find((c) => c.name === value);
 
     if (category) {
-      emit("update:modelValue", value);
+      emit("update:modelValue", { id: category.id, name: category.name });
     } else {
-      emit("update:modelValue", "");
+      emit("update:modelValue", {} as Category);
     }
   },
 });
