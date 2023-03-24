@@ -5,6 +5,6 @@
     <p>Du kan bokmere annonser ved å trykke på bokmerk ikonet på en annonse du er interessert i.</p>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 </script>

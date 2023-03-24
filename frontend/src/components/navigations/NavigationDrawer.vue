@@ -6,7 +6,7 @@
       'drawer-active': !props.modelValue,
     }"
   >
-    <button style="margin-bottom: 1.5rem" @click="collapse" class="button close">
+    <button class="button close" style="margin-bottom: 1.5rem" @click="collapse">
       <CollapseIcon class="button-icon" />
       Skjul
     </button>
@@ -67,6 +67,7 @@ function collapse() {
     height: 100%;
     margin-top: 0;
   }
+
   .close {
     display: block;
   }

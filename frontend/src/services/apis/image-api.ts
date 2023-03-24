@@ -11,12 +11,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from "axios";
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
 import { Image } from "../models";
+
 /**
  * ImageApi - axios parameter creator
  * @export
@@ -235,6 +236,7 @@ export class ImageApi extends BaseAPI {
       .imageIdGet(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Upload a new image
    * @summary Upload an image

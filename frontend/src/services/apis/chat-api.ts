@@ -11,15 +11,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from "axios";
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from "../base";
-import { Chat } from "../models";
-import { CreateChat } from "../models";
-import { CreateMessage } from "../models";
-import { Message } from "../models";
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import { Chat, CreateChat, CreateMessage, Message } from "../models";
+
 /**
  * ChatApi - axios parameter creator
  * @export
@@ -469,6 +467,7 @@ export class ChatApi extends BaseAPI {
       .createChat(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Get a chat by ID
    * @summary Retrieve an existing chat
@@ -482,6 +481,7 @@ export class ChatApi extends BaseAPI {
       .getChat(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Retrieve all chats
    * @summary Retrieve all chats
@@ -494,6 +494,7 @@ export class ChatApi extends BaseAPI {
       .getChats(options)
       .then((request) => request(this.axios, this.basePath));
   }
+
   /**
    * Send a message to an existing chat
    * @summary Send a message to an existing chat

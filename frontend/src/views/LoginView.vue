@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
 import { UserApi } from "@/services/apis/user-api";
 import router from "@/router";
-import Alert from "@/components/dialogs/AlertBox.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 
 const userApi = new UserApi();
@@ -55,24 +54,24 @@ function clearError() {
     <form @submit.prevent="login">
       <label for="email">Email</label>
       <input
-        class="input-text"
-        type="email"
         id="email"
         v-model="email"
-        @input="clearError"
+        class="input-text"
         placeholder="ola.sormann@gmail.com"
+        type="email"
+        @input="clearError"
       />
       <label for="password">Passord</label>
       <input
-        class="input-text"
-        type="password"
         id="password"
         v-model="password"
-        @input="clearError"
+        class="input-text"
         placeholder="sikker123"
+        type="password"
+        @input="clearError"
       />
       <button class="button button-black" type="submit">Logg in</button>
-      <AlertBox type="error" :message="errorMessage" v-if="errorMessage !== ''"></AlertBox>
+      <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error"></AlertBox>
       <RouterLink to="/register">Har du ikke en konto?</RouterLink>
     </form>
   </div>

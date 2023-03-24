@@ -8,7 +8,7 @@
     <RouterView v-model:collapsed="collapsed"></RouterView>
   </main>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
 import { ref } from "vue";
 

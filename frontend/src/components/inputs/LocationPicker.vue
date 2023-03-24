@@ -1,14 +1,14 @@
 <template>
   <div class="dropdown">
     <input
-      class="input-text"
-      type="text"
-      placeholder="Search.."
       v-model="input"
+      class="input-text"
+      placeholder="Search.."
+      type="text"
       @keyup="searchWithDelay"
     />
     <div class="dropdown-content">
-      <div @click="setValue(location)" v-for="location in locations" :key="location">
+      <div v-for="location in locations" :key="location" @click="setValue(location)">
         {{ location.country }},
         {{ location.name }}
       </div>

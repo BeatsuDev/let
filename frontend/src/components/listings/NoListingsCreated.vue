@@ -5,6 +5,6 @@
     <p>Du kan opprette en annonse ved å trykke på "ny annonse" øverst på siden.</p>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
 </script>

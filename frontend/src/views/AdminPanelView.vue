@@ -1,4 +1,4 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <template>
   <div class="wrapper">
@@ -9,7 +9,7 @@
           <h2>Lag Ny Kategori</h2>
           <form>
             <div class="form-group">
-              <input class="input-text" type="text" id="name" placeholder="Elektronikk" />
+              <input id="name" class="input-text" placeholder="Elektronikk" type="text" />
             </div>
             <div class="form-group">
               <button class="button button-black button-screaming" type="submit">

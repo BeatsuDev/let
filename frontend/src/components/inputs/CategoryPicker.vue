@@ -4,12 +4,12 @@
       <label for="category-picker">{{ title }}</label>
     </h3>
     <input
-      name="category-picker"
       v-model="inputData"
-      :placeholder="props.placeholder"
       :class="{ 'input-text': true, 'red-border': props.validationError }"
-      @keyup="filterResults"
+      :placeholder="props.placeholder"
+      name="category-picker"
       @change="filterResults"
+      @keyup="filterResults"
     />
     <div class="dropdown">
       <div v-if="!error && !categories">loading...</div>
@@ -33,10 +33,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { CategoryApi, type Category } from "@/services/index";
+<script lang="ts" setup>
+import { type Category, CategoryApi } from "@/services/index";
 import runAxios from "@/services/composable";
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 // Define apis
 const categoryApi = new CategoryApi();

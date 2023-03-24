@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { RouterLink } from "vue-router";
 import AdminIcon from "@/components/icons/AdminIcon.vue";
 import ChatIcon from "@/components/icons/ChatIcon.vue";
@@ -20,14 +20,14 @@ const highestRole = computed(() => sessionStore.getHighestRole());
         <RouterLink class="nav-item" style="margin-left: 1rem" to="/">letno</RouterLink>
         <div class="spacer"></div>
         <RouterLink
-          class="nav-item"
           v-if="sessionStore.isAuthenticated && highestRole === 'ADMIN'"
+          class="nav-item"
           to="/admin"
         >
           <AdminIcon class="nav-icon" />
           <span>admin</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/chats">
+        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/chats">
           <ChatIcon class="nav-icon" />
           <span>chats</span></RouterLink
         >
@@ -35,15 +35,15 @@ const highestRole = computed(() => sessionStore.getHighestRole());
           <CreateListingIcon class="nav-icon" />
           <span>ny annonse</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="!sessionStore.isAuthenticated" to="/login">
+        <RouterLink v-if="!sessionStore.isAuthenticated" class="nav-item" to="/login">
           <ProfileIcon class="nav-icon" />
           <span>logg inn</span></RouterLink
         >
-        <RouterLink class="nav-item" v-if="sessionStore.isAuthenticated" to="/my-page">
+        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/my-page">
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
-        <a class="nav-item" v-if="sessionStore.isAuthenticated" @click="sessionStore.logOut()">
+        <a v-if="sessionStore.isAuthenticated" class="nav-item" @click="sessionStore.logOut()">
           <LogOutIcon class="nav-icon" />
           <span>logg ut</span></a
         >
