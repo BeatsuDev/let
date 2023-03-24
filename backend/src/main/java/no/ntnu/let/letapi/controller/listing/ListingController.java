@@ -138,9 +138,8 @@ public class ListingController {
             return ResponseEntity.badRequest().body("All fields must be specified");
         }
 
-        Boolean admin = authenticationService.isAdmin();
-        if (admin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        if (!admin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        User user = authenticationService.getLoggedInUser();
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         Listing listing = mapper.toListing(listingCreationDTO);
         Listing savedListing;

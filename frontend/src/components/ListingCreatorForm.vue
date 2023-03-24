@@ -9,8 +9,6 @@ import CategoryPicker from "./CategoryPicker.vue";
 import LocationPicker from "@/components/forms/LocationPicker.vue";
 import type { Location } from "@/service/index";
 
-const location = ref({} as Location);
-
 // Variables as they are from the inputs.
 // 
 // The price is a string, but it should be a number.
@@ -21,7 +19,7 @@ const location = ref({} as Location);
 const listingDataInputRefs = reactive({
   title: "",
   price: "",
-  place: {} as Location,
+  location: {} as Location,
   category: {} as Category,
   summary: "",
   description: "",
@@ -31,7 +29,7 @@ const listingDataInputRefs = reactive({
 const rules = {
   title: { required },
   price: { required, numeric },
-  place: { required },
+  location: { required },
   category: { required },
   summary: { required },
   description: { required },
@@ -51,8 +49,12 @@ async function submitData() {
   // Check if inputs follow validation rules
   const result = await validator.value.$validate();
   if (!result) {
+    console.error("Validation failed: ", validator.value.$errors);
     return;
   }
+
+  console.log("Uploading images...");
+
 
   // Upload images to backend
   const imageResponses = await Promise.all(
@@ -76,18 +78,23 @@ async function submitData() {
     return;
   }
 
-  // Get all the urls for the uploaded images
-  const imageUrls = imageResponses.map((image) => image.data.url) as string[];
+  console.log("Images uploaded. Getting URLs... ");
 
-  const {price, place, images, category, ...data} = listingDataInputRefs;
+  const imageIds = imageResponses.map((image) => image.data.id) as string[];
+  const {price, location, images, category, ...data} = listingDataInputRefs;
+  const thumbnailId = imageResponses[0].data.id;
 
   const listingDataWithImages = {
     ...data,
     categoryId: category.id,
-    location: listingDataInputRefs.place,
+    location: {...listingDataInputRefs.location},
     price: Number(listingDataInputRefs.price),
-    images: imageUrls,
+    thumbnailId,
+    galleryIds: imageIds,
   } as CreateListing;
+
+  console.log("Emitting createListing event...");
+  
 
   emit("createListing", listingDataWithImages);
 }
@@ -123,7 +130,7 @@ function imageFileHandler(event: Event) {
     <div class="row" id="row-2">
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
-        <LocationPicker class="input-container" v-model="location"/>
+        <LocationPicker class="input-container" v-model="listingDataInputRefs.location"/>
       </div>
       <CategoryPicker class="input-container" id="category-picker" title="Kategori" placeholder="Planter" v-model="listingDataInputRefs.category" :validation-error="validator.category.$errors[0]" />
     </div>
