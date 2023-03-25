@@ -9,10 +9,13 @@
   >
     {{ category.name }}
   </div>
+
   <h3 class="nav-title">Søk</h3>
   <input v-model="searchValue" class="input-text" type="text" @input="search" />
+
   <h3 class="nav-title">Lokasjon</h3>
   <LocationPicker v-model="value.location" />
+
   <h3 class="nav-title">Radius</h3>
   <input
     v-model="radius"
@@ -25,11 +28,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type PropType, ref, type WritableComputedRef } from "vue";
-import { ListingFilter } from "@/types/listing";
-import type { Category } from "@/services/models";
+import { computed, ref } from "vue";
+import type { PropType, WritableComputedRef, ComputedGetter } from "vue";
+
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
+
+import { ListingFilter } from "@/types/listing";
 import { InputHandler } from "@/utils/input-delay";
+import type { Category } from "@/services/models";
 
 // Define props
 const props = defineProps({
@@ -55,7 +61,7 @@ const searchValue = ref("");
 const radius = ref(props.modelValue.radius);
 
 // Define computed values
-const value = computed({
+const value: WritableComputedRef<ListingFilter> = computed({
   get(): ListingFilter {
     return props.modelValue;
   },
