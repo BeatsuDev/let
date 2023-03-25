@@ -6,7 +6,7 @@
     </div>
     <div class="chat">
       <h3>Chat 2</h3>
-      <p>Some message</p>
+      <p>Some really long latest message</p>
     </div>
   </div>
 </template>
@@ -53,5 +53,17 @@ const emit = defineEmits<{
 .chat-list-wrapper > .chat:hover {
   background-color: #f1f1f1;
   cursor: pointer;
+}
+
+.chat-list-wrapper > .chat > p {
+  margin: 0;
+  color: #777;
+  font-family: Inter;
+  font-size: 0.9rem;
+  font-weight: 300;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
