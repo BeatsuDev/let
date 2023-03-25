@@ -5,30 +5,30 @@
         <RouterLink class="nav-item" style="margin-left: 1rem" to="/">letno</RouterLink>
         <div class="spacer"></div>
         <RouterLink
-          v-if="sessionStore.isAuthenticated && highestRole === 'ADMIN'"
+          v-if="sessionStore.isAuthenticated && sessionStore.getHighestRole() === 'ADMIN'"
           class="nav-item"
           to="/admin"
         >
           <AdminIcon class="nav-icon" />
           <span>admin</span></RouterLink
         >
-        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/chats">
+        <RouterLink v-if="sessionStore.getUser()" class="nav-item" to="/chats">
           <ChatIcon class="nav-icon" />
           <span>chats</span></RouterLink
         >
-        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/create-listing">
+        <RouterLink v-if="sessionStore.getUser()" class="nav-item" to="/create-listing">
           <CreateListingIcon class="nav-icon" />
           <span>ny annonse</span></RouterLink
         >
-        <RouterLink v-if="!sessionStore.isAuthenticated" class="nav-item" to="/login">
+        <RouterLink v-if="!sessionStore.getUser()" class="nav-item" to="/login">
           <ProfileIcon class="nav-icon" />
           <span>logg inn</span></RouterLink
         >
-        <RouterLink v-if="sessionStore.isAuthenticated" class="nav-item" to="/my-page">
+        <RouterLink v-if="sessionStore.getUser()" class="nav-item" to="/my-page">
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
-        <a v-if="sessionStore.isAuthenticated" class="nav-item" @click="sessionStore.logOut()">
+        <a v-if="sessionStore.getUser()" class="nav-item" @click="sessionStore.logOut()">
           <LogOutIcon class="nav-icon" />
           <span>logg ut</span></a
         >
@@ -44,12 +44,10 @@ import ChatIcon from "@/components/icons/ChatIcon.vue";
 import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
 import ProfileIcon from "@/components/icons/ProfileIcon.vue";
 import { useSessionStore } from "@/stores/sessionStore";
-import { computed } from "vue";
 import LogOutIcon from "@/components/icons/LogOutIcon.vue";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
-const highestRole = computed(() => sessionStore.getHighestRole());
 </script>
 
 <style scoped>

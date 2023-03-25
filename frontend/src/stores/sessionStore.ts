@@ -11,15 +11,18 @@ export const useSessionStore = defineStore("sessionStore", () => {
   let id = 0 as number;
 
   const isAuthenticated = computed(() => {
-    return getUser() != null;
+    return user.value != null;
   });
 
   function getUser() {
     const userFromStorage = sessionStorage.getItem("user");
+    if (user.value != null) {
+      return user.value;
+    }
     if (userFromStorage != null) {
       user.value = JSON.parse(userFromStorage);
+      return user.value;
     }
-    return user.value;
   }
 
   function refreshNotification() {
