@@ -1,38 +1,29 @@
 <template>
   <div v-if="!data && !errorMessage">
-    <FullPageLoading />
+    <FullPageLoading/>
   </div>
-  <AlertBox v-else-if="errorMessage" type="error" :message="errorMessage" />
+  <AlertBox v-else-if="errorMessage" type="error" :message="errorMessage"/>
   <main v-else-if="data">
     <div id="images-section">
-      <BackButton />
-      <img id="main-image" :src="mainImage" />
-      <div id="other-images">
-        <img
-          v-for="(image_url, index) in data.galleryUrls"
-          :key="index"
-          :src="image_url"
-          loading="lazy"
-          @click="mainImage = data.galleryUrls[index]"
-        />
-      </div>
+    <BackButton style="margin-left: -1rem;"/>
+    <ImageContainer v-model="mainImage" :images="data.galleryUrls"></ImageContainer>
     </div>
-
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ data.title }}</h1>
         <div
-          v-if="sessionStore.getUser()?.email === data.seller.email"
-          id="edit-btn"
-          class="button-slim button-green button-screaming"
+            v-if="sessionStore.getUser()?.email === data.seller.email"
+            id="edit-btn"
+            class="button-slim button-green button-screaming"
+            @click="router.push('/edit-listing/' + data.id)"
         >
           Rediger
         </div>
         <div id="bookmark-btn">
           <BookmarkIcon
-            :bookmarked="isBookmarked"
-            :class="{ filled: isBookmarked }"
-            @toggleBookmark="handleBookmarkClick"
+              :bookmarked="isBookmarked"
+              :class="{ filled: isBookmarked }"
+              @toggleBookmark="handleBookmarkClick"
           />
         </div>
       </div>
@@ -66,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import {ref} from "vue";
 import router from "@/router";
 
 import { ChatApi, ListingsApi } from "@/services/index";
@@ -76,6 +67,7 @@ import { useSessionStore } from "@/stores/sessionStore";
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import FullPageLoading from "@/components/containers/FullPageLoading.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
+import ImageContainer from "@/components/containers/ImageContainer.vue";
 import BackButton from "@/components/inputs/BackButton.vue";
 
 // Define APIs
@@ -88,7 +80,7 @@ const sessionStore = useSessionStore();
 
 // Define refs
 const isBookmarked = ref(false);
-const mainImage = ref(null as string | null);
+const mainImage = ref(0);
 const data = ref(null as ListingFull | null);
 const errorMessage = ref("" as string);
 
@@ -162,33 +154,6 @@ main {
   flex: 1;
   padding: 2rem;
   max-width: 50%;
-}
-
-#main-image {
-  height: 60vh;
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  object-fit: contain;
-  margin: 0 auto;
-}
-
-#other-images {
-  margin-top: 1rem;
-  display: flex;
-  white-space: nowrap;
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-#other-images > img {
-  width: 100px;
-  height: 100px;
-  margin-right: 0.5rem;
-  object-position: center;
-  object-fit: cover;
-  cursor: pointer;
 }
 
 /* ----- DETAILS SECTION ----- */

@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper-form">
     <BackButton style="margin-left: -3rem" />
-    <h1>Lag en ny annonse</h1>
+    <h1>Rediger annonsen din</h1>
     <ListingCreatorForm v-model="listingData" @create-listing="createListing" />
-    <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
+    <AlertBox :message="errorMessage" type="error"></AlertBox>
   </div>
 </template>
 
@@ -13,9 +13,9 @@ import type { CreateListing } from "@/services/index";
 import { ListingsApi } from "@/services/index";
 import router from "@/router";
 import BackButton from "@/components/inputs/BackButton.vue";
-import axios from "axios";
 import { ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
+import axios from "axios";
 
 // Define api
 const api = new ListingsApi();
@@ -23,15 +23,45 @@ const api = new ListingsApi();
 // Define refs
 const listingData = ref({
   title: "",
-  description: "",
+  description: "moren din",
   price: 0,
   category: "",
   images: [],
 } as CreateListing);
-const errorMessage = ref("" as string);
+const errorMessage = ref("");
 
-//Define callback functions
-async function createListing() {
+api
+  .getListing(parseInt(router.currentRoute.value.params.id as string))
+  .then((response) => {
+    response.data.location = { name: response.data.locationName };
+    response.data.category = { name: response.data.categoryName };
+    console.log(response.data);
+    listingData.value = response.data;
+  })
+  .catch((error) => {
+    alert(error.message);
+  });
+
+// Callback functions
+function createListing(listingData: CreateListing) {
+  console.log(listingData);
+  api
+    .createListing(listingData)
+    .then((response) => {
+      router.push({ name: "listing-details", params: { id: response.data.id } });
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
+
+async function submitData() {
+  // Check if inputs follow validation rules
+  const result = await validator.value.$validate();
+  if (!result) {
+    return;
+  }
+
   // Upload images to backend
   const imageResponses = await Promise.all(
     listingData.value.images.map((image) => {
@@ -52,28 +82,5 @@ async function createListing() {
       imageResponses.filter((response) => response.status !== 201)[0].data;
     return;
   }
-
-  const imageIds = imageResponses.map((image) => image.data.id) as string[];
-  const { price, location, images, category, ...data } = listingData.value;
-
-  const listingDataWithImages = {
-    ...data,
-    categoryId: category.id,
-    thumbnailId: listingData.value.thumbnailId,
-    location: { ...listingData.value.location },
-    price: Math.round(Number(listingData.value.price) * 100),
-    galleryIds: imageIds,
-  } as unknown as CreateListing;
-  console.table(listingDataWithImages);
-
-  api
-    .createListing(listingDataWithImages)
-    .then((response) => {
-      router.push({ name: "listing-details", params: { id: response.data.id } });
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-  router.push({ name: "listing-details", params: { id: 1 } });
 }
 </script>

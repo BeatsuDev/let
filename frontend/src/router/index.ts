@@ -70,6 +70,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/edit-listing/:id",
+      name: "edit-listing",
+      component: () => import("../views/EditListingpage.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/admin",
       name: "admin-panel",
       component: () => import("../views/AdminPanelView.vue"),
