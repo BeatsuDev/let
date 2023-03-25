@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
+      path: "/chats",
+      name: "chats",
+      component: () => import("../views/ChatsListView.vue"),
+    },
+    {
       path: "/my-page",
       name: "my-page",
       meta: { requiresAuth: true },
