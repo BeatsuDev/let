@@ -1,57 +1,7 @@
-<script lang="ts" setup>
-import { ref } from "vue";
-import { useSessionStore } from "@/stores/sessionStore";
-import { UserApi } from "@/services/apis/user-api";
-import router from "@/router";
-import AlertBox from "@/components/dialogs/AlertBox.vue";
-
-const userApi = new UserApi();
-const errorMessage = ref("");
-const sessionStore = useSessionStore();
-
-function login() {
-  userApi
-    .loginUser({
-      email: email.value,
-      password: password.value,
-    })
-    .then((response) => {
-      sessionStore.authenticate(response.data);
-      router.push("/");
-    })
-    .catch((error) => {
-      if (error.response.status === 401) {
-        errorMessage.value = "Ugyldig mail eller passord";
-      } else {
-        errorMessage.value = "En uventet feil oppstod, har du internettilgang?";
-      }
-    });
-}
-
-// v-models
-const email = ref("");
-const password = ref("");
-
-const responses = [
-  "Velkommen tilbake! 🤗",
-  "På tide å lete 🔍",
-  "Du er tilbake! 🎉",
-  "Vi har savna deg 🥺",
-  "Et steg nærmere å finne drømmehjemmet! 🤩",
-  "Hva var nå passordet igjen... 🤔",
-];
-
-const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-
-function clearError() {
-  if (errorMessage.value) errorMessage.value = "";
-}
-</script>
-
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
-    <form @submit.prevent="login">
+    <form @submit.prevent="login" class="form-container">
       <label for="email">Email</label>
       <input
         id="email"
@@ -77,6 +27,58 @@ function clearError() {
   </div>
 </template>
 
+<script lang="ts" setup>
+import { ref } from "vue";
+import { useSessionStore } from "@/stores/sessionStore";
+import { UserApi } from "@/services/apis/user-api";
+import router from "@/router";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
+
+// Define API
+const userApi = new UserApi();
+const sessionStore = useSessionStore();
+
+// Define refs
+const errorMessage = ref("");
+const email = ref("");
+const password = ref("");
+
+const responses = [
+  "Velkommen tilbake! 🤗",
+  "På tide å lete 🔍",
+  "Du er tilbake! 🎉",
+  "Vi har savna deg 🥺",
+  "Et steg nærmere å finne drømmehjemmet! 🤩",
+  "Hva var nå passordet igjen... 🤔",
+];
+
+const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+// Define callback functions
+function login() {
+  userApi
+    .loginUser({
+      email: email.value,
+      password: password.value,
+    })
+    .then((response) => {
+      sessionStore.authenticate(response.data);
+      router.push("/");
+    })
+    .catch((error) => {
+      if (error.response.status === 401) {
+        errorMessage.value = "Ugyldig mail eller passord";
+      } else {
+        errorMessage.value = "En uventet feil oppstod, har du internettilgang?";
+      }
+    });
+}
+
+function clearError() {
+  if (errorMessage.value) errorMessage.value = "";
+}
+</script>
+
 <style scoped>
 .wrapper {
   display: flex;
@@ -90,23 +92,12 @@ h2 {
   margin: 2rem 0 3rem 0;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  margin-bottom: 4rem;
-}
-
 label,
 input {
   display: block;
   width: 100%;
-  margin: 0px 0;
-  font-family: Inter;
+  margin: 0;
+  font-family: Inter, sans-serif;
 }
 
 label {

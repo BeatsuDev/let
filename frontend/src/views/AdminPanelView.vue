@@ -1,10 +1,10 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper-form">
     <h1>Admin Panel</h1>
     <div class="container">
-      <div class="left-container">
+      <div class="column">
         <div class="form-container">
           <h2>Lag Ny Kategori</h2>
           <form>
@@ -20,7 +20,7 @@
         </div>
       </div>
 
-      <div class="right-container">
+      <div class="column">
         <h2>Kategorier</h2>
         <div class="category-container">
           <div class="category">
@@ -53,20 +53,12 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.wrapper {
-  margin: 0.5rem auto;
-  max-width: 1200px;
-  padding: 0.5rem 5rem;
-}
-
 .container {
   display: flex;
   flex-direction: row;
 }
 
-.left-container,
-.right-container {
-  flex: 1;
+.column {
   padding: 1rem;
 }
 
@@ -107,15 +99,7 @@ form input {
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
-  }
-
-  .left-container,
-  .right-container {
     padding: 0;
-  }
-
-  .right-container {
-    margin-top: 3rem;
   }
 }
 </style>

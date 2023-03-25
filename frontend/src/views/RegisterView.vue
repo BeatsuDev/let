@@ -1,51 +1,3 @@
-<script lang="ts" setup>
-import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
-import type { UserBody } from "@/services";
-import { UserApi } from "@/services/index";
-import { useSessionStore } from "@/stores/sessionStore";
-import router from "@/router";
-import { ref } from "vue";
-import AlertBox from "@/components/dialogs/AlertBox.vue";
-
-const userApi = new UserApi();
-const errorMessage = ref("");
-const sessionStore = useSessionStore();
-const user = sessionStore.getUser() || ({} as UserBody);
-
-const userEdit = ref({
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-} as UserBody);
-
-function register() {
-  userApi
-    .createUser(userEdit.value)
-    .then((response) => {
-      sessionStore.authenticate(response.data);
-      console.log(response);
-      router.push("/");
-    })
-    .catch((error) => {
-      if (error.response.status === 409) {
-        errorMessage.value = "Denne eposten er allerede registrert";
-      } else {
-        errorMessage.value = "En uventet feil oppstod, har du internettilgang?";
-      }
-    });
-}
-
-const responses = [
-  "På tide å finne ting 🔍",
-  "Klar til å finne drømmeplanten? 🌱",
-  "En ny verden venter deg! 🌎",
-  "Et steg nærmere å finne drømmehjemmet! 🤩",
-];
-
-const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-</script>
-
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
@@ -62,18 +14,58 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
   </div>
 </template>
 
-<style scoped>
-.form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: start;
-  max-width: 400px;
-  margin: 0 auto;
-}
+<script lang="ts" setup>
+import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
+import type { UserBody } from "@/services";
+import { UserApi } from "@/services/index";
+import { useSessionStore } from "@/stores/sessionStore";
+import router from "@/router";
+import { ref } from "vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
 
+//Define API
+const userApi = new UserApi();
+const sessionStore = useSessionStore();
+
+//Define refs
+const userEdit = ref({
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+} as UserBody);
+const errorMessage = ref("");
+const user = sessionStore.getUser() || ({} as UserBody);
+
+const responses = [
+  "På tide å finne ting 🔍",
+  "Klar til å finne drømmeplanten? 🌱",
+  "En ny verden venter deg! 🌎",
+  "Et steg nærmere å finne drømmehjemmet! 🤩",
+];
+
+const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+//Define callbacks
+function register() {
+  userApi
+    .createUser(userEdit.value)
+    .then((response) => {
+      sessionStore.authenticate(response.data);
+      console.log(response);
+      router.push("/");
+    })
+    .catch((error) => {
+      if (error.response.status === 409) {
+        errorMessage.value = "Denne eposten er allerede registrert";
+      } else {
+        errorMessage.value = "En uventet feil oppstod, har du internettilgang?";
+      }
+    });
+}
+</script>
+
+<style scoped>
 .wrapper {
   text-align: center;
 }

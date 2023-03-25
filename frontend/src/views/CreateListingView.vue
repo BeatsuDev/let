@@ -1,11 +1,20 @@
-<script lang="ts" setup>
+<template>
+  <div class="wrapper-form">
+    <h1>Lag en ny annonse</h1>
+    <ListingCreatorForm @create-listing="createListing" />
+  </div>
+</template>
+
+<script setup lang="ts">
 import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
 import type { CreateListing } from "@/services/index";
 import { ListingsApi } from "@/services/index";
 import router from "@/router";
 
+// Define api
 const api = new ListingsApi();
 
+// Callback funcitons
 function createListing(listingData: CreateListing) {
   console.log(listingData);
   api
@@ -18,19 +27,3 @@ function createListing(listingData: CreateListing) {
     });
 }
 </script>
-
-<template>
-  <div class="wrapper">
-    <h1>Lag en ny annonse</h1>
-    <ListingCreatorForm @create-listing="createListing" />
-  </div>
-</template>
-
-<style scoped>
-.wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  min-width: 400px;
-  padding: 2rem 5rem;
-}
-</style>

@@ -1,4 +1,68 @@
-<script lang="ts" setup>
+<template>
+  <div v-if="!data && !error">
+    <FullPageLoading />
+  </div>
+  <div v-else-if="error">Error: {{ error }}</div>
+  <main v-else-if="data">
+    <div id="images-section">
+      <img id="main-image" :src="mainImage" />
+      <div id="other-images">
+        <img
+          v-for="(image_url, index) in data.galleryUrls"
+          :key="index"
+          :src="image_url"
+          loading="lazy"
+          @click="mainImage = data.galleryUrls[index]"
+        />
+      </div>
+    </div>
+
+    <div id="details-section">
+      <div class="top-bar">
+        <h1>{{ data.title }}</h1>
+        <div
+          v-if="sessionStore.getUser()?.id === data.seller.id"
+          id="edit-btn"
+          class="button-slim button-green button-screaming"
+        >
+          Rediger
+        </div>
+        <div id="bookmark-btn">
+          <BookmarkIcon
+            :bookmarked="isBookmarked"
+            :class="{ filled: isBookmarked }"
+            @toggleBookmark="handleBookmarkClick"
+          />
+        </div>
+      </div>
+
+      <div class="price-bar">
+        <h2>{{ data.price ? data.price / 100 : "-" }}kr</h2>
+      </div>
+
+      <div class="misc-info-bar">
+        <div class="misc-bar-left">
+          <h3>Kategori:</h3>
+          <p id="category">{{ data.categoryName }}</p>
+          <button class="button button-black button-screaming">Kontakt Seller</button>
+        </div>
+        <div class="misc-bar-right">
+          <h5>Selges av:</h5>
+          <p id="seller">{{ data.seller!.firstName + " " + data.seller!.lastName }}</p>
+          <h5 id="location-header">Sted:</h5>
+          <p id="location">{{ data.locationName }}</p>
+        </div>
+      </div>
+
+      <div class="description-bar">
+        <h2>Beskrivelse</h2>
+        <p id="description">{{ data.description }}</p>
+      </div>
+    </div>
+  </main>
+</template>
+
+<script setup lang="ts">
 import { ref } from "vue";
 import router from "@/router";
 
@@ -65,70 +129,6 @@ api
     error.value = e;
   });
 </script>
-
-<template>
-  <div v-if="!data && !error">
-    <FullPageLoading />
-  </div>
-  <div v-else-if="error">Error: {{ error }}</div>
-  <main v-else-if="data">
-    <div id="images-section">
-      <img id="main-image" :src="mainImage" />
-      <div id="other-images">
-        <img
-          v-for="(image_url, index) in data.galleryUrls"
-          :key="index"
-          :src="image_url"
-          loading="lazy"
-          @click="mainImage = data.galleryUrls[index]"
-        />
-      </div>
-    </div>
-
-    <div id="details-section">
-      <div class="top-bar">
-        <h1>{{ data.title }}</h1>
-        <div
-          v-if="sessionStore.getUser()?.id === data.seller.id"
-          id="edit-btn"
-          class="button-slim button-green button-screaming"
-        >
-          Rediger
-        </div>
-        <div id="bookmark-btn">
-          <BookmarkIcon
-            :bookmarked="isBookmarked"
-            :class="{ filled: isBookmarked }"
-            @toggleBookmark="handleBookmarkClick"
-          />
-        </div>
-      </div>
-
-      <div class="price-bar">
-        <h2>{{ data.price ? data.price / 100 : "-" }}kr</h2>
-      </div>
-
-      <div class="misc-info-bar">
-        <div class="misc-bar-left">
-          <h3>Kategori:</h3>
-          <p id="category">{{ data.categoryName }}</p>
-          <button class="button button-black button-screaming">Kontakt Seller</button>
-        </div>
-        <div class="misc-bar-right">
-          <h5>Selges av:</h5>
-          <p id="seller">{{ data.seller!.firstName + " " + data.seller!.lastName }}</p>
-          <h5 id="location-header">Sted:</h5>
-          <p id="location">{{ data.locationName }}</p>
-        </div>
-      </div>
-
-      <div class="description-bar">
-        <h2>Beskrivelse</h2>
-        <p id="description">{{ data.description }}</p>
-      </div>
-    </div>
-  </main>
-</template>
 
 <style scoped>
 main {

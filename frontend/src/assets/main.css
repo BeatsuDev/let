@@ -69,6 +69,25 @@ main {
   cursor: pointer;
 }
 
+.wrapper-form {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-width: 400px;
+  padding: 2rem 5rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: start;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .nav-item:hover {
   color: var(--color-text-hover);
 }
@@ -95,5 +114,11 @@ main {
 
   .collapsed {
     margin-left: 0;
+  }
+
+  .wrapper-form {
+    padding: 0;
+    margin: 1rem;
+    width: 100%;
   }
 }
