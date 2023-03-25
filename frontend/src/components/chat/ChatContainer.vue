@@ -1,37 +1,74 @@
 <template>
   <div class="chat-container-wrapper">
     <div class="chat-title-bar">
-      <h3>Chat for listing 1 with Person Person</h3>
+      <h3 v-if="!chat">Ingen chat valgt</h3>
+      <!-- TODO: Check if the user viewing the page is the buyer or the seller -->
+      <h3 v-else>Chat for "{{ chat.listing.title }}" med {{ chat.seller.firstName }}</h3>
     </div>
     
     <div class="chat-messages">
-      <div class="chat-message received-message">
-        <p>A very long messsage that someone sent to me. It would be nice if this message was like really realy long so that I can see the text wrapping in place!</p>
+      <div class="no-chats" v-if="!chat || chat.messages.length === 0">
+        <h2>Ingen meldinger å vise...</h2>
       </div>
-      <div class="chat-message sent-message">
-        <p>Hi man! Thanks for the message. I've been waiting to hear from you.</p>
+      <div
+        v-else
+        :class="{'chat-message': true, 'received-message': () => message.sender !== loggedInUser, 'sent-message': () => message.sender == loggedInUser}"
+        v-for="message in messages" >
+        <p>{{ message.content }}</p>
       </div>
     </div>
 
-    <div class="chat-input-container">
-      <input type="text" class="chat-input" />
+    <form @submit.prevent="sendMessage" class="chat-input-container">
+      <input type="text" class="chat-input" v-model="chatMessageInput"/>
       <button class="chat-send-button">Send</button>
-    </div>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
+import type { ComputedRef } from "vue";
+
+import { useSessionStore } from "@/stores/sessionStore";
+
+import { ChatApi, type CreateMessage } from "@/services/index";
+import type { Chat } from "@/types/chat";
+
 // Define APIs
+const chatApi = new ChatApi();
 
 // Define props
+const props = defineProps<{
+  chat: Chat | null;
+}>();
 
 // Define emits
 
 // Define refs
+const chatMessageInput = ref("");
+const messages = ref(props.chat?.messages);
 
 // Define computed values
+const loggedInUser: ComputedRef<"BUYER" | "SELLER"> = computed(() => {  
+  return useSessionStore().getUser()?.id === props.chat?.buyer.id ? "BUYER" : "SELLER";
+});
+
+
 
 // Define callback functions
+async function sendMessage() {
+  if (chatMessageInput.value === "") {
+    return;
+  }
+
+  chatMessageInput.value = "";
+  console.log(loggedInUser.value);
+
+  const response = await chatApi.sendMessage(props.chat!.id, { content: chatMessageInput.value } as CreateMessage);
+  messages.value = (response.data as Chat).messages.map(m => ({ ...m }));
+
+  console.log("New messages:", messages.value);
+}
 
 // Vue hooks
 
@@ -40,6 +77,13 @@
 </script>
 
 <style scoped>
+
+.chat-messages > .no-chats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .chat-container-wrapper {
   background-color: #fcfcfc;
   width: 100%;
@@ -60,9 +104,9 @@
 
 .chat-messages {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: end;
-  flex-direction: column;
+  flex-direction: column-reverse;
   height: calc(100% - 9.1rem);
   overflow-y: scroll;
   border-bottom: 1px solid #e1e1e1;
