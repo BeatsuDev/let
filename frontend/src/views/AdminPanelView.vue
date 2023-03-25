@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
   <div class="wrapper-form">
     <h1>Admin Panel</h1>
@@ -7,9 +5,14 @@
       <div class="column">
         <div class="form-container">
           <h2>Lag Ny Kategori</h2>
-          <form>
+          <form @submit.prevent="addCategory">
             <div class="form-group">
-              <input id="name" class="input-text" placeholder="Elektronikk" type="text" />
+              <input
+                class="input-text"
+                type="text"
+                v-model="newCategory"
+                placeholder="Elektronikk"
+              />
             </div>
             <div class="form-group">
               <button class="button button-black button-screaming" type="submit">
@@ -18,27 +21,21 @@
             </div>
           </form>
         </div>
+        <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
       </div>
 
       <div class="column">
         <h2>Kategorier</h2>
         <div class="category-container">
-          <div class="category">
-            <div class="category-name">Elektronikk</div>
+          <div v-for="(category, index) in categories" :key="index" class="category">
+            <div class="category-name">{{ category.name }}</div>
             <div class="category-actions">
-              <button id="delete-category" class="button button-screaming">Slett</button>
-            </div>
-          </div>
-          <div class="category">
-            <div class="category-name">Elektronikk</div>
-            <div class="category-actions">
-              <button id="delete-category" class="button button-screaming">Slett</button>
-            </div>
-          </div>
-          <div class="category">
-            <div class="category-name">Elektronikk</div>
-            <div class="category-actions">
-              <button id="delete-category" class="button button-screaming">Slett</button>
+              <button
+                class="button button-screaming delete-category"
+                @click="() => removeCategory(index)"
+              >
+                Slett
+              </button>
             </div>
           </div>
         </div>
@@ -46,6 +43,79 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { CategoryApi, type Category } from "@/services/index";
+import { ref, computed, onMounted } from "vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
+
+// Define APIs
+const categoryApi = new CategoryApi();
+
+// Define props
+
+// Define emits
+
+// Define refs
+const categories = ref<Category[]>([]);
+const newCategory = ref("");
+const errorMessage = ref("");
+
+// Define computed values
+const computedValue = computed(() => {});
+
+const errorMessages = {
+  401: "Du er ikke logget inn",
+  403: "Du har ikke tilgang til denne siden",
+  404: "Kunne ikke finne kategorien du ønsket å slette",
+  409: "Kategorien du prøver å slette er i bruk",
+  500: "Noe gikk galt på serveren",
+};
+
+// Define callback functions
+function removeCategory(index: number): void {
+  const category = categories.value[index];
+  categoryApi
+    .deleteCategory(category.id)
+    .then(() => {
+      errorMessage.value = "";
+      categories.value.splice(index, 1);
+    })
+    .catch((error) => {
+      if (error.response.status in errorMessages) {
+        errorMessage.value = errorMessages[error.response.status];
+      } else {
+        errorMessage.value = "Noe gikk galt";
+      }
+    });
+}
+
+function addCategory(): void {
+  if (newCategory.value === "") return;
+  categoryApi
+    .createCategory({ name: newCategory.value })
+    .then((response) => {
+      errorMessage.value = "";
+      categories.value.push(response.data);
+      newCategory.value = "";
+    })
+    .catch((error) => {
+      if (error.response.status in errorMessages) {
+        errorMessage.value = errorMessages[error.response.status];
+      } else {
+        errorMessage.value = "Noe gikk galt";
+      }
+    });
+}
+
+// Vue hooks
+onMounted(() => {});
+
+// Other script logic
+categoryApi.getCategories().then((response) => {
+  categories.value = response.data;
+});
+</script>
 
 <style scoped>
 h1 {
@@ -72,6 +142,7 @@ form input {
 }
 
 .category-container {
+  overflow-y: scroll;
   margin-top: 1rem;
   border: 1px solid black;
   height: 300px;
@@ -82,16 +153,16 @@ form input {
   padding: 0.4rem 1rem;
 }
 
-.category .category-name {
+.category-name {
   flex: 1;
   font-size: 1.1rem;
 }
 
-.category #delete-category {
+.delete-category {
   transition-duration: 120ms;
 }
 
-.category #delete-category:hover {
+.delete-category:hover {
   background-color: red;
   color: white;
 }
