@@ -8,6 +8,7 @@ import no.ntnu.let.letapi.security.AuthenticationService;
 import no.ntnu.let.letapi.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class CategoryController {
     public ResponseEntity<Object> createCategory(@RequestBody CategoryCreationDTO categoryDTO) {
         Boolean isAdmin = authenticationService.isAdmin();
         if (isAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        if (isAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (!isAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Category category = categoryService.createCategory(listingMapper.toCategory(categoryDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(listingMapper.toCategoryDTO(category));
@@ -48,12 +49,17 @@ public class CategoryController {
     public ResponseEntity<Object> deleteCategory(@PathVariable long id) {
         Boolean isAdmin = authenticationService.isAdmin();
         if (isAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        if (isAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (!isAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Category category = categoryService.getCategory(id);
         if (category == null) return ResponseEntity.notFound().build();
 
-        categoryService.deleteCategory(category);
+        try {
+            categoryService.deleteCategory(category);
+        } catch (DataIntegrityViolationException e) {
+            logger.warn("Failed to delete category with id " + id + " due to foreign key constraint");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Category is in use");
+        }
         return ResponseEntity.ok(listingMapper.toCategoryDTO(category));
     }
 }
