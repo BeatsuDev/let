@@ -15,7 +15,7 @@
   </MainContainer>
 </template>
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue";
+import {computed, ref, watch, watchEffect} from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { InlineResponse200 } from "@/services/models";
 import { ListingsApi } from "@/services/apis/listings-api";
@@ -58,10 +58,8 @@ watch(router.currentRoute, () => {
 const title = computed(() => {
   if (router.currentRoute.value.name == "my-listings") {
     return "Mine annonser";
-  } else if (router.currentRoute.value.name == "my-bookmarked-listings") {
-    return "Bokmerkede annonser";
   }
-  return "Feil URL...";
+    return "Bokmerkede annonser";
 });
 
 function fetchListings() {
