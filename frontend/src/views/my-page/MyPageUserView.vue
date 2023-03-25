@@ -33,7 +33,7 @@ import MainContainer from "@/components/containers/MainContainer.vue";
 import { UserApi } from "@/services/apis/user-api";
 import { useSessionStore } from "@/stores/sessionStore";
 import type { UserBody } from "@/services";
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import router from "@/router";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
@@ -76,7 +76,7 @@ function updateUser() {
       }
 
       sessionStore.authenticate(response.data);
-      console.log(response.data)
+      console.log(response.data);
       changePassword.value = false;
     })
     .catch((error) => {

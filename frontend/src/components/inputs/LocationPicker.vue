@@ -22,29 +22,20 @@ import { lookUpLocation } from "@/services/location-api";
 import { InputHandler } from "@/utils/input-delay";
 import { Location } from "@/services/models/location";
 
-const locations = ref([]);
-
-const location = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value: Object) {
-    location.value = [];
-    emit("update:modelValue", value);
-  },
-});
-
+// Define props
 const props = defineProps({
   modelValue: {
-    type: Object,
+    type: Object || undefined,
     required: true,
   },
 });
 
+// Define emits
 const emit = defineEmits(["update:modelValue"]);
 
+// Define refs
 const input = ref("");
-
+const locations = ref([]);
 const loading = ref(false);
 
 // eslint-disable-next-line no-undef
@@ -52,6 +43,18 @@ const inputDelay = new InputHandler(500);
 
 let id = 0 as number;
 
+// Define computed values
+const location = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: Object) {
+    locations.value = [];
+    emit("update:modelValue", value);
+  },
+});
+
+// Other functions
 function searchWithDelay() {
   inputDelay.searchWithDelay(search);
 }

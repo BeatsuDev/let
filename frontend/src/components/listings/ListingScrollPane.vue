@@ -20,7 +20,7 @@ import type { ListingMinimal } from "@/services/models";
 //Define props
 const props = defineProps({
   listings: {
-    type: [Array] as PropType<ListingMinimal[]>,
+    type: ([Array] as PropType<ListingMinimal[]>) || undefined,
     required: true,
   },
   loading: {

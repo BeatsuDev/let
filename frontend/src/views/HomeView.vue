@@ -23,7 +23,7 @@
 import { computed, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
-import type { InlineResponse200 } from "@/services/models";
+import type { Category, InlineResponse200 } from "@/services/models";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
 import { ListingsApi } from "@/services/apis/listings-api";
 import { CategoryApi } from "@/services/apis/category-api";
@@ -44,10 +44,12 @@ const listingRequest = ref({ listings: [] } as InlineResponse200);
 const loading = ref(false);
 const errorMessage = ref("" as string);
 const collapsed = ref(false);
-const { data } = runAxios(categoryApi.getCategories());
-const categories = data;
+const categories = ref([] as Category[]);
 
 fetchListings();
+categoryApi.getCategories().then((response) => {
+  categories.value = response.data;
+});
 
 // Define computed values
 const listings = computed(() => {

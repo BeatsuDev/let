@@ -15,7 +15,7 @@
   </MainContainer>
 </template>
 <script lang="ts" setup>
-import {computed, ref, watch, watchEffect} from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { ListingFilter } from "@/types/listing";
 import type { InlineResponse200 } from "@/services/models";
 import { ListingsApi } from "@/services/apis/listings-api";
@@ -59,7 +59,7 @@ const title = computed(() => {
   if (router.currentRoute.value.name == "my-listings") {
     return "Mine annonser";
   }
-    return "Bokmerkede annonser";
+  return "Bokmerkede annonser";
 });
 
 function fetchListings() {

@@ -59,12 +59,15 @@ export const useSessionStore = defineStore("sessionStore", () => {
   }
 
   function logOut() {
-    userApi.logoutUser().then(() => {
-      timeout();
-      router.push("/login")
-    }).catch(() => {
-      alert("Det oppstod en feil under utlogging. Vennligst prøv igjen senere.")
-    });
+    userApi
+      .logoutUser()
+      .then(() => {
+        timeout();
+        router.push("/login");
+      })
+      .catch(() => {
+        alert("Det oppstod en feil under utlogging. Vennligst prøv igjen senere.");
+      });
   }
 
   function getHighestRole() {

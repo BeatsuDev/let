@@ -38,7 +38,6 @@ import { InputHandler } from "@/utils/input-delay";
 const props = defineProps({
   modelValue: {
     type: ListingFilter,
-    required: true,
   },
   categories: {
     type: [Array] as PropType<Category[]>,

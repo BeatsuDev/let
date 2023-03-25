@@ -98,7 +98,7 @@ function handleBookmarkClick() {
         isBookmarked.value = false;
       })
       .catch((e) => {
-        handleError(e)
+        handleError(e);
       });
   } else {
     api
@@ -107,7 +107,7 @@ function handleBookmarkClick() {
         isBookmarked.value = true;
       })
       .catch((e) => {
-        handleError(e)
+        handleError(e);
       });
   }
 }

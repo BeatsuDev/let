@@ -80,7 +80,7 @@ router.beforeEach((to, from, next) => {
   const sessionStore = useSessionStore();
   const userApi = new UserApi();
   if (startup) {
-    console.log(startup)
+    console.log(startup);
     userApi.getCurrentUser().then((user) => {
       if (user != null) {
         sessionStore.authenticate(user);
