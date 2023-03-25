@@ -1,20 +1,55 @@
+<template>
+  <div class="wrapper">
+    <h2 id="title">{{ randomResponse }}</h2>
+    <div class="form-container">
+      <FullUserDetailsForm
+        v-model="user"
+        buttonTitle="Registrer"
+        password-field
+        @submit="register"
+      />
+      <AlertBox v-if="errorMessage" :message="errorMessage" />
+      <RouterLink to="/login">Jeg har en konto!</RouterLink>
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
-import FullUserDetailsForm from "@/components/FullUserDetailsForm.vue";
-import type { UserBody } from "@/service";
-import { UserApi } from "@/service/index";
+import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
+import type { UserBody } from "@/services";
+import { UserApi } from "@/services/index";
 import { useSessionStore } from "@/stores/sessionStore";
 import router from "@/router";
 import { ref } from "vue";
-import Alert from "@/components/forms/AlertBox.vue";
-import AlertBox from "@/components/forms/AlertBox.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
 
+//Define API
 const userApi = new UserApi();
-const errorMessage = ref("");
 const sessionStore = useSessionStore();
 
-function register(fullUserData: UserBody) {
+//Define refs
+const userEdit = ref({
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+} as UserBody);
+const errorMessage = ref("");
+const user = sessionStore.getUser() || ({} as UserBody);
+
+const responses = [
+  "På tide å finne ting 🔍",
+  "Klar til å finne drømmeplanten? 🌱",
+  "En ny verden venter deg! 🌎",
+  "Et steg nærmere å finne drømmehjemmet! 🤩",
+];
+
+const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+//Define callbacks
+function register() {
   userApi
-    .createUser(fullUserData)
+    .createUser(userEdit.value)
     .then((response) => {
       sessionStore.authenticate(response.data);
       console.log(response);
@@ -28,40 +63,9 @@ function register(fullUserData: UserBody) {
       }
     });
 }
-
-const responses = [
-  "På tide å finne ting 🔍",
-  "Klar til å finne drømmeplanten? 🌱",
-  "En ny verden venter deg! 🌎",
-  "Et steg nærmere å finne drømmehjemmet! 🤩",
-];
-
-const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 </script>
 
-<template>
-  <div class="wrapper">
-    <h2 id="title">{{ randomResponse }}</h2>
-    <div class="form-container">
-      <FullUserDetailsForm buttonTitle="Registrer" @submit="register" />
-      <AlertBox v-if="errorMessage" :error="errorMessage" />
-      <RouterLink to="/login">Jeg har en konto!</RouterLink>
-    </div>
-  </div>
-</template>
-
 <style scoped>
-.form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: start;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
 .wrapper {
   text-align: center;
 }

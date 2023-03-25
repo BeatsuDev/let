@@ -1,14 +1,60 @@
+<template>
+  <div class="wrapper">
+    <h2 id="title">{{ randomResponse }}</h2>
+    <form @submit.prevent="login" class="form-container">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        v-model="email"
+        class="input-text"
+        placeholder="ola.sormann@gmail.com"
+        type="email"
+        @input="clearError"
+      />
+      <label for="password">Passord</label>
+      <input
+        id="password"
+        v-model="password"
+        class="input-text"
+        placeholder="sikker123"
+        type="password"
+        @input="clearError"
+      />
+      <button class="button button-black" type="submit">Logg in</button>
+      <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error"></AlertBox>
+      <RouterLink to="/register">Har du ikke en konto?</RouterLink>
+    </form>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
-import { UserApi } from "@/service/apis/user-api";
+import { UserApi } from "@/services/apis/user-api";
 import router from "@/router";
-import Alert from "@/components/forms/AlertBox.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
 
+// Define API
 const userApi = new UserApi();
-const errorMessage = ref("");
 const sessionStore = useSessionStore();
 
+// Define refs
+const errorMessage = ref("");
+const email = ref("");
+const password = ref("");
+
+const responses = [
+  "Velkommen tilbake! 🤗",
+  "På tide å lete 🔍",
+  "Du er tilbake! 🎉",
+  "Vi har savna deg 🥺",
+  "Et steg nærmere å finne drømmehjemmet! 🤩",
+  "Hva var nå passordet igjen... 🤔",
+];
+
+const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+// Define callback functions
 function login() {
   userApi
     .loginUser({
@@ -28,54 +74,10 @@ function login() {
     });
 }
 
-// v-models
-const email = ref("");
-const password = ref("");
-
-const responses = [
-  "Velkommen tilbake! 🤗",
-  "På tide å lete 🔍",
-  "Du er tilbake! 🎉",
-  "Vi har savna deg 🥺",
-  "Et steg nærmere å finne drømmehjemmet! 🤩",
-  "Hva var nå passordet igjen... 🤔",
-];
-
-const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-
 function clearError() {
   if (errorMessage.value) errorMessage.value = "";
 }
 </script>
-
-<template>
-  <div class="wrapper">
-    <h2 id="title">{{ randomResponse }}</h2>
-    <form @submit.prevent="login">
-      <label for="email">Email</label>
-      <input
-        class="input-text"
-        type="email"
-        id="email"
-        v-model="email"
-        @input="clearError"
-        placeholder="ola.sormann@gmail.com"
-      />
-      <label for="password">Passord</label>
-      <input
-        class="input-text"
-        type="password"
-        id="password"
-        v-model="password"
-        @input="clearError"
-        placeholder="sikker123"
-      />
-      <button class="button button-black" type="submit">Logg in</button>
-      <Alert type="error" :error="errorMessage" v-if="errorMessage !== ''"></Alert>
-      <RouterLink to="/register">Har du ikke en konto?</RouterLink>
-    </form>
-  </div>
-</template>
 
 <style scoped>
 .wrapper {
@@ -90,23 +92,12 @@ h2 {
   margin: 2rem 0 3rem 0;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  margin-bottom: 4rem;
-}
-
 label,
 input {
   display: block;
   width: 100%;
-  margin: 0px 0;
-  font-family: Inter;
+  margin: 0;
+  font-family: Inter, sans-serif;
 }
 
 label {

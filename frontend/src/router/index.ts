@@ -25,22 +25,22 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import("../views/MyPage.vue"),
+      component: () => import("../views/my-page/MyPageView.vue"),
       children: [
         {
           path: "",
           name: "my-profile",
-          component: () => import("../views/MyPageUser.vue"),
+          component: () => import("../views/my-page/MyPageUserView.vue"),
         },
         {
           path: "listings",
           name: "my-listings",
-          component: () => import("../views/MyPageListings.vue"),
+          component: () => import("../views/my-page/MyPageListingsView.vue"),
         },
         {
           path: "bookmarked",
           name: "my-bookmarked-listings",
-          component: () => import("../views/MyPageListings.vue"),
+          component: () => import("../views/my-page/MyPageListingsView.vue"),
         },
       ],
     },

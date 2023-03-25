@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="$emit('click', props.value.id)">
-    <img class="thumbnail" :src="props.value.thumbnailUrl" loading="lazy" alt="thumbnail" />
+    <img :src="props.value.thumbnailUrl" alt="thumbnail" class="thumbnail" loading="lazy" />
     <div class="information">
       <div class="column">
         <div class="row italic row-margin">
@@ -19,8 +19,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { ListingMinimal } from "@/service/models";
+import type { ListingMinimal } from "@/services/models";
 
+// Define props
 const props = defineProps({
   value: {
     type: Object as () => ListingMinimal,
@@ -28,8 +29,10 @@ const props = defineProps({
   },
 });
 
+// Define emits
 const emit = defineEmits(["click"]);
 </script>
+
 <style scoped>
 .card {
   max-width: 15rem;

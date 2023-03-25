@@ -1,74 +1,19 @@
-<script setup lang="ts">
-import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
-import { useRoute } from "vue-router";
-import { ListingFull, ListingsApi } from "@/service/index";
-import FullPageLoading from "@/components/FullPageLoading.vue";
-import { ref } from "vue";
-import { useSessionStore } from "@/stores/sessionStore";
-
-const route = useRoute();
-const api = new ListingsApi();
-const mainImage = ref(null as string | null);
-const id = Number(route.params.id);
-const data = ref(null as ListingFull | null);
-const sessionStore = useSessionStore();
-const error = ref(null as Error | null);
-
-api
-  .getListing(id)
-  .then((response) => {
-    data.value = response.data;
-    mainImage.value = response.data.galleryUrls[0] || null;
-  })
-  .catch((e) => {
-    error.value = e;
-  });
-
-const isBookmarked = ref(false);
-api.checkFavorite(id).then((response) => {
-  isBookmarked.value = response.data;
-}).catch((e) => {
-  error.value = e;
-});
-
-function handleBookmarkClick() {
-  if (isBookmarked.value) {
-    api
-      .removeFavorite(id)
-      .then(() => {
-        isBookmarked.value = false;
-      })
-      .catch((e) => {
-        error.value = e;
-      });
-  } else {
-    api
-      .addFavorite(id)
-      .then(() => {
-        isBookmarked.value = true;
-      })
-      .catch((e) => {
-        error.value = e;
-      });
-  }
-}
-</script>
-
 <template>
   <div v-if="!data && !error">
     <FullPageLoading />
   </div>
-  <div v-else-if="error">Error: {{ error }}</div>
+  <AlertBox v-else-if="error" type="error" :message="error" />
   <main v-else-if="data">
     <div id="images-section">
-      <img :src="mainImage" id="main-image" />
+      <BackButton />
+      <img id="main-image" :src="mainImage" />
       <div id="other-images">
         <img
-          :key="index"
           v-for="(image_url, index) in data.galleryUrls"
+          :key="index"
           :src="image_url"
-          @click="mainImage = data.galleryUrls[index]"
           loading="lazy"
+          @click="mainImage = data.galleryUrls[index]"
         />
       </div>
     </div>
@@ -77,7 +22,7 @@ function handleBookmarkClick() {
       <div class="top-bar">
         <h1>{{ data.title }}</h1>
         <div
-          v-if="sessionStore.getUser()?.id === data.seller.id"
+          v-if="sessionStore.getUser()?.email === data.seller.email"
           id="edit-btn"
           class="button-slim button-green button-screaming"
         >
@@ -117,6 +62,76 @@ function handleBookmarkClick() {
     </div>
   </main>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import router from "@/router";
+
+import { ListingsApi } from "@/services/index";
+import type { ListingFull } from "@/services/index";
+import { useSessionStore } from "@/stores/sessionStore";
+
+import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
+import FullPageLoading from "@/components/containers/FullPageLoading.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
+import BackButton from "@/components/inputs/BackButton.vue";
+
+// Define APIs
+const api = new ListingsApi();
+
+// Define variables
+const id = Number(router.currentRoute.value.params.id);
+const sessionStore = useSessionStore();
+
+// Define refs
+const isBookmarked = ref(false);
+const mainImage = ref(null as string | null);
+const data = ref(null as ListingFull | null);
+const error = ref(null as Error | null);
+
+// Define callbacks
+function handleBookmarkClick() {
+  if (isBookmarked.value) {
+    api
+      .removeFavorite(id)
+      .then(() => {
+        isBookmarked.value = false;
+      })
+      .catch((e) => {
+        error.value = e;
+      });
+  } else {
+    api
+      .addFavorite(id)
+      .then(() => {
+        isBookmarked.value = true;
+      })
+      .catch((e) => {
+        error.value = e;
+      });
+  }
+}
+
+// Other script logic
+api
+  .getListing(id)
+  .then((response) => {
+    data.value = response.data;
+    mainImage.value = response.data.galleryUrls[0];
+  })
+  .catch((e) => {
+    error.value = e;
+  });
+
+api
+  .checkFavorite(id)
+  .then((response) => {
+    isBookmarked.value = response.data;
+  })
+  .catch((e) => {
+    error.value = e;
+  });
+</script>
 
 <style scoped>
 main {

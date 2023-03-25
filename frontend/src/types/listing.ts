@@ -1,4 +1,4 @@
-import type { Location } from "@/service/models";
+import type { Location } from "@/services/models";
 
 export class ListingFilter {
   category?: number | undefined = undefined;
@@ -9,14 +9,4 @@ export class ListingFilter {
   page: number = 1;
 
   user: number | undefined = undefined;
-}
-
-export default interface NewListingWithImageUrls {
-  title: string;
-  price: string;
-  place: string;
-  category: string;
-  summary: string;
-  description: string;
-  images: string[];
 }
