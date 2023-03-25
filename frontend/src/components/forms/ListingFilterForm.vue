@@ -12,14 +12,17 @@
   <h3 class="nav-title">Søk</h3>
   <input v-model="searchValue" class="input-text" type="text" @input="search" />
   <h3 class="nav-title">Lokasjon</h3>
-  <LocationPicker v-model="value.location" />
+  <LocationPicker v-model="value.location" @update:modelValue="value.page = 1" />
   <h3 class="nav-title">Radius</h3>
   <input
     v-model="radius"
     class="slider"
     style="width: 100%"
     type="range"
-    @mouseup="value.radius = radius"
+    @mouseup="
+      value.radius = radius;
+      value.page = 1;
+    "
   />
   <div class="center-text">{{ radius }}km</div>
 </template>
@@ -55,24 +58,17 @@ const searchValue = ref("");
 const radius = ref(props.modelValue.radius);
 
 // Define computed values
-const value = computed({
-  get(): ListingFilter {
-    return props.modelValue;
-  },
-  set(value: string) {
-    const newFilter = { ...props.modelValue, [value]: value } as ListingFilter;
-    emit("update:modelValue", newFilter);
-  },
-});
+const value = computed(() => props.modelValue);
 
 // Define callback functions
 function search() {
   inputDelay.searchWithDelay(function updateSearchField() {
+    value.value.page = 1;
     value.value.search = searchValue.value;
   });
 }
-
 function selectCategory(category: Category) {
+  value.value.page = 1;
   if (value.value.category === category.id) {
     value.value.category = undefined;
     return;

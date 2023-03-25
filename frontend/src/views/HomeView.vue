@@ -1,7 +1,7 @@
 <template>
   <main>
     <NavigationDrawer v-model="collapsed">
-      <ListingFilterForm v-model="listingFilter" :categories="categories" />
+      <ListingFilterForm :model-value="listingFilter" :categories="categories" />
     </NavigationDrawer>
     <MainContainer :collapsed="collapsed">
       <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
@@ -54,8 +54,8 @@ const listings = computed(() => {
   return listingRequest.value.listings;
 });
 const totalPages = computed(() => {
-  if (listingRequest.value.numberOfPages) {
-    return listingRequest.value.numberOfPages;
+  if (listingRequest.value.totalPages) {
+    return listingRequest.value.totalPages;
   }
   return 1;
 });
@@ -77,7 +77,7 @@ function fetchListings() {
       undefined,
       undefined,
       filters.page,
-      50
+      20
     )
     .then((response) => {
       if (errorMessage.value != "") errorMessage.value = "";
