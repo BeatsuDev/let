@@ -45,7 +45,7 @@
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
           <p id="category">{{ data.categoryName }}</p>
-          <button class="button button-black button-screaming">Kontakt Seller</button>
+          <button class="button button-black button-screaming" @click="contactSeller">Kontakt Seller</button>
         </div>
         <div class="misc-bar-right">
           <h5>Selges av:</h5>
@@ -67,7 +67,7 @@
 import { ref } from "vue";
 import router from "@/router";
 
-import { ListingsApi } from "@/services/index";
+import { ChatApi, ListingsApi } from "@/services/index";
 import type { ListingFull } from "@/services/index";
 import { useSessionStore } from "@/stores/sessionStore";
 
@@ -77,7 +77,8 @@ import AlertBox from "@/components/dialogs/AlertBox.vue";
 import BackButton from "@/components/inputs/BackButton.vue";
 
 // Define APIs
-const api = new ListingsApi();
+const listingsApi = new ListingsApi();
+const chatApi = new ChatApi();
 
 // Define variables
 const id = Number(router.currentRoute.value.params.id);
@@ -92,7 +93,7 @@ const error = ref(null as Error | null);
 // Define callbacks
 function handleBookmarkClick() {
   if (isBookmarked.value) {
-    api
+    listingsApi
       .removeFavorite(id)
       .then(() => {
         isBookmarked.value = false;
@@ -101,7 +102,7 @@ function handleBookmarkClick() {
         error.value = e;
       });
   } else {
-    api
+    listingsApi
       .addFavorite(id)
       .then(() => {
         isBookmarked.value = true;
@@ -112,8 +113,14 @@ function handleBookmarkClick() {
   }
 }
 
+function contactSeller() {
+  chatApi.createChat({ listingId: id}).then(() => {
+    router.push({ name: "chats" });
+  });
+}
+
 // Other script logic
-api
+listingsApi
   .getListing(id)
   .then((response) => {
     data.value = response.data;
@@ -123,7 +130,7 @@ api
     error.value = e;
   });
 
-api
+listingsApi
   .checkFavorite(id)
   .then((response) => {
     isBookmarked.value = response.data;
