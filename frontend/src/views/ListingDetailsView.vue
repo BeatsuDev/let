@@ -2,9 +2,10 @@
   <div v-if="!data && !error">
     <FullPageLoading />
   </div>
-  <div v-else-if="error">Error: {{ error }}</div>
+  <AlertBox v-else-if="error" type="error" :message="error" />
   <main v-else-if="data">
     <div id="images-section">
+      <BackButton />
       <img id="main-image" :src="mainImage" />
       <div id="other-images">
         <img
@@ -21,7 +22,7 @@
       <div class="top-bar">
         <h1>{{ data.title }}</h1>
         <div
-          v-if="sessionStore.getUser()?.id === data.seller.id"
+          v-if="sessionStore.getUser()?.email === data.seller.email"
           id="edit-btn"
           class="button-slim button-green button-screaming"
         >
@@ -72,6 +73,8 @@ import { useSessionStore } from "@/stores/sessionStore";
 
 import BookmarkIcon from "@/components/icons/BookmarkIcon.vue";
 import FullPageLoading from "@/components/containers/FullPageLoading.vue";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
+import BackButton from "@/components/inputs/BackButton.vue";
 
 // Define APIs
 const api = new ListingsApi();

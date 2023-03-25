@@ -69,6 +69,10 @@ main {
   cursor: pointer;
 }
 
+.nav-item:hover {
+  color: var(--color-text-hover);
+}
+
 .wrapper-form {
   max-width: 1200px;
   margin: 0 auto;
@@ -86,10 +90,6 @@ main {
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
-}
-
-.nav-item:hover {
-  color: var(--color-text-hover);
 }
 
 .nav-icon {

@@ -1,7 +1,9 @@
 <template>
   <MainContainer :collapsed="collapsed">
     <h1>Rediger profilen din</h1>
-    <button class="button no" @click="$emit('update:collapsed', !collapsed)">Meny</button>
+    <button class="button no" @click="$emit('update:collapsed', !collapsed)">
+      <FilterIcon class="button-icon" />Meny
+    </button>
     <FullUserDetailsForm
       v-model="userEdit"
       :password-field="changePassword"
@@ -9,8 +11,12 @@
       @input="clearMessages"
       @submit="updateUser"
     />
-    <button class="button" style="margin-top: 1rem" @click="changePassword = !changePassword">
-      Vil du bytte passord også?
+    <button
+      class="button button-text"
+      style="margin-top: 1rem"
+      @click="changePassword = !changePassword"
+    >
+      Jeg vil bytte passord
     </button>
     <AlertBox
       v-if="user.email !== userEdit.email"
@@ -30,6 +36,7 @@ import type { UserBody } from "@/services";
 import { ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import router from "@/router";
+import FilterIcon from "@/components/icons/FilterIcon.vue";
 
 const success = ref("");
 const errorMessage = ref("");

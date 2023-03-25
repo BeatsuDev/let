@@ -6,7 +6,11 @@
       'drawer-active': !props.modelValue,
     }"
   >
-    <button class="button close" style="margin-bottom: 1.5rem" @click="collapse">
+    <button
+      class="button close"
+      style="margin-bottom: 1.5rem"
+      @click="$emit('update:modelValue', true)"
+    >
       <CollapseIcon class="button-icon" />
       Skjul
     </button>
@@ -16,7 +20,9 @@
 
 <script setup lang="ts">
 import CollapseIcon from "@/components/icons/CollapseIcon.vue";
+import BackButton from "@/components/inputs/BackButton.vue";
 
+// Define props
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -24,11 +30,8 @@ const props = defineProps({
   },
 });
 
+// Define emits
 const emit = defineEmits(["update:modelValue"]);
-
-function collapse() {
-  emit("update:modelValue", true);
-}
 </script>
 
 <style scoped>
@@ -38,7 +41,7 @@ function collapse() {
   left: 0;
   top: 0;
   margin-top: 7rem;
-  padding: 8rem 3rem 3rem 3rem;
+  padding: 7rem 3rem 3rem 3rem;
   transition: 0.5s;
   overflow: auto;
   background-color: var(--color-background);

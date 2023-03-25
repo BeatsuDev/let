@@ -93,7 +93,11 @@ function fetchListings() {
 }
 
 // Vue hooks
-watch(listingFilter, () => {
-  fetchListings();
-});
+watch(
+  listingFilter,
+  () => {
+    fetchListings();
+  },
+  { deep: true }
+);
 </script>

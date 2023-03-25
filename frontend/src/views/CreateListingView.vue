@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper-form">
+    <BackButton style="margin-left: -3rem" />
     <h1>Lag en ny annonse</h1>
     <ListingCreatorForm @create-listing="createListing" />
   </div>
@@ -10,6 +11,7 @@ import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
 import type { CreateListing } from "@/services/index";
 import { ListingsApi } from "@/services/index";
 import router from "@/router";
+import BackButton from "@/components/inputs/BackButton.vue";
 
 // Define api
 const api = new ListingsApi();

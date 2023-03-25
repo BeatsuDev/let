@@ -12,6 +12,16 @@
   cursor: pointer;
 }
 
+.button-text {
+  background-color: white;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.button-text:hover {
+  color: var(--color-text-hover);
+}
+
 .button-slim {
   border: 0;
   padding: 0.3rem 2rem;
