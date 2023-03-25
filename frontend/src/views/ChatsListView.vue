@@ -38,7 +38,7 @@ import ChatContainer from "@/components/chat/ChatContainer.vue";
   max-width: 400px;
   width: 15rem;
   position: fixed;
-  height: calc(100% - 7rem);
+  height: calc(100% - 6.6rem);
 }
 
 .chat-view-wrapper > .chat-container {
