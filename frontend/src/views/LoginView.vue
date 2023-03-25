@@ -63,7 +63,6 @@ function login() {
     })
     .then((response) => {
       sessionStore.authenticate(response.data);
-      router.push("/");
     })
     .catch((error) => {
       if (error.response.status === 401) {

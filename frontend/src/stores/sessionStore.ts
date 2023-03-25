@@ -11,16 +11,14 @@ export const useSessionStore = defineStore("sessionStore", () => {
   let id = 0 as number;
 
   const isAuthenticated = computed(() => {
-    if (user.value == null) {
-      const userFromStorage = localStorage.getItem("user");
-      if (userFromStorage != null) {
-        user.value = JSON.parse(userFromStorage);
-      }
-    }
-    return user.value != null;
+    return getUser() != null;
   });
 
   function getUser() {
+    const userFromStorage = sessionStorage.getItem("user");
+    if (userFromStorage != null) {
+      user.value = JSON.parse(userFromStorage);
+    }
     return user.value;
   }
 
@@ -55,7 +53,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
   }
 
   function timeout() {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     clearTimeout(id);
     user.value = null;
   }
@@ -63,6 +61,9 @@ export const useSessionStore = defineStore("sessionStore", () => {
   function logOut() {
     userApi.logoutUser().then(() => {
       timeout();
+      router.push("/login")
+    }).catch(() => {
+      alert("Det oppstod en feil under utlogging. Vennligst prøv igjen senere.")
     });
   }
 
