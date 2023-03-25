@@ -117,7 +117,7 @@ async function submit() {
   let result = await validator.value.$validate();
   if (!result) return;
   if (!props.passwordField) {
-    props.modelValue.value.password = undefined;
+    user.value.password = undefined;
     passwordRepeat.value = undefined;
   }
   emit("submit");
