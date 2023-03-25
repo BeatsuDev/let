@@ -33,7 +33,7 @@ import MainContainer from "@/components/containers/MainContainer.vue";
 import { UserApi } from "@/services/apis/user-api";
 import { useSessionStore } from "@/stores/sessionStore";
 import type { UserBody } from "@/services";
-import { ref } from "vue";
+import {computed, ref} from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import router from "@/router";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
@@ -47,28 +47,36 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(["update:collapsed"]);
 
-const user = sessionStore.getUser() || ({} as UserBody);
+const user = computed(() => sessionStore.getUser() || ({} as UserBody));
 const userEdit = ref({
-  firstName: user.firstName,
-  lastName: user.lastName,
-  email: user.email,
+  firstName: user.value.firstName,
+  lastName: user.value.lastName,
+  email: user.value.email,
   password: "",
-  id: user.id,
+  id: user.value.id,
 } as UserBody);
 
 function updateUser() {
+  if (!confirm("Er du sikker på at du vil endre brukeren din?")) {
+    userEdit.value.email = user.value.email;
+    userEdit.value.firstName = user.value.firstName;
+    userEdit.value.lastName = user.value.lastName;
+    return;
+  }
   const userApi = new UserApi();
   userApi
     .updateUser(userEdit.value)
     .then((response) => {
       success.value = "Brukeren din ble oppdatert";
-      if (user.email !== userEdit.value.email) {
+
+      if (user.value.email !== userEdit.value.email) {
         sessionStore.logOut();
         router.push("/login");
         return;
       }
 
       sessionStore.authenticate(response.data);
+      console.log(response.data)
       changePassword.value = false;
     })
     .catch((error) => {

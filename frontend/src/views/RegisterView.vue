@@ -52,6 +52,7 @@ function register() {
     .createUser(userEdit.value)
     .then((response) => {
       sessionStore.authenticate(response.data);
+      router.push("/");
     })
     .catch((error) => {
       if (error.response.status === 409) {

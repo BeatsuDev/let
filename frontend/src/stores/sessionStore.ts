@@ -49,7 +49,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
 
   function authenticate(authentication: UserFull) {
     user.value = authentication;
-    localStorage.setItem("user", JSON.stringify(authentication));
+    sessionStorage.setItem("user", JSON.stringify(authentication));
   }
 
   function timeout() {
