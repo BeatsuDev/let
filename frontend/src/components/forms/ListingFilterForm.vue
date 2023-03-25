@@ -65,7 +65,7 @@ const value: WritableComputedRef<ListingFilter> = computed({
   get(): ListingFilter {
     return props.modelValue;
   },
-  set(value: string) {
+  set(value: string): void {
     const newFilter = { ...props.modelValue, [value]: value } as ListingFilter;
     emit("update:modelValue", newFilter);
   },

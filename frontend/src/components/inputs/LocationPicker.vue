@@ -16,14 +16,35 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { lookUpLocation } from "@/services/location-api";
 import { InputHandler } from "@/utils/input-delay";
-import { Location } from "@/services/models/location";
+import type { Location } from "@/services/models/location";
 
+// Define props
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true,
+  },
+});
+
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", value: Location): void;
+}>();
+
+// Define variables
+const inputDelay = new InputHandler(500);
+
+// Define refs
 const locations = ref([]);
+const input = ref("");
+const loading = ref(false);
 
+// Define computed values
 const location = computed({
   get() {
     return props.modelValue;
@@ -34,24 +55,8 @@ const location = computed({
   },
 });
 
-const props = defineProps({
-  modelValue: {
-    type: Object,
-    required: true,
-  },
-});
 
-const emit = defineEmits(["update:modelValue"]);
-
-const input = ref("");
-
-const loading = ref(false);
-
-// eslint-disable-next-line no-undef
-const inputDelay = new InputHandler(500);
-
-let id = 0 as number;
-
+// Other script logic
 function searchWithDelay() {
   inputDelay.searchWithDelay(search);
 }
@@ -85,6 +90,7 @@ function search() {
     });
 }
 </script>
+
 <style scoped>
 .dropdown {
   box-sizing: border-box;
