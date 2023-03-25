@@ -59,6 +59,7 @@ public abstract class ListingMapper {
                             "(imageRepository::getReferenceById).toList())"),
     })
     public abstract Listing toListing(ListingUpdateDTO listingUpdateDTO);
+    @Named("toMinimalListingDTO")
     @Mappings({
             @Mapping(target = "categoryName", source = "category.name"),
             @Mapping(target = "thumbnailUrl", source = "thumbnail", qualifiedByName = "toImageUrl"),
