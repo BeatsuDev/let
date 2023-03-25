@@ -85,7 +85,6 @@ function updateUser() {
 }
 
 function clearMessages() {
-  console.log("hei");
   if (errorMessage.value !== "" || success.value !== "") {
     errorMessage.value = "";
     success.value = "";
