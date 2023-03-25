@@ -7,14 +7,15 @@
     </div>
     
     <div class="chat-messages">
-      <div class="no-chats" v-if="!chat || chat.messages.length === 0">
+      <div class="no-chats" v-if="chat === null || chat.messages.length === 0">
         <h2>Ingen meldinger å vise...</h2>
       </div>
       <div
         v-else
-        :class="{'chat-message': true, 'received-message': () => message.sender !== loggedInUser, 'sent-message': () => message.sender == loggedInUser}"
+        :class="{'chat-message': true, 'received-message': !(message.sender === loggedInUser), 'sent-message': message.sender === loggedInUser}"
         v-for="message in messages" >
-        <p>{{ message.content }}</p>
+        <p>{{ message.content }}</p><br v-if="!(message.sender === loggedInUser)">
+        <span>{{ (new Date(message.timestamp)).toLocaleTimeString("no", {timeStyle: "short"}) }}</span>
       </div>
     </div>
 
@@ -26,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { ComputedRef } from "vue";
 
 import { useSessionStore } from "@/stores/sessionStore";
@@ -42,18 +43,15 @@ const props = defineProps<{
   chat: Chat | null;
 }>();
 
-// Define emits
-
 // Define refs
 const chatMessageInput = ref("");
 const messages = ref(props.chat?.messages);
 
 // Define computed values
-const loggedInUser: ComputedRef<"BUYER" | "SELLER"> = computed(() => {  
-  return useSessionStore().getUser()?.id === props.chat?.buyer.id ? "BUYER" : "SELLER";
+const loggedInUser: ComputedRef<"BUYER" | "SELLER"> = computed(() => {
+  let user = useSessionStore().getUser()?.id === props.chat?.buyer.id ? "BUYER" : "SELLER";
+  return user as "BUYER" | "SELLER";
 });
-
-
 
 // Define callback functions
 async function sendMessage() {
@@ -61,13 +59,10 @@ async function sendMessage() {
     return;
   }
 
-  chatMessageInput.value = "";
-  console.log(loggedInUser.value);
-
   const response = await chatApi.sendMessage(props.chat!.id, { content: chatMessageInput.value } as CreateMessage);
+  
+  chatMessageInput.value = "";
   messages.value = (response.data as Chat).messages.map(m => ({ ...m }));
-
-  console.log("New messages:", messages.value);
 }
 
 // Vue hooks
@@ -114,21 +109,24 @@ async function sendMessage() {
 }
 
 .chat-messages  > .chat-message {
-  padding: 1rem;
+  padding: 0.2rem 1rem;
   border-radius: 1rem;
   max-width: 85%;
 }
 
 .chat-messages > .chat-message > p {
   padding: 0.4rem 1rem;
+  margin: 0;
 }
 
 .chat-messages > .sent-message {
   align-self: flex-end;
+  text-align: end;
 }
 
 .chat-messages > .received-message > p {
   background-color: rgb(212, 212, 212);
+  display: inline;
 }
 
 .chat-messages > .sent-message > p {
