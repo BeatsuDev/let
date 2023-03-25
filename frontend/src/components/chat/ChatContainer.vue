@@ -63,7 +63,7 @@
   flex-wrap: wrap;
   justify-content: end;
   flex-direction: column;
-  height: calc(100% - 7.5rem);
+  height: calc(100% - 9.1rem);
   overflow-y: scroll;
   border-bottom: 1px solid #e1e1e1;
   background-color: #f1f1f1;
@@ -96,6 +96,7 @@
   display: flex;
   flex-direction: row;
   padding: 1rem;
+  border-bottom: 1px solid #e1e1e1;
 }
 
 .chat-input-container > input {
