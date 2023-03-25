@@ -7,7 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -69,6 +72,12 @@ public class AuthenticationService {
         User user = this.getLoggedInUser();
         if (user == null) return false;
         return user.getAdmin() || allowedTest.test(user);
+    }
+
+    public Boolean isAllowed(Predicate<User> allowedTest) {
+        User user = this.getLoggedInUser();
+        if (user == null) return null;
+        return allowedTest.test(user);
     }
 
     public Boolean isAdmin() {
