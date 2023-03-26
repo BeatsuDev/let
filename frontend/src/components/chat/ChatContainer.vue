@@ -27,12 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import type { ComputedRef } from "vue";
 
 import { useSessionStore } from "@/stores/sessionStore";
 
-import { ChatApi, type CreateMessage } from "@/services/index";
+import { ChatApi } from "@/services/index";
+import type { CreateMessage } from "@/services/index";
 import type { Chat } from "@/types/chat";
 
 // Define APIs
@@ -43,9 +44,16 @@ const props = defineProps<{
   chat: Chat | null;
 }>();
 
+const currentChat = computed(() => props.chat);
+
 // Define refs
 const chatMessageInput = ref("");
-const messages = ref(props.chat?.messages);
+const messages = computed({
+  get: () => currentChat.value?.messages.map(m => ({ ...m })) ?? [],
+  set: (value: Chat["messages"]) => {
+    currentChat.value!.messages = value;
+  }
+});
 
 // Define computed values
 const loggedInUser: ComputedRef<"BUYER" | "SELLER"> = computed(() => {
@@ -60,7 +68,7 @@ async function sendMessage() {
   }
 
   const response = await chatApi.sendMessage(props.chat!.id, { content: chatMessageInput.value } as CreateMessage);
-  
+
   chatMessageInput.value = "";
   messages.value = (response.data as Chat).messages.map(m => ({ ...m }));
 }
