@@ -1,15 +1,11 @@
 <template>
-  <div v-if="chats === null && !chatFetchError">Henter chats...</div>
-  <div v-else-if="chats?.length === 0">Ingen chats å vise...</div>
-  <div v-else-if="chatFetchError">
-    <AlertBox :message="'Feil ved henting av chatter: ' + chatFetchError.message" />
-  </div>
+  <div v-if="chats?.length === 0">Ingen chats å vise...</div>
   <div v-else class="chat-list-wrapper">
     <div
-      class="chat"
       v-for="(chat, index) in chats"
       :key="index"
-      @click="emit('chat-selected', chat)"
+      class="chat"
+      @click="emit('select-chat', chat)"
     >
       <h3>[{{ chat.id }}]: {{ chat.listing.title }}</h3>
       <p>{{ chat.lastMessage?.content || "(ny chat)" }}</p>
@@ -18,18 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import runAxios from "@/services/composable";
-import {ChatApi, ChatMinimal} from "@/services/index";
-import AlertBox from "../dialogs/AlertBox.vue";
+import { ChatMinimal } from "@/services/index";
+import { computed } from "vue";
 
 // Define APIs
-const chatApi = new ChatApi();
 
 // Define props
+const props = defineProps<{
+  modelValue: Array<ChatMinimal>;
+}>();
+const chats = computed({
+  get: () => props.modelValue,
+  set: (chats) => emit("update:modelValue", chats),
+});
 
 // Define emits
 const emit = defineEmits<{
-  (event: "chat-selected", chat: ChatMinimal): void;
+  (event: "update:modelValue", chats: Array<ChatMinimal>): void;
+  (event: "select-chat", chat: ChatMinimal): void;
 }>();
 
 // Define refs
@@ -39,7 +41,6 @@ const emit = defineEmits<{
 // Define callback functions
 
 // Other script logic
-const { data: chats, error: chatFetchError } = runAxios(chatApi.getChats());
 </script>
 
 <style scoped>
