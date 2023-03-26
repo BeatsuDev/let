@@ -45,7 +45,9 @@
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
           <p id="category">{{ data.categoryName }}</p>
-          <button class="button button-black button-screaming" @click="contactSeller">Kontakt Seller</button>
+          <button class="button button-black button-screaming" @click="contactSeller">
+            Kontakt Seller
+          </button>
         </div>
         <div class="misc-bar-right">
           <h5>Selges av:</h5>
@@ -114,8 +116,8 @@ function handleBookmarkClick() {
 }
 
 function contactSeller() {
-  chatApi.createChat({ listingId: id}).then((response) => {
-    router.push({ name: "chat" , params: { chatId: response.data.id }});
+  chatApi.createChat({ listingId: id }).then((response) => {
+    router.push({ name: "chat", params: { chatId: response.data.id } });
   });
 }
 
