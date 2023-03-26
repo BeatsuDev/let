@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
+  
+  <div :class="{'blur-background': true, blur: showEmoji}"></div>
+  <div class="emoji" :class="{'emoji-animation': showEmoji}">{{ ['🤩','🥰','😮','😎','🤭','🤭','🤭','🤭','🤭','🤭'][Math.floor(Math.random()*10)] }}</div>
     <form @submit.prevent="login" class="form-container">
       <label for="email">Email</label>
       <input
@@ -42,6 +45,7 @@ const sessionStore = useSessionStore();
 const errorMessage = ref("");
 const email = ref("");
 const password = ref("");
+const showEmoji = ref(false);
 
 const responses = [
   "Velkommen tilbake! 🤗",
@@ -63,7 +67,10 @@ function login() {
     })
     .then((response) => {
       sessionStore.authenticate(response.data);
-      router.push("/");
+
+      // Add animation to emoji
+      showEmoji.value = true;
+      setTimeout(() => router.push("/"), 800);
     })
     .catch((error) => {
       if (error.response.status === 401) {
@@ -80,6 +87,48 @@ function clearError() {
 </script>
 
 <style scoped>
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  transition-duration: 200ms;
+  z-index: -10000;
+}
+
+.emoji {
+  position: fixed;
+  top: -120vh;
+  left: 0;
+  width: 99vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rem;
+  z-index: 101;
+}
+
+.blur {
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+@keyframes bounce-in {
+  from {
+    top: -120vh;
+  }
+  to {
+    top: 120vh;
+  }
+}
+
+.emoji-animation {
+  animation: bounce-in 800ms cubic-bezier(0.145, 0.940, 0.925, 0.075);
+  animation-iteration-count: 1;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
