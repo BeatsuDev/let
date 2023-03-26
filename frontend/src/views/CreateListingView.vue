@@ -27,6 +27,7 @@ const listingData = ref({
   price: 0,
   category: "",
   images: [],
+  thumbnailId: 0,
 } as CreateListing);
 const errorMessage = ref("" as string);
 

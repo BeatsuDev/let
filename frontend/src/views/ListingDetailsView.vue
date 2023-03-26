@@ -1,29 +1,29 @@
 <template>
   <div v-if="!data && !errorMessage">
-    <FullPageLoading/>
+    <FullPageLoading />
   </div>
-  <AlertBox v-else-if="errorMessage" type="error" :message="errorMessage"/>
+  <AlertBox v-else-if="errorMessage" type="error" :message="errorMessage" />
   <main v-else-if="data">
     <div id="images-section">
-    <BackButton style="margin-left: -1rem;"/>
-    <ImageContainer v-model="mainImage" :images="data.galleryUrls"></ImageContainer>
+      <BackButton style="margin-left: -1rem" />
+      <ImageContainer v-model="mainImage" :images="data.galleryUrls"></ImageContainer>
     </div>
     <div id="details-section">
       <div class="top-bar">
         <h1>{{ data.title }}</h1>
         <div
-            v-if="sessionStore.getUser()?.email === data.seller.email"
-            id="edit-btn"
-            class="button-slim button-green button-screaming"
-            @click="router.push('/edit-listing/' + data.id)"
+          v-if="sessionStore.getUser()?.email === data.seller.email"
+          id="edit-btn"
+          class="button-slim button-green button-screaming"
+          @click="router.push('/edit-listing/' + data.id)"
         >
           Rediger
         </div>
         <div id="bookmark-btn">
           <BookmarkIcon
-              :bookmarked="isBookmarked"
-              :class="{ filled: isBookmarked }"
-              @toggleBookmark="handleBookmarkClick"
+            :bookmarked="isBookmarked"
+            :class="{ filled: isBookmarked }"
+            @toggleBookmark="handleBookmarkClick"
           />
         </div>
       </div>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 import router from "@/router";
 
 import { ChatApi, ListingsApi } from "@/services/index";
