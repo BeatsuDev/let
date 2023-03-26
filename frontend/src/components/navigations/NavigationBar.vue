@@ -51,7 +51,6 @@ import { computed } from "vue";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
-const highestRole = computed(() => sessionStore.getHighestRole());
 
 // Define callback functions
 function logOut() {
