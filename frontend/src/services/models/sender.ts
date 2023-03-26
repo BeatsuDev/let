@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+
 /**
  * let API - OpenAPI 3.0
  * A simple API for listing items for sale.  Some useful links: - [The GitHub repository](https://github.com/BeatsuDev/let)
@@ -14,13 +15,9 @@
 /**
  *
  * @export
- * @interface CreateChat
+ * @enum {string}
  */
-export interface CreateChat {
-  /**
-   *
-   * @type {number}
-   * @memberof CreateChat
-   */
-  listingId?: number;
+export enum Sender {
+  BUYER = "BUYER",
+  SELLER = "SELLER",
 }
