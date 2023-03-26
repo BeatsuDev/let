@@ -1,7 +1,11 @@
 <template>
-  <div>
+  <div style="max-width: 100%; margin-top: 1rem">
     <div>
-      <button class="delete" v-if="deletable" @click="$emit('delete-image', modelValue)">
+      <button
+        class="button-danger button delete"
+        v-if="deletable"
+        @click="$emit('delete-image', modelValue)"
+      >
         slett
       </button>
       <img id="main-image" :src="images[modelValue]" />
