@@ -114,8 +114,8 @@ function handleBookmarkClick() {
 }
 
 function contactSeller() {
-  chatApi.createChat({ listingId: id}).then(() => {
-    router.push({ name: "chats" });
+  chatApi.createChat({ listingId: id}).then((response) => {
+    router.push({ name: "chat" , params: { chatId: response.data.id }});
   });
 }
 
