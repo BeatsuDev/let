@@ -13,7 +13,7 @@
     <form @submit.prevent="login" class="form-container">
       <label for="email">Email</label>
       <input
-        id="email"
+        id="email-input"
         v-model="email"
         class="input-text"
         placeholder="ola.sormann@gmail.com"
@@ -22,16 +22,16 @@
       />
       <label for="password">Passord</label>
       <input
-        id="password"
+        id="password-input"
         v-model="password"
         class="input-text"
         placeholder="sikker123"
         type="password"
         @input="clearError"
       />
-      <button class="button button-black" type="submit">Logg in</button>
+      <button id="login-button" class="button button-black" type="submit">Logg in</button>
       <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error"></AlertBox>
-      <RouterLink to="/register">Har du ikke en konto?</RouterLink>
+      <RouterLink id="no-account-button" to="/register">Har du ikke en konto?</RouterLink>
     </form>
   </div>
 </template>
