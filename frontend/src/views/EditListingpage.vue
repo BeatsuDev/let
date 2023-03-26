@@ -2,7 +2,7 @@
   <div class="wrapper-form">
     <BackButton style="margin-left: -3rem" />
     <h1>Rediger annonsen din</h1>
-    <ListingCreatorForm v-model="listingData" @create-listing="updateListing" />
+    <ListingCreatorForm v-model="listingData" @create-listing="updateListing" editable />
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
     <div style="margin-top: 1rem">
       <button
@@ -48,6 +48,7 @@ api
   .then((response) => {
     listingData.value.location = { name: response.data.locationName };
     listingData.value = { ...listingData.value, ...response.data };
+    listingData.value.price = response.data.price / 100;
   })
   .catch(() => {
     errorMessage.value = "Noe gikk galt...";
@@ -69,7 +70,7 @@ async function updateListing() {
   const listingDataWithImages = {
     id: listingData.value.id,
     categoryId: listingData.value.category.id,
-    thumbnailId: listingData.value.thumbnail.id,
+    thumbnailIndex: listingData.value.thumbnailId,
     summary: listingData.value.summary,
     description: listingData.value.description,
     location: { ...listingData.value.location },
@@ -85,7 +86,6 @@ async function updateListing() {
     .catch((error) => {
       alert(error.message);
     });
-  router.push({ name: "listing-details", params: { id: 1 } });
 }
 
 function deleteListing() {

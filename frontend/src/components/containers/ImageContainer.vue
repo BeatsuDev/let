@@ -1,13 +1,13 @@
 <template>
   <div style="max-width: 100%; margin-top: 1rem">
     <div>
-      <button
-        class="button-danger button delete"
+      <CloseIcon
         v-if="deletable"
         @click="$emit('delete-image', modelValue)"
+        style="cursor: pointer; width: 1rem; height: 1rem"
       >
         slett
-      </button>
+      </CloseIcon>
       <img id="main-image" :src="images[modelValue]" />
     </div>
     <div id="other-images">
@@ -23,6 +23,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import CloseIcon from "@/components/icons/CloseIcon.vue";
 
 const props = defineProps<{
   images: [string];

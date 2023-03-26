@@ -3,7 +3,7 @@
     <FullPageLoading />
   </div>
   <AlertBox
-    v-if="data.state === 'SOLD' && !errorMessage"
+    v-if="data?.state === 'SOLD' && !errorMessage"
     type="warning"
     message="Denne annonsen er solgt"
   />
