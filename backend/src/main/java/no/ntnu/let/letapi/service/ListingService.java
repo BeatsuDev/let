@@ -58,7 +58,7 @@ public class ListingService {
         if (listing.getState() == null) listing.setState(oldListing.getState());
         if (listing.getSeller() == null) listing.setSeller(oldListing.getSeller());
 
-        listing = listingRepository.save(listing);
+        createListing(listing);
         return listing;
     }
 
