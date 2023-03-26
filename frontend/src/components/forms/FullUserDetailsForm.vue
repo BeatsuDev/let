@@ -1,18 +1,21 @@
 <template>
   <form @submit.prevent="submit">
     <ValidatedInput
+      id="first-name-input"
       v-model="user.firstName"
       :error="validator.firstName.$errors[0]"
       placeholder="Ola"
       title="Fornavn"
     />
     <ValidatedInput
+      id="last-name-input"
       v-model="user.lastName"
       :error="validator.lastName.$errors[0]"
       placeholder="Sørmann"
       title="Etternavn"
     />
     <ValidatedInput
+      id="email-input"
       v-model="user.email"
       :error="validator.email.$errors[0]"
       input-type="email"
@@ -20,6 +23,7 @@
       title="Email"
     />
     <ValidatedInput
+      id="password-input"
       v-if="passwordField"
       v-model="user.password"
       :error="validator.password.$errors[0]"
@@ -29,6 +33,7 @@
       title="Passord"
     />
     <ValidatedInput
+      id="password-repeat-input"
       v-if="passwordField"
       v-model="passwordRepeat"
       :error="validator.passwordRepeat.$errors[0]"
@@ -38,7 +43,7 @@
       title="Gjenta passord"
     />
 
-    <button class="button button-black">{{ props.buttonTitle }}</button>
+    <button id="register-button" class="button button-black">{{ props.buttonTitle }}</button>
   </form>
 </template>
 
