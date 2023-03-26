@@ -777,10 +777,10 @@ components:
           example: 1234
         location:
           $ref: '#/components/schemas/Location'
-        thumbnailId:
+        thumbnailIndex:
           type: integer
           format: int64
-          example: 876
+          example: 3
         galleryIds:
           type: array
           items:
