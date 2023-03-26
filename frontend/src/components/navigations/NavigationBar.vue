@@ -28,7 +28,7 @@
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
-        <a v-if="sessionStore.getUser()" class="nav-item" @click="sessionStore.logOut()">
+        <a v-if="sessionStore.isAuthenticated" class="nav-item" @click="logOut">
           <LogOutIcon class="nav-icon" />
           <span>logg ut</span></a
         >
@@ -45,9 +45,17 @@ import CreateListingIcon from "@/components/icons/CreateListingIcon.vue";
 import ProfileIcon from "@/components/icons/ProfileIcon.vue";
 import { useSessionStore } from "@/stores/sessionStore";
 import LogOutIcon from "@/components/icons/LogOutIcon.vue";
+import router from "@/router";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
+const highestRole = computed(() => sessionStore.getHighestRole());
+
+// Define callback functions
+function logOut() {
+  sessionStore.logOut();
+  router.push("/");
+}
 </script>
 
 <style scoped>
