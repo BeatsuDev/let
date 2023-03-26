@@ -1,30 +1,33 @@
 <template>
   <MainContainer :collapsed="collapsed">
-    <h1>Rediger profilen din</h1>
-    <button class="button no" @click="$emit('update:collapsed', !collapsed)">
-      <FilterIcon class="button-icon" />Meny
-    </button>
-    <FullUserDetailsForm
-      v-model="userEdit"
-      :password-field="changePassword"
-      button-title="ENDRE"
-      @input="clearMessages"
-      @submit="updateUser"
-    />
-    <button
-      class="button button-text"
-      style="margin-top: 1rem"
-      @click="changePassword = !changePassword"
-    >
-      Jeg vil bytte passord
-    </button>
-    <AlertBox
-      v-if="user.email !== userEdit.email"
-      message="Du må logge inn på nytt etter å ha endret eposten din."
-      type="warning"
-    />
-    <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error" />
-    <AlertBox v-if="success !== ''" :message="success" type="success" />
+    <div style="max-width: 60rem; margin: auto">
+      <h1>Rediger profilen din</h1>
+      <button class="button no" @click="$emit('update:collapsed', !collapsed)">
+        <FilterIcon class="button-icon" />
+        Meny
+      </button>
+      <FullUserDetailsForm
+        v-model="userEdit"
+        :password-field="changePassword"
+        button-title="ENDRE"
+        @input="clearMessages"
+        @submit="updateUser"
+      />
+      <button
+        class="button button-text"
+        style="margin-top: 1rem"
+        @click="changePassword = !changePassword"
+      >
+        Jeg vil bytte passord
+      </button>
+      <AlertBox
+        v-if="user.email !== userEdit.email"
+        message="Du må logge inn på nytt etter å ha endret eposten din."
+        type="warning"
+      />
+      <AlertBox v-if="errorMessage !== ''" :message="errorMessage" type="error" />
+      <AlertBox v-if="success !== ''" :message="success" type="success" />
+    </div>
   </MainContainer>
 </template>
 <script lang="ts" setup>
