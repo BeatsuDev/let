@@ -6,7 +6,7 @@
       <h3 v-else>
         Chat for "{{ chat.listing.title }}" med
         {{
-          useSessionStore().getUser()?.firstName === chat.seller.firstName
+          useSessionStore().getUser()?.id === chat.seller.id
             ? chat.buyer.firstName
             : chat.seller.firstName
         }}
@@ -24,7 +24,8 @@
           'received-message': !(message.sender === loggedInUser),
           'sent-message': message.sender === loggedInUser,
         }"
-        v-for="message in messages"
+        v-for="(message, index) in chat.messages"
+        :key="index"
       >
         <p>{{ message.content }}</p>
         <br v-if="!(message.sender === loggedInUser)" />
@@ -42,40 +43,36 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import type { ComputedRef } from "vue";
+import type {ComputedRef} from "vue";
+import {computed, ref} from "vue";
 
-import { useSessionStore } from "@/stores/sessionStore";
+import {useSessionStore} from "@/stores/sessionStore";
 
-import { ChatApi } from "@/services/index";
-import type { CreateMessage } from "@/services/index";
-import type { Chat } from "@/types/chat";
+import {ChatApi, ChatFull, CreateMessage, Sender} from "@/services/index";
 
 // Define APIs
 const chatApi = new ChatApi();
 
 // Define props
 const props = defineProps<{
-  chat: Chat | null;
+  modelValue: ChatFull;
 }>();
-
-const currentChat = computed(() => {
-  return props.chat;
+const chat = computed({
+  get: () => props.modelValue,
+  set: (chat) => emit("update:modelValue", chat),
 });
+
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", newChat: ChatFull): void;
+}>();
 
 // Define refs
 const chatMessageInput = ref("");
-const messages = computed({
-  get: () => currentChat.value?.messages.map((m) => ({ ...m })) ?? [],
-  set: (value: Chat["messages"]) => {
-    currentChat.value!.messages = value;
-  },
-});
 
 // Define computed values
-const loggedInUser: ComputedRef<"BUYER" | "SELLER"> = computed(() => {
-  let user = useSessionStore().getUser()?.id === props.chat?.buyer.id ? "BUYER" : "SELLER";
-  return user as "BUYER" | "SELLER";
+const loggedInUser: ComputedRef<Sender> = computed(() => {
+  return useSessionStore().getUser()?.id === chat.value.buyer?.id ? Sender.BUYER : Sender.SELLER;
 });
 
 // Define callback functions
@@ -84,12 +81,17 @@ async function sendMessage() {
     return;
   }
 
-  const response = await chatApi.sendMessage(props.chat!.id, {
-    content: chatMessageInput.value,
-  } as CreateMessage);
-
+  await chatApi
+    .sendMessage(chat.value.id!, {
+      content: chatMessageInput.value,
+    } as CreateMessage)
+    .then((response) => {
+      const newChat = response.data as ChatFull;
+      console.table(newChat.messages);
+      chat.value = newChat;
+    })
+    .catch(() => alert("Kunne ikke sende meldingen"));
   chatMessageInput.value = "";
-  messages.value = (response.data as Chat).messages.map((m) => ({ ...m }));
 }
 
 // Vue hooks
