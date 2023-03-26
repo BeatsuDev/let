@@ -76,7 +76,7 @@
     </div>
     <div v-if="images.length !== 0">
       <h3>Velg forsidebilde og behandle bilder</h3>
-      <div class="form-container" style="width: 40rem">
+      <div class="form-container">
         <ImageContainer
           v-model="listingDataInputRefs.thumbnailId"
           :images="images"

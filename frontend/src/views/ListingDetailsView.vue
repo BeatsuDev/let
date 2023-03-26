@@ -2,8 +2,13 @@
   <div v-if="!data && !errorMessage">
     <FullPageLoading />
   </div>
-  <AlertBox v-else-if="errorMessage" :message="errorMessage" type="error" />
-  <main v-else-if="data">
+  <AlertBox
+    v-if="data.state === 'SOLD' && !errorMessage"
+    type="warning"
+    message="Denne annonsen er solgt"
+  />
+  <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
+  <main v-if="data" style="padding-top: 3rem">
     <div id="images-section">
       <BackButton style="margin-left: -1rem" />
       <ImageContainer v-model="mainImage" :images="imageUrls(data.gallery)"></ImageContainer>
@@ -36,8 +41,8 @@
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
           <p id="category">{{ data.categoryName }}</p>
-          <button class="button button-black button-screaming" @click="contactSeller">
-            Kontakt Seller
+          <button class="button button-black button-screaming" v-if="data.state !== 'SOLD'" @click="contactSeller">
+            Kontakt selger
           </button>
         </div>
         <div class="misc-bar-right">
