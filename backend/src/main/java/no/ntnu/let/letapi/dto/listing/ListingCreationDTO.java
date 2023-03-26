@@ -14,6 +14,6 @@ public class ListingCreationDTO {
     private Long price;
     private Long categoryId;
     private LocationDTO location;
-    private Long thumbnailId;
+    private Integer thumbnailIndex;
     private List<Long> galleryIds;
 }
