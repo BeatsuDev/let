@@ -47,24 +47,26 @@ const props = defineProps<{
   validationError?: any;
   modelValue?: Category; // The data that the user writes in the input will be updated here
   placeholder?: string;
+  textInput: string;
 }>();
 
 // Define emits
 const emit = defineEmits<{
   (event: "update:modelValue", value: Category): void;
+  (event: "update:textInput", value: string): void;
 }>();
 
 // Define refs;
-const textInput = ref("");
 const { data: categories, error } = runAxios(categoryApi.getCategories());
 
 const inputData = computed({
   get() {
-    return textInput.value;
+    return props.textInput;
   },
   set(value) {
     // Always set the textInput
-    textInput.value = value;
+    console.log(value);
+    emit("update:textInput", value);
 
     // Only update the v-model if the value is a valid category
     const category = categories.value?.find((c) => c.name === value);

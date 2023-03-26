@@ -25,9 +25,10 @@
       <CategoryPicker
         id="category-picker"
         v-model="listingDataInputRefs.category"
+        v-model:text-input="listingDataInputRefs.categoryName"
         :validation-error="validator.category.$errors[0]"
         class="input-container"
-        placeholder="Planter"
+        :placeholder="categoryInput"
         title="Kategori"
       />
     </div>
@@ -93,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
@@ -118,6 +119,14 @@ const emit = defineEmits<{
 }>();
 
 // Define refs
+const categoryInput = ref(props.modelValue.categoryName as string);
+watch(
+  () => props.modelValue.categoryName,
+  (value) => {
+    categoryInput.value = value as string;
+  }
+);
+
 const listingDataInputRefs = computed({
   get() {
     return props.modelValue;
@@ -162,10 +171,10 @@ const validator = useVuelidate(rules, listingDataInputRefs);
 //Define callback functions
 async function submitData() {
   // Check if inputs follow validation rules
-  //const result = await validator.value.$validate();
-  //if (!result) {
-  //  return;
-  //}
+  const result = await validator.value.$validate();
+  if (!result) {
+    return;
+  }
 
   emit("createListing");
 }

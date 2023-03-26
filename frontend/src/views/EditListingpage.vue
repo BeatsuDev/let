@@ -2,7 +2,7 @@
   <div class="wrapper-form">
     <BackButton style="margin-left: -3rem" />
     <h1>Rediger annonsen din</h1>
-    <ListingCreatorForm v-model="listingData" @create-listing="createListing" />
+    <ListingCreatorForm v-model="listingData" @create-listing="updateListing" />
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
     <div style="margin-top: 1rem">
       <button
@@ -28,6 +28,7 @@ import BackButton from "@/components/inputs/BackButton.vue";
 import { ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import axios from "axios";
+import { uploadImage } from "@/utils/imageUpload";
 
 // Define api
 const api = new ListingsApi();
@@ -54,29 +55,16 @@ api
   });
 
 // Callback functions
-async function createListing() {
+async function updateListing() {
   // Upload images to backend
-  const imageResponses = await Promise.all(
-    listingData.value.images.map((image) => {
-      const formData = new FormData();
-      formData.append("image", image);
-      return axios.post("http://localhost:8080/image", formData);
-    })
-  );
+  let imageIds = [] as string[];
+  await uploadImage(listingData.value.images)
+    .then((data) => (imageIds = data))
+    .catch((error) => {
+      //errorMessage = error.message
+      return;
+    });
 
-  // Make sure all image responses are successful
-  const imageSuccesses = imageResponses.map(
-    (response) => response.status === 201 && response.data.url
-  );
-
-  if (imageSuccesses.includes(false)) {
-    errorMessage.value =
-      "Noe gikk galt under bildeopplastningen... " +
-      imageResponses.filter((response) => response.status !== 201)[0].data;
-    return;
-  }
-
-  const imageIds = imageResponses.map((image) => image.data.id) as string[];
   const { price, location, images, category, ...data } = listingData.value;
 
   const listingDataWithImages = {
@@ -90,7 +78,7 @@ async function createListing() {
   console.table(listingDataWithImages);
 
   api
-    .createListing(listingDataWithImages)
+    .updateListing(listingDataWithImages)
     .then((response) => {
       router.push({ name: "listing-details", params: { id: response.data.id } });
     })
