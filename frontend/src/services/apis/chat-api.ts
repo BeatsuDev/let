@@ -16,7 +16,7 @@ import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { Chat, CreateChat, CreateMessage, Message } from "../models";
+import { ChatFull, ChatMinimal, CreateChat, CreateMessage, Message } from "../models";
 
 /**
  * ChatApi - axios parameter creator
@@ -296,7 +296,7 @@ export const ChatApiFp = function (configuration?: Configuration) {
     async createChat(
       body?: CreateChat,
       options?: AxiosRequestConfig
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Chat>>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<ChatFull>>> {
       const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).createChat(
         body,
         options
@@ -319,7 +319,7 @@ export const ChatApiFp = function (configuration?: Configuration) {
     async getChat(
       id: number,
       options?: AxiosRequestConfig
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Chat>>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<ChatFull>>> {
       const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).getChat(id, options);
       return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
         const axiosRequestArgs: AxiosRequestConfig = {
@@ -337,7 +337,9 @@ export const ChatApiFp = function (configuration?: Configuration) {
      */
     async getChats(
       options?: AxiosRequestConfig
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Chat>>>> {
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<ChatMinimal>>>
+    > {
       const localVarAxiosArgs = await ChatApiAxiosParamCreator(configuration).getChats(options);
       return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
         const axiosRequestArgs: AxiosRequestConfig = {
@@ -396,7 +398,7 @@ export const ChatApiFactory = function (
     async createChat(
       body?: CreateChat,
       options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<Chat>> {
+    ): Promise<AxiosResponse<ChatFull>> {
       return ChatApiFp(configuration)
         .createChat(body, options)
         .then((request) => request(axios, basePath));
@@ -408,7 +410,7 @@ export const ChatApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Chat>> {
+    async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<ChatFull>> {
       return ChatApiFp(configuration)
         .getChat(id, options)
         .then((request) => request(axios, basePath));
@@ -419,7 +421,7 @@ export const ChatApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Chat>>> {
+    async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<ChatMinimal>>> {
       return ChatApiFp(configuration)
         .getChats(options)
         .then((request) => request(axios, basePath));
@@ -462,7 +464,7 @@ export class ChatApi extends BaseAPI {
   public async createChat(
     body?: CreateChat,
     options?: AxiosRequestConfig
-  ): Promise<AxiosResponse<Chat>> {
+  ): Promise<AxiosResponse<ChatFull>> {
     return ChatApiFp(this.configuration)
       .createChat(body, options)
       .then((request) => request(this.axios, this.basePath));
@@ -476,7 +478,7 @@ export class ChatApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof ChatApi
    */
-  public async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Chat>> {
+  public async getChat(id: number, options?: AxiosRequestConfig): Promise<AxiosResponse<ChatFull>> {
     return ChatApiFp(this.configuration)
       .getChat(id, options)
       .then((request) => request(this.axios, this.basePath));
@@ -489,7 +491,7 @@ export class ChatApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof ChatApi
    */
-  public async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Chat>>> {
+  public async getChats(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<ChatMinimal>>> {
     return ChatApiFp(this.configuration)
       .getChats(options)
       .then((request) => request(this.axios, this.basePath));
