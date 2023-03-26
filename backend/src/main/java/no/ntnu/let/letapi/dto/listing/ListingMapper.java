@@ -31,6 +31,10 @@ public abstract class ListingMapper {
     }
     @Mapping(target = "url", source = "image", qualifiedByName = "toImageUrl")
     public abstract ImageDTO toImageDTO(Image image);
+    public Image toImageReference(Long id) {
+        if (id == null) return null;
+        return imageRepository.getReferenceById(id);
+    }
 
     String formatDate(Date date) {
         return DateUtil.formatDate(date);
@@ -38,25 +42,21 @@ public abstract class ListingMapper {
 
     public abstract Category toCategory(CategoryCreationDTO categoryCreationDTO);
     public abstract CategoryDTO toCategoryDTO(Category category);
+    public Category toCategoryReference(Long id) {
+        if (id == null) return null;
+        return categoryRepository.getReferenceById(id);
+    }
 
     @Mappings({
-            @Mapping(target = "category", expression = "java(categoryRepository.getReferenceById" +
-                    "(listingCreationDTO.getCategoryId()))"),
-            @Mapping(target = "thumbnail", expression = "java(imageRepository.getReferenceById" +
-                    "(listingCreationDTO.getThumbnailId()))"),
-            @Mapping(target = "gallery",
-                    expression = "java(listingCreationDTO.getGalleryIds().stream().map" +
-                            "(imageRepository::getReferenceById).toList())"),
+            @Mapping(target = "category", source = "categoryId"),
+            @Mapping(target = "thumbnail", source = "thumbnailId"),
+            @Mapping(target = "gallery", source = "galleryIds"),
     })
     public abstract Listing toListing(ListingCreationDTO listingCreationDTO);
     @Mappings({
-            @Mapping(target = "category", expression = "java(categoryRepository.getReferenceById" +
-                    "(listingUpdateDTO.getCategoryId()))"),
-            @Mapping(target = "thumbnail", expression = "java(imageRepository.getReferenceById" +
-                    "(listingUpdateDTO.getThumbnailId()))"),
-            @Mapping(target = "gallery",
-                    expression = "java(listingUpdateDTO.getGalleryIds().stream().map" +
-                            "(imageRepository::getReferenceById).toList())"),
+            @Mapping(target = "category", source = "categoryId"),
+            @Mapping(target = "thumbnail", source = "thumbnailId"),
+            @Mapping(target = "gallery", source = "galleryIds"),
     })
     public abstract Listing toListing(ListingUpdateDTO listingUpdateDTO);
     @Named("toMinimalListingDTO")
