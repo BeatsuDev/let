@@ -1,55 +1,55 @@
 <template>
-  <form @submit.prevent="submitData">
+  <div>
     <div id="row-1" class="row">
       <ValidatedInput
-          v-model="listingDataInputRefs.title"
-          :error="validator.title.$errors[0]"
-          class="input-container"
-          placeholder="Rød rose - snart døende"
-          title="Tittel"
+        v-model="listingDataInputRefs.title"
+        :error="validator.title.$errors[0]"
+        class="input-container"
+        placeholder="Rød rose - snart døende"
+        title="Tittel"
       />
       <ValidatedInput
-          v-model="listingDataInputRefs.price"
-          :error="validator.price.$errors[0]"
-          class="input-container"
-          placeholder="249.99"
-          title="Pris (kr)"
+        v-model="listingDataInputRefs.price"
+        :error="validator.price.$errors[0]"
+        class="input-container"
+        placeholder="249.99"
+        title="Pris (kr)"
       />
     </div>
 
     <div id="row-2" class="row">
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
-        <LocationPicker v-model="listingDataInputRefs.location" class="input-container"/>
+        <LocationPicker v-model="listingDataInputRefs.location" class="input-container" />
       </div>
       <CategoryPicker
-          id="category-picker"
-          v-model="listingDataInputRefs.category"
-          :validation-error="validator.category.$errors[0]"
-          class="input-container"
-          placeholder="Planter"
-          title="Kategori"
+        id="category-picker"
+        v-model="listingDataInputRefs.category"
+        :validation-error="validator.category.$errors[0]"
+        class="input-container"
+        placeholder="Planter"
+        title="Kategori"
       />
     </div>
 
     <div id="row-3" class="row">
       <ValidatedInput
-          v-model="listingDataInputRefs.summary"
-          :error="validator.summary.$errors[0]"
-          class="input-container"
-          input-type="textarea"
-          title="Kort beskrivelse (Maks 100 tegn)"
+        v-model="listingDataInputRefs.summary"
+        :error="validator.summary.$errors[0]"
+        class="input-container"
+        input-type="textarea"
+        title="Kort beskrivelse (Maks 100 tegn)"
       />
     </div>
 
     <div id="row-4" class="row">
       <ValidatedInput
-          id="description"
-          v-model="listingDataInputRefs.description"
-          :error="validator.description.$errors[0]"
-          class="input-container"
-          input-type="textarea"
-          title="Detaljert beskrivelse"
+        id="description"
+        v-model="listingDataInputRefs.description"
+        :error="validator.description.$errors[0]"
+        class="input-container"
+        input-type="textarea"
+        title="Detaljert beskrivelse"
       />
     </div>
 
@@ -57,45 +57,55 @@
       <div class="input-container">
         <h3><label for="images">Last opp bilder</label></h3>
         <input
-            id="images"
-            :class="{ 'input-text': true, 'red-border': validator.images.$error }"
-            multiple
-            type="file"
-            accept="image/*"
-            @change="imageFileHandler"
+          id="images"
+          :class="{ 'input-text': true, 'red-border': validator.images.$error }"
+          multiple
+          type="file"
+          accept="image/*"
+          @change="imageFileHandler"
         />
         <div v-if="validator.images.$error" id="error">
           {{ validator.images.$errors[0].$message }}
         </div>
       </div>
     </div>
-    <div v-if="listingDataInputRefs.images.length !== 0">
-      <h3>Velg forside bilde</h3>
+    <div v-if="images.length !== 0">
+      <h3>Velg forsidebilde og behandle bilder</h3>
       <div class="form-container">
-        <ImageContainer :images="images" v-model="listingDataInputRefs.thumbnailId"></ImageContainer>
+        <ImageContainer
+          :images="images"
+          v-model="listingDataInputRefs.thumbnailId"
+          @delete-image="deleteImage"
+          deletable
+        ></ImageContainer>
       </div>
     </div>
 
     <div id="row-6" class="row">
-      <div class="input-container">
-        <button class="button button-black button-screaming" type="submit">Publiser Annonse</button>
+      <div class="input-container" style="margin-top: 1rem">
+        <button class="button button-black button-screaming" @click="submitData" type="submit">
+          Publiser Annonse
+        </button>
       </div>
     </div>
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {useVuelidate} from "@vuelidate/core";
-import {helpers, maxLength, numeric, required} from "@vuelidate/validators";
+import { computed } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
-import type {CreateListing, UpdateListing} from "@/services";
+import type { CreateListing, UpdateListing } from "@/services";
 import CategoryPicker from "../inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
+import { ImageApi, ListingsApi } from "@/services/index";
 
+// Define pais
+const imageApi = new ImageApi();
 // Define props
 const props = defineProps<{
   modelValue: UpdateListing | CreateListing;
@@ -113,29 +123,36 @@ const listingDataInputRefs = computed({
     return props.modelValue;
   },
   set(value: any) {
-    const newListing = {...props.modelValue, [value]: value};
+    const newListing = { ...props.modelValue, [value]: value };
     emit("update:modelValue", newListing);
   },
 });
-const images = computed(() => listingDataInputRefs.value.images.map((image: File) => URL.createObjectURL(image)))
+
+const images = computed(() => {
+  let images = listingDataInputRefs.value.images.map((image: File) => URL.createObjectURL(image));
+  if (listingDataInputRefs.value.galleryUrls) {
+    images = [...images, ...listingDataInputRefs.value.galleryUrls];
+  }
+  return images;
+});
 
 const rules = {
-  title: {required: helpers.withMessage("Tittel er påkrevd", required)},
+  title: { required: helpers.withMessage("Tittel er påkrevd", required) },
   price: {
     required: helpers.withMessage("Pris er pekrevd", required),
     numeric: helpers.withMessage("Pris må være et tall", numeric),
   },
-  location: {required: helpers.withMessage("Lokasjon er påkrevd", required)},
-  category: {required: helpers.withMessage("Kategori er påkrevd", required)},
+  location: { required: helpers.withMessage("Lokasjon er påkrevd", required) },
+  category: { required: helpers.withMessage("Kategori er påkrevd", required) },
   summary: {
     required: helpers.withMessage("Sammendrag er påkrevd", required),
     maxLength: helpers.withMessage("Sammendrag kan ikke være lengre enn 100 tegn", maxLength(100)),
   },
-  description: {required: helpers.withMessage("Beskrivelse er påkrevd", required)},
+  description: { required: helpers.withMessage("Beskrivelse er påkrevd", required) },
   images: {
     required: helpers.withMessage("Bilder er påkrevd", required),
     images: helpers.withMessage("Bilder må være mindre enn 1 MB", (images: File[]) =>
-        images.every((image) => image.size < 1024 * 1024)
+      images.every((image) => image.size < 1024 * 1024)
     ),
   },
 };
@@ -159,6 +176,13 @@ function imageFileHandler(event: Event) {
   const files = target.files;
   if (files) {
     listingDataInputRefs.value.images = Array.from(files);
+  }
+}
+
+function deleteImage(index: number) {
+  if (images.value[index].startsWith("blob:")) {
+    listingDataInputRefs.value.images.splice(index, 1);
+    return;
   }
 }
 </script>
