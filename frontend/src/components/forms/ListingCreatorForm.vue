@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="submitData">
+    <LocationMapPicker></LocationMapPicker>
     <div id="row-1" class="row">
       <ValidatedInput
         v-model="listingDataInputRefs.title"
@@ -88,6 +89,7 @@ import type { Category, CreateListing, Location } from "@/services";
 import CategoryPicker from "../inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
+import LocationMapPicker from "@/components/inputs/LocationMapPicker.vue";
 
 // Variables as they are from the inputs.
 //

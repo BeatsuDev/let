@@ -41,7 +41,7 @@ const emit = defineEmits(["update:modelValue"]);
   left: 0;
   top: 0;
   margin-top: 7rem;
-  padding: 7rem 3rem 3rem 3rem;
+  padding: 7rem 2rem 2rem 2rem;
   transition: 0.5s;
   overflow: auto;
   background-color: var(--color-background);
@@ -65,8 +65,6 @@ const emit = defineEmits(["update:modelValue"]);
 @media screen and (max-width: 600px) {
   .sidebar {
     padding-top: 11.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
     height: 100%;
     margin-top: 0;
   }

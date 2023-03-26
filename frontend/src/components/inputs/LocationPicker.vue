@@ -8,7 +8,16 @@
       @keyup="searchWithDelay"
     />
     <div class="dropdown-content">
-      <div v-for="location in locations" :key="location" @click="setValue(location)">
+      <div
+        v-for="location in locations"
+        :key="location"
+        @click="
+          (event) => {
+            event.stopPropagation();
+            setValue(location);
+          }
+        "
+      >
         {{ location.country }},
         {{ location.name }}
       </div>
@@ -97,13 +106,13 @@ function search() {
 }
 
 .dropdown-content {
+  z-index: 10000;
   background-color: #f6f6f6;
   overflow: auto;
   max-height: 300px;
   width: 100%;
   position: absolute;
   border: 1px solid #ddd;
-  z-index: 1;
 }
 
 .dropdown-content div {
