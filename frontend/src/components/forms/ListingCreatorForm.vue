@@ -20,15 +20,19 @@
     <div id="row-2" class="row">
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
-        <LocationPicker v-model="listingDataInputRefs.location" class="input-container" />
+        <LocationPicker
+          v-model="listingDataInputRefs.location"
+          v-model:input="locationInput"
+          class="input-container"
+        />
       </div>
       <CategoryPicker
         id="category-picker"
         v-model="listingDataInputRefs.category"
         v-model:text-input="listingDataInputRefs.categoryName"
+        :placeholder="categoryInput"
         :validation-error="validator.category.$errors[0]"
         class="input-container"
-        :placeholder="categoryInput"
         title="Kategori"
       />
     </div>
@@ -60,9 +64,9 @@
         <input
           id="images"
           :class="{ 'input-text': true, 'red-border': validator.images.$error }"
+          accept="image/*"
           multiple
           type="file"
-          accept="image/*"
           @change="imageFileHandler"
         />
         <div v-if="validator.images.$error" id="error">
@@ -72,41 +76,38 @@
     </div>
     <div v-if="images.length !== 0">
       <h3>Velg forsidebilde og behandle bilder</h3>
-      <div class="form-container">
+      <div class="form-container" style="width: 40rem">
         <ImageContainer
-          :images="images"
           v-model="listingDataInputRefs.thumbnailId"
-          @delete-image="deleteImage"
+          :images="images"
           deletable
+          @delete-image="deleteImage"
         ></ImageContainer>
       </div>
     </div>
 
     <div id="row-6" class="row">
       <div class="input-container" style="margin-top: 1rem">
-        <button class="button button-black button-screaming" @click="submitData" type="submit">
+        <button class="button button-black button-screaming" type="submit" @click="submitData">
           Publiser Annonse
         </button>
       </div>
     </div>
-    <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
 import type { CreateListing, UpdateListing } from "@/services";
+import { Image } from "@/services";
 import CategoryPicker from "../inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
-import { ImageApi, ListingsApi } from "@/services/index";
 
-// Define pais
-const imageApi = new ImageApi();
 // Define props
 const props = defineProps<{
   modelValue: UpdateListing | CreateListing;
@@ -119,14 +120,10 @@ const emit = defineEmits<{
 }>();
 
 // Define refs
-const categoryInput = ref(props.modelValue.categoryName as string);
-watch(
-  () => props.modelValue.categoryName,
-  (value) => {
-    categoryInput.value = value as string;
-  }
-);
+const categoryInput = ref(props.modelValue?.categoryName);
+const locationInput = ref(props.modelValue.location?.name);
 
+// Define computed
 const listingDataInputRefs = computed({
   get() {
     return props.modelValue;
@@ -139,8 +136,8 @@ const listingDataInputRefs = computed({
 
 const images = computed(() => {
   let images = listingDataInputRefs.value.images.map((image: File) => URL.createObjectURL(image));
-  if (listingDataInputRefs.value.galleryUrls) {
-    images = [...images, ...listingDataInputRefs.value.galleryUrls];
+  if (listingDataInputRefs.value.gallery) {
+    images = [...images, ...imageUrls(listingDataInputRefs.value.gallery)];
   }
   return images;
 });
@@ -179,6 +176,14 @@ async function submitData() {
   emit("createListing");
 }
 
+//Vue hooks
+watch(
+  () => props.modelValue.categoryName,
+  (value) => {
+    categoryInput.value = value as string;
+  }
+);
+
 //Other script logic
 function imageFileHandler(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -188,10 +193,19 @@ function imageFileHandler(event: Event) {
   }
 }
 
+function imageUrls(images: [Image]): string[] {
+  return images!.map((image) => image.url!);
+}
+
 function deleteImage(index: number) {
-  if (images.value[index].startsWith("blob:")) {
+  if (index < listingDataInputRefs.value.images.length) {
     listingDataInputRefs.value.images.splice(index, 1);
-    return;
+  } else {
+    console.log(listingDataInputRefs.value.gallery);
+    listingDataInputRefs.value.gallery!.splice(
+      index - listingDataInputRefs.value.images.length - 1,
+      1
+    );
   }
 }
 </script>

@@ -18,7 +18,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import BackButton from "@/components/inputs/BackButton.vue";
 import { ref, watch } from "vue";
 
 const props = defineProps<{
@@ -56,7 +55,7 @@ watch(
   margin-top: 1rem;
   display: flex;
   white-space: nowrap;
-  max-width: 100%;
+  width: 100%;
   overflow-x: auto;
 }
 
