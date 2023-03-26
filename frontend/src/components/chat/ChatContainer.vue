@@ -3,7 +3,14 @@
     <div class="chat-title-bar">
       <h3 v-if="!chat">Ingen chat valgt</h3>
       <!-- TODO: Check if the user viewing the page is the buyer or the seller -->
-      <h3 v-else>Chat for "{{ chat.listing.title }}" med {{ useSessionStore().getUser()?.firstName === chat.seller.firstName ? chat.buyer.firstName : chat.seller.firstName }}</h3>
+      <h3 v-else>
+        Chat for "{{ chat.listing.title }}" med
+        {{
+          useSessionStore().getUser()?.firstName === chat.seller.firstName
+            ? chat.buyer.firstName
+            : chat.seller.firstName
+        }}
+      </h3>
     </div>
 
     <div class="chat-messages">
@@ -12,15 +19,23 @@
       </div>
       <div
         v-else
-        :class="{'chat-message': true, 'received-message': !(message.sender === loggedInUser), 'sent-message': message.sender === loggedInUser}"
-        v-for="message in messages" >
-        <p>{{ message.content }}</p><br v-if="!(message.sender === loggedInUser)">
-        <span>{{ (new Date(message.timestamp)).toLocaleTimeString("no", {timeStyle: "short"}) }}</span>
+        :class="{
+          'chat-message': true,
+          'received-message': !(message.sender === loggedInUser),
+          'sent-message': message.sender === loggedInUser,
+        }"
+        v-for="message in messages"
+      >
+        <p>{{ message.content }}</p>
+        <br v-if="!(message.sender === loggedInUser)" />
+        <span>{{
+          new Date(message.timestamp).toLocaleTimeString("no", { timeStyle: "short" })
+        }}</span>
       </div>
     </div>
 
     <form @submit.prevent="sendMessage" class="chat-input-container">
-      <input type="text" class="chat-input" v-model="chatMessageInput"/>
+      <input type="text" class="chat-input" v-model="chatMessageInput" />
       <button class="chat-send-button">Send</button>
     </form>
   </div>
@@ -51,10 +66,10 @@ const currentChat = computed(() => {
 // Define refs
 const chatMessageInput = ref("");
 const messages = computed({
-  get: () => currentChat.value?.messages.map(m => ({ ...m })) ?? [],
+  get: () => currentChat.value?.messages.map((m) => ({ ...m })) ?? [],
   set: (value: Chat["messages"]) => {
     currentChat.value!.messages = value;
-  }
+  },
 });
 
 // Define computed values
@@ -69,20 +84,20 @@ async function sendMessage() {
     return;
   }
 
-  const response = await chatApi.sendMessage(props.chat!.id, { content: chatMessageInput.value } as CreateMessage);
+  const response = await chatApi.sendMessage(props.chat!.id, {
+    content: chatMessageInput.value,
+  } as CreateMessage);
 
   chatMessageInput.value = "";
-  messages.value = (response.data as Chat).messages.map(m => ({ ...m }));
+  messages.value = (response.data as Chat).messages.map((m) => ({ ...m }));
 }
 
 // Vue hooks
 
 // Other script logic
-
 </script>
 
 <style scoped>
-
 .chat-messages > .no-chats {
   display: flex;
   justify-content: center;
@@ -118,7 +133,7 @@ async function sendMessage() {
   background-color: #f1f1f1;
 }
 
-.chat-messages  > .chat-message {
+.chat-messages > .chat-message {
   padding: 0.2rem 1rem;
   border-radius: 1rem;
   max-width: 85%;

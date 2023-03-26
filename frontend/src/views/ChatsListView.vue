@@ -1,13 +1,16 @@
 <template>
   <main>
     <NavigationDrawer v-model="collapsed">
-      <ChatList class="chat-list" @chat-selected="loadChat"/>
+      <ChatList class="chat-list" @chat-selected="loadChat" />
     </NavigationDrawer>
-    <div class="toggle-sidebar" @click="collapsed = false" :style="{opacity: Number(collapsed)}">
+    <div class="toggle-sidebar" @click="collapsed = false" :style="{ opacity: Number(collapsed) }">
       <FilterIcon class="button-icon" /> Meny
     </div>
     <MainContainer class="chat-view-wrapper" :collapse="collapsed">
-      <ChatContainer :class="{'chat-container': true, 'collapsed-margin': collapsed}" :chat="selectedChat"/>
+      <ChatContainer
+        :class="{ 'chat-container': true, 'collapsed-margin': collapsed }"
+        :chat="selectedChat"
+      />
     </MainContainer>
   </main>
 </template>
@@ -46,10 +49,11 @@ async function loadChat(chat: ChatOverview) {
 // Get the chat ID
 let chatId = Number(router.currentRoute.value.params.chatId);
 console.log("Chat ID: " + chatId);
-chatApi.getChat(chatId)
-  .then(response => response.data as Chat)
-  .then(chat => {
-    selectedChat.value = chat
+chatApi
+  .getChat(chatId)
+  .then((response) => response.data as Chat)
+  .then((chat) => {
+    selectedChat.value = chat;
   });
 </script>
 
