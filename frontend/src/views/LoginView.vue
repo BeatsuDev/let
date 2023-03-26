@@ -3,7 +3,7 @@
     <h2 id="title">{{ randomResponse }}</h2>
   
   <div :class="{'blur-background': true, blur: showEmoji}"></div>
-  <div class="emoji" :class="{'emoji-animation': showEmoji}">{{ ['🤩','🥰','😮','😎','🤭','🤭','🤭','🤭','🤭','🤭'][Math.floor(Math.random()*10)] }}</div>
+  <div class="emoji" :class="{'emoji-animation': showEmoji}">{{ ['🤩','🥰','😮','😎','🤑','👀','😩💦','🌱','🤭','😍'][Math.floor(Math.random()*10)] }}</div>
     <form @submit.prevent="login" class="form-container">
       <label for="email">Email</label>
       <input
