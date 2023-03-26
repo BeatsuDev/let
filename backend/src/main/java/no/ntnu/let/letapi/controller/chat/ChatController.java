@@ -53,6 +53,10 @@ public class ChatController {
         if (user.getId() == listing.getSeller().getId())
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You cannot chat with yourself");
 
+        Chat oldChat = chatService.getChat(listing, user);
+        if (oldChat != null) return ResponseEntity.status(HttpStatus.OK)
+                .body(chatMapper.toChatFullDto(oldChat, chatService.getMessages(oldChat)));
+
         Chat chat = chatService.createChat(listing, user);
         return ResponseEntity.status(HttpStatus.CREATED).body(chatMapper.toChatFullDto(chat, List.of()));
     }
