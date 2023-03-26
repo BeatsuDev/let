@@ -2,14 +2,14 @@
   <div>
     <div id="row-1" class="row">
       <ValidatedInput
-        v-model="listingDataInputRefs.title"
+        v-model="listing.title"
         :error="validator.title.$errors[0]"
         class="input-container"
         placeholder="Rød rose - snart døende"
         title="Tittel"
       />
       <ValidatedInput
-        v-model="listingDataInputRefs.price"
+        v-model="listing.price"
         :error="validator.price.$errors[0]"
         class="input-container"
         placeholder="249.99"
@@ -21,15 +21,15 @@
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
         <LocationPicker
-          v-model="listingDataInputRefs.location"
+          v-model="listing.location"
           v-model:input="locationInput"
           class="input-container"
         />
       </div>
       <CategoryPicker
         id="category-picker"
-        v-model="listingDataInputRefs.category"
-        v-model:text-input="listingDataInputRefs.categoryName"
+        v-model="listing.category"
+        v-model:text-input="listing.categoryName"
         :placeholder="categoryInput"
         :validation-error="validator.category.$errors[0]"
         class="input-container"
@@ -39,7 +39,7 @@
 
     <div id="row-3" class="row">
       <ValidatedInput
-        v-model="listingDataInputRefs.summary"
+        v-model="listing.summary"
         :error="validator.summary.$errors[0]"
         class="input-container"
         input-type="textarea"
@@ -50,7 +50,7 @@
     <div id="row-4" class="row">
       <ValidatedInput
         id="description"
-        v-model="listingDataInputRefs.description"
+        v-model="listing.description"
         :error="validator.description.$errors[0]"
         class="input-container"
         input-type="textarea"
@@ -78,7 +78,7 @@
       <h3>Velg forsidebilde og behandle bilder</h3>
       <div class="form-container">
         <ImageContainer
-          v-model="listingDataInputRefs.thumbnailId"
+          v-model="listing.thumbnailId"
           :images="images"
           deletable
           @delete-image="deleteImage"
@@ -105,12 +105,16 @@ import type { CreateListing, UpdateListing } from "@/services";
 import { Image } from "@/services";
 import CategoryPicker from "../inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
-import AlertBox from "@/components/dialogs/AlertBox.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
 
 // Define props
 const props = defineProps<{
   modelValue: UpdateListing | CreateListing;
+  editable: {
+    type: Boolean;
+    required: false;
+    default: false;
+  };
 }>();
 
 // Emit form data to parent component
@@ -121,10 +125,10 @@ const emit = defineEmits<{
 
 // Define refs
 const categoryInput = ref(props.modelValue?.categoryName);
-const locationInput = ref(props.modelValue.location?.name);
+const locationInput = ref("");
 
 // Define computed
-const listingDataInputRefs = computed({
+const listing = computed({
   get() {
     return props.modelValue;
   },
@@ -134,10 +138,22 @@ const listingDataInputRefs = computed({
   },
 });
 
+const imageValidation = computed(() => {
+  let filters = {
+    images: helpers.withMessage("Bilder må være mindre enn 1 MB", (images: File[]) =>
+      images.every((image) => image.size < 1024 * 1024)
+    ),
+  };
+  if (!props.editable) {
+    filters.required = helpers.withMessage("Bilder er påkrevd", required);
+  }
+  return filters;
+});
+
 const images = computed(() => {
-  let images = listingDataInputRefs.value.images.map((image: File) => URL.createObjectURL(image));
-  if (listingDataInputRefs.value.gallery) {
-    images = [...images, ...imageUrls(listingDataInputRefs.value.gallery)];
+  let images = listing.value.images.map((image: File) => URL.createObjectURL(image));
+  if (listing.value.gallery) {
+    images = [...images, ...imageUrls(listing.value.gallery)];
   }
   return images;
 });
@@ -155,15 +171,10 @@ const rules = {
     maxLength: helpers.withMessage("Sammendrag kan ikke være lengre enn 100 tegn", maxLength(100)),
   },
   description: { required: helpers.withMessage("Beskrivelse er påkrevd", required) },
-  images: {
-    required: helpers.withMessage("Bilder er påkrevd", required),
-    images: helpers.withMessage("Bilder må være mindre enn 1 MB", (images: File[]) =>
-      images.every((image) => image.size < 1024 * 1024)
-    ),
-  },
+  images: imageValidation.value,
 };
 
-const validator = useVuelidate(rules, listingDataInputRefs);
+const validator = useVuelidate(rules, listing);
 
 //Define callback functions
 async function submitData() {
@@ -176,11 +187,27 @@ async function submitData() {
   emit("createListing");
 }
 
+function deleteImage(index: number) {
+  if (index < listing.value.images.length) {
+    listing.value.images.splice(index, 1);
+  } else {
+    listing.value.gallery!.splice(index - listing.value.images.length, 1);
+  }
+}
+
 //Vue hooks
 watch(
-  () => props.modelValue.categoryName,
+  () => props.modelValue.categoryId,
   (value) => {
     categoryInput.value = value as string;
+    listing.value.categoryId = props.modelValue?.categoryId;
+  }
+);
+
+watch(
+  () => props.modelValue.locationName,
+  (value) => {
+    locationInput!.value = value;
   }
 );
 
@@ -189,24 +216,12 @@ function imageFileHandler(event: Event) {
   const target = event.target as HTMLInputElement;
   const files = target.files;
   if (files) {
-    listingDataInputRefs.value.images = Array.from(files);
+    listing.value.images = Array.from(files);
   }
 }
 
 function imageUrls(images: [Image]): string[] {
   return images!.map((image) => image.url!);
-}
-
-function deleteImage(index: number) {
-  if (index < listingDataInputRefs.value.images.length) {
-    listingDataInputRefs.value.images.splice(index, 1);
-  } else {
-    console.log(listingDataInputRefs.value.gallery);
-    listingDataInputRefs.value.gallery!.splice(
-      index - listingDataInputRefs.value.images.length - 1,
-      1
-    );
-  }
 }
 </script>
 
