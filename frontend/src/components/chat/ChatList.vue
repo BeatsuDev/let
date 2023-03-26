@@ -2,7 +2,7 @@
   <div v-if="chats === null && !chatFetchError">Henter chats...</div>
   <div v-else-if="chats?.length === 0">Ingen chats å vise...</div>
   <div v-else-if="chatFetchError">
-    <AlertBox :message="'Feil ved henting av chatter: ' + chatFetchError.message"/>
+    <AlertBox :message="'Feil ved henting av chatter: ' + chatFetchError.message" />
   </div>
   <div v-else class="chat-list-wrapper">
     <div class="chat" v-for="chat in chats" @click="emit('chat-selected', chat)">
@@ -29,7 +29,7 @@ const { data: chats, error: chatFetchError } = runAxios<ChatOverview[]>(
 
 // Define emits
 const emit = defineEmits<{
-  (event: "chat-selected", chat: ChatOverview) : void;
+  (event: "chat-selected", chat: ChatOverview): void;
 }>();
 
 // Define refs
