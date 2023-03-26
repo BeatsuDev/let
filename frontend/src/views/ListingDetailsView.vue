@@ -6,7 +6,7 @@
   <main v-else-if="data">
     <div id="images-section">
       <BackButton style="margin-left: -1rem" />
-      <ImageContainer v-model="mainImage" :images="data.galleryUrls"></ImageContainer>
+      <ImageContainer v-model="mainImage" :images="imageUrls(data.gallery)"></ImageContainer>
     </div>
     <div id="details-section">
       <div class="top-bar">
@@ -140,6 +140,10 @@ function handleError(e: any) {
     return;
   }
   errorMessage.value = "En uventet feil har oppstått, prøv igjen senere";
+}
+
+function imageUrls(images: Image[]): string[] {
+  return images.map((image) => image?.url).filter((url) => !!url) as string[];
 }
 </script>
 
