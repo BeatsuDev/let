@@ -3,9 +3,9 @@
     <div class="chat-title-bar">
       <h3 v-if="!chat">Ingen chat valgt</h3>
       <!-- TODO: Check if the user viewing the page is the buyer or the seller -->
-      <h3 v-else>Chat for "{{ chat.listing.title }}" med {{ chat.seller.firstName }}</h3>
+      <h3 v-else>Chat for "{{ chat.listing.title }}" med {{ useSessionStore().getUser()?.firstName === chat.seller.firstName ? chat.buyer.firstName : chat.seller.firstName }}</h3>
     </div>
-    
+
     <div class="chat-messages">
       <div class="no-chats" v-if="chat === null || chat.messages.length === 0">
         <h2>Ingen meldinger å vise...</h2>
@@ -44,7 +44,9 @@ const props = defineProps<{
   chat: Chat | null;
 }>();
 
-const currentChat = computed(() => props.chat);
+const currentChat = computed(() => {
+  return props.chat;
+});
 
 // Define refs
 const chatMessageInput = ref("");
