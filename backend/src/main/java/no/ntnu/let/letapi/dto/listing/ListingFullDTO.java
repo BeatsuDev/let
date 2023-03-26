@@ -7,10 +7,17 @@ import no.ntnu.let.letapi.model.listing.ListingState;
 
 @Getter
 @Setter
-public class ListingFullDTO extends ListingMinimalDTO {
+public class ListingFullDTO {
+    private Long id;
+    private String title;
+    private String summary;
+    private Long price;
+    private ImageDTO thumbnail;
+    private String locationName;
+    private String categoryName;
     private String description;
     private ListingState state;
     private String created;
-    private String[] galleryUrls;
+    private ImageDTO[] gallery;
     private UserMinimalDTO seller;
 }
