@@ -73,6 +73,7 @@ watch(
   (location) => {
     if (location.latitude && location.longitude) {
       marker.setLatLng([location.latitude, location.longitude]);
+      map.setView([location.latitude, location.longitude]);
     }
   }
 );

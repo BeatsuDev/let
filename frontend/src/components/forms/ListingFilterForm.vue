@@ -11,7 +11,7 @@
   </div>
   <h3 class="nav-title">Søk</h3>
   <input v-model="searchValue" class="input-text" type="text" @input="search" />
-  <h3 class="nav-title">Lokasjon</h3>
+  <h3 class="nav-title">Sted</h3>
   <LocationPicker v-model="value.location" @update:modelValue="value.page = 1" />
   <LocationMapPicker v-model="value.location" :radius="parseInt(radius)"></LocationMapPicker>
   <h3 class="nav-title">Radius</h3>
