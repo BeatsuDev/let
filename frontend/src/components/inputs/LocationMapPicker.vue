@@ -72,6 +72,7 @@ watch(
   () => props.modelValue,
   (location) => {
     if (location.latitude && location.longitude) {
+      hide(false);
       marker.setLatLng([location.latitude, location.longitude]);
       map.setView([location.latitude, location.longitude]);
     }
