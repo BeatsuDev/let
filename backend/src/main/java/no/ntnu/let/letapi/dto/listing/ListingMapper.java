@@ -13,6 +13,7 @@ import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class ListingMapper {
@@ -35,6 +36,10 @@ public abstract class ListingMapper {
         if (id == null) return null;
         return imageRepository.getReferenceById(id);
     }
+    public Image toImageReference(List<Long> gallery, Integer index) {
+        if (gallery == null || index == null) return null;
+        return toImageReference(gallery.get(index));
+    }
 
     String formatDate(Date date) {
         return DateUtil.formatDate(date);
@@ -49,13 +54,15 @@ public abstract class ListingMapper {
 
     @Mappings({
             @Mapping(target = "category", source = "categoryId"),
-            @Mapping(target = "thumbnail", source = "thumbnailId"),
+            @Mapping(target = "thumbnail", expression = "java(toImageReference(listingCreationDTO.getGalleryIds(), " +
+                    "listingCreationDTO.getThumbnailIndex()))"),
             @Mapping(target = "gallery", source = "galleryIds"),
     })
     public abstract Listing toListing(ListingCreationDTO listingCreationDTO);
     @Mappings({
             @Mapping(target = "category", source = "categoryId"),
-            @Mapping(target = "thumbnail", source = "thumbnailId"),
+            @Mapping(target = "thumbnail", expression = "java(toImageReference(listingUpdateDTO.getGalleryIds(), " +
+                    "listingUpdateDTO.getThumbnailIndex()))"),
             @Mapping(target = "gallery", source = "galleryIds"),
     })
     public abstract Listing toListing(ListingUpdateDTO listingUpdateDTO);

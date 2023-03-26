@@ -132,7 +132,7 @@ public class ListingController {
                 listingCreationDTO.getPrice(),
                 listingCreationDTO.getTitle(),
                 listingCreationDTO.getGalleryIds(),
-                listingCreationDTO.getThumbnailId()
+                listingCreationDTO.getThumbnailIndex()
         ).anyMatch(Objects::isNull)
         ) {
             return ResponseEntity.badRequest().body("All fields must be specified");
