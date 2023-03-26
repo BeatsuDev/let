@@ -10,7 +10,7 @@
     <div class="dropdown-content">
       <div
         v-for="location in locations"
-        :key="location"
+        :key="location.id"
         @click="
           (event) => {
             event.stopPropagation();
@@ -18,7 +18,6 @@
           }
         "
       >
-        {{ location.country }},
         {{ location.name }}
       </div>
       <div v-if="loading">Loading...</div>
@@ -71,7 +70,7 @@ function searchWithDelay() {
 function setValue(location: Location) {
   location.value = location;
   locations.value = [];
-  input.value = location.country + ", " + location.name;
+  input.value = location.name;
   emit("update:modelValue", {
     longitude: location.longitude,
     latitude: location.latitude,
@@ -87,10 +86,10 @@ function search() {
     return;
   }
   loading.value = true;
-  lookUpLocation("Norway", input.value)
+  lookUpLocation(input.value)
     .then((response) => {
       loading.value = false;
-      locations.value = response.data;
+      locations.value = response;
     })
     .catch(() => {
       loading.value = false;

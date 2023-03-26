@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="submitData">
-    <LocationMapPicker></LocationMapPicker>
     <div id="row-1" class="row">
       <ValidatedInput
         v-model="listingDataInputRefs.title"
