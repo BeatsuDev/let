@@ -2,7 +2,6 @@
   <div class="chat-container-wrapper">
     <div class="chat-title-bar">
       <h3 v-if="!chat">Ingen chat valgt</h3>
-      <!-- TODO: Check if the user viewing the page is the buyer or the seller -->
       <h3 v-else>
         Chat for "{{ chat.listing.title }}" med
         {{
@@ -13,42 +12,46 @@
       </h3>
     </div>
 
-    <div class="chat-messages">
-      <div class="no-chats" v-if="chat === null || chat.messages.length === 0">
-        <h2>Ingen meldinger å vise...</h2>
-      </div>
-      <div
-        v-else
-        :class="{
-          'chat-message': true,
-          'received-message': !(message.sender === loggedInUser),
-          'sent-message': message.sender === loggedInUser,
-        }"
-        v-for="(message, index) in chat.messages"
-        :key="index"
-      >
-        <p>{{ message.content }}</p>
-        <br v-if="!(message.sender === loggedInUser)" />
-        <span>{{
-          new Date(message.timestamp).toLocaleTimeString("no", { timeStyle: "short" })
-        }}</span>
+    <div ref="messages" class="chat-messages-container">
+      <div class="chat-messages">
+        <div v-if="chat === null || chat.messages.length === 0" class="no-chats">
+          <h2>Ingen meldinger å vise...</h2>
+        </div>
+        <div
+          v-for="(message, index) in chat.messages"
+          v-else
+          :key="index"
+          :class="{
+            'received-message': !(message.sender === loggedInUser),
+            'sent-message': message.sender === loggedInUser,
+          }"
+          class="chat-message"
+        >
+          <div class="row">
+            <p>{{ message.content }}</p>
+            <div class="spacer" />
+          </div>
+          <span>{{
+            new Date(message.timestamp).toLocaleTimeString("no", { timeStyle: "short" })
+          }}</span>
+        </div>
       </div>
     </div>
 
     <form @submit.prevent="sendMessage" class="chat-input-container">
-      <input type="text" class="chat-input" v-model="chatMessageInput" />
+      <input v-model="chatMessageInput" class="chat-input" type="text" />
       <button class="chat-send-button">Send</button>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {ComputedRef} from "vue";
-import {computed, ref} from "vue";
+import type { ComputedRef } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 
-import {useSessionStore} from "@/stores/sessionStore";
+import { useSessionStore } from "@/stores/sessionStore";
 
-import {ChatApi, ChatFull, CreateMessage, Sender} from "@/services/index";
+import { ChatApi, ChatFull, CreateMessage, Sender } from "@/services/index";
 
 // Define APIs
 const chatApi = new ChatApi();
@@ -59,7 +62,9 @@ const props = defineProps<{
 }>();
 const chat = computed({
   get: () => props.modelValue,
-  set: (chat) => emit("update:modelValue", chat),
+  set: (chat) => {
+    emit("update:modelValue", chat);
+  },
 });
 
 // Define emits
@@ -69,6 +74,7 @@ const emit = defineEmits<{
 
 // Define refs
 const chatMessageInput = ref("");
+const messages = ref<null | HTMLDivElement>(null);
 
 // Define computed values
 const loggedInUser: ComputedRef<Sender> = computed(() => {
@@ -86,27 +92,37 @@ async function sendMessage() {
       content: chatMessageInput.value,
     } as CreateMessage)
     .then((response) => {
-      const newChat = response.data as ChatFull;
-      console.table(newChat.messages);
-      chat.value = newChat;
+      chat.value = response.data as ChatFull;
     })
     .catch(() => alert("Kunne ikke sende meldingen"));
   chatMessageInput.value = "";
 }
 
 // Vue hooks
+function scrollDown() {
+  if (messages.value) messages.value.scrollTop = messages.value.scrollHeight;
+}
+
+onMounted(scrollDown);
+
+watch(chat, () => {
+  nextTick(scrollDown);
+});
 
 // Other script logic
 </script>
 
 <style scoped>
-.chat-messages > .no-chats {
+.no-chats {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  width: 100%;
 }
+
 .chat-container-wrapper {
+  display: flex;
+  flex-direction: column;
   background-color: #fcfcfc;
   width: 100%;
   height: 100%;
@@ -114,49 +130,63 @@ async function sendMessage() {
   border-bottom: none;
 }
 
-.chat-container-wrapper > * {
+.chat-title-bar,
+.chat-messages-container,
+.chat-input-container {
   width: 100%;
 }
 
-.chat-container-wrapper > .chat-title-bar {
+.chat-messages-container {
+  flex-grow: 1; /* Take up remaining space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  background-color: #f1f1f1;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column-reverse; /* Stack child elements vertically */
+  flex-wrap: wrap; /* Allow child elements to wrap to multiple rows */
+  align-content: flex-start; /* Align child elements at the start of the container */
+  justify-content: end;
+}
+
+.sent-message > .row {
+  flex-direction: row-reverse !important;
+}
+
+.received-message > .row {
+  flex-direction: row !important;
+}
+
+.chat-title-bar {
   padding: 1rem;
   text-align: center;
   border-bottom: 1px solid #e1e1e1;
 }
 
-.chat-messages {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: end;
-  flex-direction: column-reverse;
-  height: calc(100% - 9.1rem);
-  overflow-y: scroll;
-  border-bottom: 1px solid #e1e1e1;
-  background-color: #f1f1f1;
-}
-
-.chat-messages > .chat-message {
+/** Chat message styles **/
+.chat-message {
   padding: 0.2rem 1rem;
   border-radius: 1rem;
+  width: 100%;
+}
+
+.chat-message p {
+  padding: 0.4rem 1rem;
+  margin: 0;
   max-width: 85%;
 }
 
-.chat-messages > .chat-message > p {
-  padding: 0.4rem 1rem;
-  margin: 0;
-}
-
-.chat-messages > .sent-message {
-  align-self: flex-end;
+.sent-message {
   text-align: end;
 }
 
-.chat-messages > .received-message > p {
+.received-message p {
   background-color: rgb(212, 212, 212);
   display: inline;
 }
 
-.chat-messages > .sent-message > p {
+.sent-message p {
   background-color: rgb(178, 209, 238);
 }
 
@@ -166,6 +196,7 @@ async function sendMessage() {
   flex-direction: row;
   padding: 1rem;
   border-bottom: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
 }
 
 .chat-input-container > input {
