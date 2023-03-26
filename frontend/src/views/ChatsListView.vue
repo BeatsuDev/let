@@ -8,8 +8,9 @@
     </div>
     <MainContainer class="chat-view-wrapper" :collapse="collapsed">
       <ChatContainer
+        v-if="selectedChat"
+        v-model="selectedChat"
         :class="{ 'chat-container': true, 'collapsed-margin': collapsed }"
-        :chat="selectedChat"
       />
     </MainContainer>
   </main>
@@ -18,9 +19,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import { ChatApi } from "@/services/index";
+import { ChatApi, ChatFull } from "@/services/index";
 import router from "@/router";
-import type { ChatOverview, Chat } from "@/types/chat";
 
 import ChatList from "@/components/chat/ChatList.vue";
 import FilterIcon from "@/components/icons/FilterIcon.vue";
@@ -32,15 +32,15 @@ import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
 const chatApi = new ChatApi();
 
 // Define refs
-const selectedChat = ref<Chat | null>(null);
+const selectedChat = ref<ChatFull | null>(null);
 const collapsed = ref(false);
 
 // Define callback functions
-async function loadChat(chat: ChatOverview) {
+async function loadChat(chat: ChatFull) {
   console.log("Loading chat with id: " + chat.id);
 
-  const response = await chatApi.getChat(chat.id);
-  selectedChat.value = response.data as Chat;
+  const response = await chatApi.getChat(chat.id!);
+  selectedChat.value = response.data;
 
   router.push({ name: "chat", params: { chatId: chat.id } });
 }
@@ -51,7 +51,7 @@ let chatId = Number(router.currentRoute.value.params.chatId);
 console.log("Chat ID: " + chatId);
 chatApi
   .getChat(chatId)
-  .then((response) => response.data as Chat)
+  .then((response) => response.data)
   .then((chat) => {
     selectedChat.value = chat;
   });
