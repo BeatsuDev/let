@@ -73,7 +73,7 @@ function fetchListings() {
       filters.search,
       filters.location?.longitude,
       filters.location?.latitude,
-      filters.location == undefined ? undefined : filters.radius,
+      filters.location?.latitude == undefined ? undefined : filters.radius,
       filters.category ? [filters.category] : undefined,
       undefined,
       undefined,
