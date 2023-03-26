@@ -2,7 +2,7 @@
   <div v-if="!data && !errorMessage">
     <FullPageLoading />
   </div>
-  <AlertBox v-else-if="errorMessage" type="error" :message="errorMessage" />
+  <AlertBox v-else-if="errorMessage" :message="errorMessage" type="error" />
   <main v-else-if="data">
     <div id="images-section">
       <BackButton style="margin-left: -1rem" />
@@ -56,11 +56,11 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
 import router from "@/router";
 
-import { ChatApi, ListingsApi } from "@/services/index";
+import { ChatApi, Image, ListingsApi } from "@/services/index";
 import type { ListingFull } from "@/services/index";
 import { useSessionStore } from "@/stores/sessionStore";
 
@@ -118,7 +118,6 @@ listingsApi
   .getListing(id)
   .then((response) => {
     data.value = response.data;
-    mainImage.value = response.data.galleryUrls[0];
   })
   .catch((e) => {
     errorMessage.value = e;
