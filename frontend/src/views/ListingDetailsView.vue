@@ -125,6 +125,10 @@ listingsApi
     data.value = response.data;
   })
   .catch((e) => {
+    if (e.response.status == 404) {
+      errorMessage.value = "Denne annonsen er slettet, eller eksisterer ikke";
+      return;
+    }
     errorMessage.value = e;
   });
 
