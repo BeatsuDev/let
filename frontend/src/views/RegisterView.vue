@@ -28,14 +28,8 @@ const userApi = new UserApi();
 const sessionStore = useSessionStore();
 
 //Define refs
-const userEdit = ref({
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-} as UserBody);
+const user = ref({} as UserBody);
 const errorMessage = ref("");
-const user = sessionStore.getUser() || ({} as UserBody);
 
 const responses = [
   "På tide å finne ting 🔍",
@@ -49,7 +43,7 @@ const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 //Define callbacks
 function register() {
   userApi
-    .createUser(userEdit.value)
+    .createUser(user.value)
     .then((response) => {
       sessionStore.authenticate(response.data);
       router.push("/");
