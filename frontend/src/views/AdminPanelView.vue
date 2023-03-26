@@ -52,17 +52,10 @@ import AlertBox from "@/components/dialogs/AlertBox.vue";
 // Define APIs
 const categoryApi = new CategoryApi();
 
-// Define props
-
-// Define emits
-
 // Define refs
 const categories = ref<Category[]>([]);
 const newCategory = ref("");
 const errorMessage = ref("");
-
-// Define computed values
-const computedValue = computed(() => {});
 
 const errorMessages = {
   401: "Du er ikke logget inn",
@@ -107,9 +100,6 @@ function addCategory(): void {
       }
     });
 }
-
-// Vue hooks
-onMounted(() => {});
 
 // Other script logic
 categoryApi.getCategories().then((response) => {
