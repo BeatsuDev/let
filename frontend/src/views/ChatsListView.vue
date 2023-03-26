@@ -13,9 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 import { ChatApi } from "@/services/index";
+import router from "@/router";
 import type { ChatOverview, Chat } from "@/types/chat";
 
 import ChatList from "@/components/chat/ChatList.vue";
@@ -27,15 +28,9 @@ import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
 // Define APIs
 const chatApi = new ChatApi();
 
-// Define props
-
-// Define emits
-
 // Define refs
 const selectedChat = ref<Chat | null>(null);
 const collapsed = ref(false);
-
-// Define computed values
 
 // Define callback functions
 async function loadChat(chat: ChatOverview) {
@@ -43,11 +38,19 @@ async function loadChat(chat: ChatOverview) {
 
   const response = await chatApi.getChat(chat.id);
   selectedChat.value = response.data as Chat;
+
+  router.push({ name: "chat", params: { chatId: chat.id } });
 }
 
-// Other script logic
-
 // Load chats
+// Get the chat ID
+let chatId = Number(router.currentRoute.value.params.chatId);
+console.log("Chat ID: " + chatId);
+chatApi.getChat(chatId)
+  .then(response => response.data as Chat)
+  .then(chat => {
+    selectedChat.value = chat
+  });
 </script>
 
 <style scoped>
