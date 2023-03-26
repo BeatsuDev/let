@@ -1,5 +1,6 @@
 export * from "./category";
-export * from "./chat";
+export * from "./chat-full";
+export * from "./chat-minimal";
 export * from "./create-category";
 export * from "./create-chat";
 export * from "./create-listing";
@@ -13,6 +14,7 @@ export * from "./listing-state";
 export * from "./location";
 export * from "./login-user";
 export * from "./message";
+export * from "./sender";
 export * from "./update-listing";
 export * from "./user-body";
 export * from "./user-full";
