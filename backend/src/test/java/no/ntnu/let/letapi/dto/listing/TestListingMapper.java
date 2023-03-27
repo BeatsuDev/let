@@ -10,8 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -85,7 +85,7 @@ public class TestListingMapper {
         listingUpdateDTO1.setSummary("Test short description 1");
         listingUpdateDTO1.setDescription("Test description 1");
         listingUpdateDTO1.setPrice(100L);
-        listingUpdateDTO1.setThumbnailId(1L);
+        listingUpdateDTO1.setThumbnailIndex(1);
         listingUpdateDTO1.setGalleryIds(List.of(
                 1L,
                 2L,
@@ -113,12 +113,6 @@ public class TestListingMapper {
     }
 
     @Test
-    public void testToImage() {
-        Image image = listingMapper.toImage(1L);
-        assertEquals(1L, image.getId());
-    }
-
-    @Test
     public void testToImageDTO() {
         ImageDTO imageDTO = listingMapper.toImageDTO(image1);
         assertEquals(1L, imageDTO.getId());
@@ -139,38 +133,6 @@ public class TestListingMapper {
         CategoryDTO categoryDTO = listingMapper.toCategoryDTO(category1);
         assertEquals(1L, categoryDTO.getId());
         assertEquals("Test category 1", categoryDTO.getName());
-    }
-
-    @Test void testToListingFromListingCreateDTL() {
-        Listing listing = listingMapper.toListing((ListingCreationDTO) listingUpdateDTO1);
-
-        assertEquals("Test listing 1", listing.getTitle());
-        assertEquals("Test short description 1", listing.getSummary());
-        assertEquals("Test description 1", listing.getDescription());
-        assertEquals(100L, listing.getPrice());
-        assertEquals(1L, listing.getThumbnail().getId());
-        assertEquals(3, listing.getGallery().size());
-        assertEquals(1L, listing.getCategory().getId());
-        assertEquals(1.0, listing.getLocation().getLatitude());
-        assertEquals(2.0, listing.getLocation().getLongitude());
-        assertEquals("Test location 1", listing.getLocation().getName());
-    }
-
-    @Test
-    public void testToListingFromListingUpdateDTO() {
-        Listing listing = listingMapper.toListing(listingUpdateDTO1);
-
-        assertEquals(1L, listing.getId());
-        assertEquals("Test listing 1", listing.getTitle());
-        assertEquals("Test short description 1", listing.getSummary());
-        assertEquals("Test description 1", listing.getDescription());
-        assertEquals(100L, listing.getPrice());
-        assertEquals(1L, listing.getThumbnail().getId());
-        assertEquals(3, listing.getGallery().size());
-        assertEquals(1L, listing.getCategory().getId());
-        assertEquals(1.0, listing.getLocation().getLatitude());
-        assertEquals(2.0, listing.getLocation().getLongitude());
-        assertEquals("Test location 1", listing.getLocation().getName());
     }
 
     @Test
@@ -197,13 +159,12 @@ public class TestListingMapper {
         assertEquals("Test description 1", listingFullDTO.getDescription());
         assertEquals(100L, listingFullDTO.getPrice());
         assertEquals(UrlUtil.getImageUrl(image1.getFileName()),
-                listingFullDTO.getThumbnailUrl());
-        assertEquals("Test category 1", listingFullDTO.getCategoryName());
+                listingFullDTO.getThumbnail().getUrl());
+        assertEquals("Test category 1", listingFullDTO.getCategory().getName());
         assertEquals("Test location 1", listingFullDTO.getLocationName());
         assertEquals(ListingState.ACTIVE, listingFullDTO.getState());
-        assertEquals(Stream.of(image1, image2, image3)
-                        .map(i -> UrlUtil.getImageUrl(i.getFileName())).toList(),
-                List.of(listingFullDTO.getGalleryUrls()));
+        assertEquals(Stream.of(image1, image2, image3).map(i -> UrlUtil.getImageUrl(i.getFileName())).toList(),
+                Arrays.stream(listingFullDTO.getGallery()).map(ImageDTO::getUrl).toList());
         assertEquals("2001-01-08T22:00:00.000Z", listingFullDTO.getCreated());
         assertEquals("Test", listingFullDTO.getSeller().getFirstName());
         assertEquals("User", listingFullDTO.getSeller().getLastName());
