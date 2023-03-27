@@ -93,9 +93,9 @@ router.beforeEach((to, from, next) => {
   const userApi = new UserApi();
   if (startup) {
     console.log(startup);
-    userApi.getCurrentUser().then((user) => {
-      if (user != null) {
-        sessionStore.authenticate(user);
+    userApi.getCurrentUser().then((data) => {
+      if (data.status == 200) {
+        sessionStore.authenticate(data.data);
       }
     });
     startup = false;

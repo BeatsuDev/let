@@ -17,24 +17,14 @@
         <div v-if="chat === null || chat.messages.length === 0" class="no-chats">
           <h2>Ingen meldinger å vise...</h2>
         </div>
-        <div
-          v-for="(message, index) in chat.messages"
+        <MessageBox
           v-else
+          v-for="(message, index) in chat.messages"
           :key="index"
-          :class="{
-            'received-message': !(message.sender === loggedInUser),
-            'sent-message': message.sender === loggedInUser,
-          }"
-          class="chat-message"
-        >
-          <div class="row">
-            <p>{{ message.content }}</p>
-            <div class="spacer" />
-          </div>
-          <span>{{
-            new Date(message.timestamp).toLocaleTimeString("no", { timeStyle: "short" })
-          }}</span>
-        </div>
+          :message="message"
+          :chat="chat"
+          :sender="loggedInUser"
+        />
       </div>
     </div>
 
@@ -52,6 +42,7 @@ import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useSessionStore } from "@/stores/sessionStore";
 
 import { ChatApi, ChatFull, CreateMessage, Sender } from "@/services/index";
+import MessageBox from "@/components/chat/MessageBox.vue";
 
 // Define APIs
 const chatApi = new ChatApi();
@@ -150,44 +141,10 @@ watch(chat, () => {
   justify-content: end;
 }
 
-.sent-message > .row {
-  flex-direction: row-reverse !important;
-}
-
-.received-message > .row {
-  flex-direction: row !important;
-}
-
 .chat-title-bar {
   padding: 1rem;
   text-align: center;
   border-bottom: 1px solid #e1e1e1;
-}
-
-/** Chat message styles **/
-.chat-message {
-  padding: 0.2rem 1rem;
-  border-radius: 1rem;
-  width: 100%;
-}
-
-.chat-message p {
-  padding: 0.4rem 1rem;
-  margin: 0;
-  max-width: 85%;
-}
-
-.sent-message {
-  text-align: end;
-}
-
-.received-message p {
-  background-color: rgb(212, 212, 212);
-  display: inline;
-}
-
-.sent-message p {
-  background-color: rgb(178, 209, 238);
 }
 
 /* Chat input */
