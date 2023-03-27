@@ -35,7 +35,7 @@
       </div>
 
       <div class="price-bar">
-        <h2>{{ listing.price ? listing.price / 100 : "-" }}kr</h2>
+        <h2>{{ listing.price ? formatPrice : "-" }}</h2>
       </div>
 
       <div class="misc-info-bar">
@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import router from "@/router";
 
 import { ChatApi, Image, ListingsApi } from "@/services/index";
@@ -82,6 +82,7 @@ import FullPageLoading from "@/components/containers/FullPageLoading.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
 import BackButton from "@/components/inputs/BackButton.vue";
+import oreToNokFormatted from "@/utils/price-formatter";
 
 // Define APIs
 const listingsApi = new ListingsApi();
@@ -133,6 +134,10 @@ function contactSeller() {
     router.push({ name: "chat", params: { chatId: response.data.id } });
   });
 }
+
+// Define computed
+
+const formatPrice = computed(() => oreToNokFormatted(listing.value?.price));
 
 // Other script logic
 listingsApi

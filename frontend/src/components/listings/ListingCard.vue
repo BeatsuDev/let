@@ -9,7 +9,7 @@
         <div class="row row-margin" style="padding-right: 10px">
           <div>{{ props.value.title }}</div>
           <div class="spacer" />
-          <div>{{ props.value.price }}kr</div>
+          <div>{{ formattedPrice }}</div>
         </div>
         <div class="row">
           <div>{{ props.value.summary }}</div>
@@ -20,6 +20,8 @@
 </template>
 <script lang="ts" setup>
 import type { ListingMinimal } from "@/services/models";
+import oreToNokFormatted from "@/utils/price-formatter";
+import { computed } from "vue";
 
 // Define props
 const props = defineProps({
@@ -31,6 +33,10 @@ const props = defineProps({
 
 // Define emits
 const emit = defineEmits(["click"]);
+
+// Define computed
+
+const formattedPrice = computed(() => oreToNokFormatted(props.value?.price));
 </script>
 
 <style scoped>
