@@ -70,7 +70,6 @@ function searchWithDelay() {
 // Callback functions
 function search() {
   if (input.value == "" || input.value.length < 2) {
-    console.log(input.value.length);
     locations.value = [];
     emit("update:modelValue", undefined);
     return;
@@ -97,27 +96,3 @@ function setValue(location: Location) {
   } as Location);
 }
 </script>
-<style scoped>
-.dropdown {
-  box-sizing: border-box;
-  display: inline-block;
-  position: relative;
-  width: 100%;
-}
-
-.dropdown-content {
-  z-index: 10000;
-  background-color: #f6f6f6;
-  overflow: auto;
-  max-height: 300px;
-  width: 100%;
-  position: absolute;
-  border: 1px solid #ddd;
-}
-
-.dropdown-content div {
-  display: block;
-  cursor: pointer;
-  padding: 1rem;
-}
-</style>

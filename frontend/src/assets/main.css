@@ -98,6 +98,32 @@ main {
   margin: 0 0.3rem;
 }
 
+.dropdown {
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-content {
+  z-index: 10000;
+  background-color: #f6f6f6;
+  overflow: auto;
+  max-height: 300px;
+  width: 100%;
+  position: absolute;
+  border: 1px solid #ddd;
+}
+
+.dropdown-content div {
+  display: block;
+  cursor: pointer;
+  padding: 1rem;
+}
+.dropdown-content div:hover {
+  background-color: #f1f1f1;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 5px;
