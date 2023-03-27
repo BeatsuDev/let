@@ -6,8 +6,9 @@
     v-if="listing?.state === 'SOLD' && !errorMessage"
     type="warning"
     message="Denne annonsen er solgt"
+    style="margin-top: 5rem"
   />
-  <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
+  <AlertBox v-if="errorMessage" :message="errorMessage" type="error" style="margin-top: 5rem" />
   <main v-if="listing" style="padding-top: 3rem">
     <div id="images-section">
       <BackButton style="margin-left: -1rem" />
