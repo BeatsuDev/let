@@ -13,4 +13,13 @@ public class CookieFactory {
         cookie.setMaxAge((int) AuthenticationService.TOKEN_DURATION.get(ChronoUnit.SECONDS));
         return cookie;
     }
+
+    public static Cookie getClearCookie() {
+        Cookie cookie = new Cookie("Authorization", "");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        return cookie;
+    }
 }

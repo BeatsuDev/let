@@ -93,10 +93,9 @@ public class UserController {
 
     @DeleteMapping("/session")
     public ResponseEntity<Object> logOutUser(HttpServletResponse response) {
-        Cookie cookie = new Cookie("Authorization", null);
-        cookie.setMaxAge(0);
-
+        Cookie cookie = CookieFactory.getClearCookie();
         response.addCookie(cookie);
+
         return ResponseEntity.ok().build();
     }
 
