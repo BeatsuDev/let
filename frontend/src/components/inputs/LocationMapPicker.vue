@@ -73,6 +73,7 @@ watch(
         marker.setLatLng([latitude, longitude]);
         marker.addTo(map);
       }
+      map.setView([latitude, longitude]);
       if (isVisible.value) {
         hide(false);
       }
