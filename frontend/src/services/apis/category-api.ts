@@ -434,7 +434,6 @@ export class CategoryApi extends BaseAPI {
       .createCategory(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Delete a category by ID
    * @summary Delete an existing category
@@ -451,7 +450,6 @@ export class CategoryApi extends BaseAPI {
       .deleteCategory(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Retrieve all categories
    * @summary Retrieve all categories
@@ -466,7 +464,6 @@ export class CategoryApi extends BaseAPI {
       .getCategories(options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Get a category by ID
    * @summary Retrieve an existing category

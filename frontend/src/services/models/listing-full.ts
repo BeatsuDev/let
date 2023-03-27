@@ -11,6 +11,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Category } from "./category";
 import { Image } from "./image";
 import { ListingState } from "./listing-state";
 import { UserMinimal } from "./user-minimal";
@@ -59,10 +60,10 @@ export interface ListingFull {
   locationName?: string;
   /**
    *
-   * @type {string}
+   * @type {Category}
    * @memberof ListingFull
    */
-  categoryName?: string;
+  category?: Category;
   /**
    *
    * @type {string}

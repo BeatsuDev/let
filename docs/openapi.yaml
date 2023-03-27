@@ -838,8 +838,8 @@ components:
           $ref: "#/components/schemas/Image"
         locationName:
           type: string
-        categoryName:
-          type: string
+        category:
+          $ref: "#/components/schemas/Category"
         description:
           type: string
         state:
@@ -856,10 +856,10 @@ components:
     ListingState:
       type: string
       enum:
-        - sold
-        - archived
-        - active
-        - deleted
+        - SOLD
+        - ARCHIVED
+        - ACTIVE
+        - DELETED
     Image:
       type: object
       properties:

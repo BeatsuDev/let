@@ -60,7 +60,7 @@ export interface UpdateListing {
    * @type {number}
    * @memberof UpdateListing
    */
-  thumbnailId?: number;
+  thumbnailIndex?: number;
   /**
    *
    * @type {Array<number>}

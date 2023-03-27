@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * let API - OpenAPI 3.0
  * A simple API for listing items for sale.  Some useful links: - [The GitHub repository](https://github.com/BeatsuDev/let)
@@ -18,8 +17,8 @@
  * @enum {string}
  */
 export enum ListingState {
-  Sold = "sold",
-  Archived = "archived",
-  Active = "active",
-  Deleted = "deleted",
+  SOLD = "SOLD",
+  ARCHIVED = "ARCHIVED",
+  ACTIVE = "ACTIVE",
+  DELETED = "DELETED",
 }
