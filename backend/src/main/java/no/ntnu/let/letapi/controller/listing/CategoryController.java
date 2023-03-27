@@ -24,6 +24,7 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final ListingMapper listingMapper;
     private final AuthenticationService authenticationService;
+
     /**
      * Get all categories
      *
