@@ -21,7 +21,7 @@ import type { ListingMinimal } from "@/services/models";
 const props = defineProps({
   listings: {
     type: ([Array] as PropType<ListingMinimal[]>) || undefined,
-    required: true,
+    default: undefined,
   },
   loading: {
     type: Boolean,

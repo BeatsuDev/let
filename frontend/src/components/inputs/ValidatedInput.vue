@@ -31,7 +31,9 @@ import { computed, toRefs } from "vue";
 // Define props
 const props = defineProps<{
   title: string;
-  modelValue: string; // The data that the user writes in the input will be updated here
+  modelValue: {
+    value: string | undefined;
+  }; // The data that the user writes in the input will be updated here
   error: any;
   placeholder?: string;
   inputType?: "text" | "textarea" | "password" | "email" | "number";
