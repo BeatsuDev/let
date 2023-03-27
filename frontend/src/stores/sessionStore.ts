@@ -33,7 +33,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
       clearTimeout(id);
     }
     id = setTimeout(() => {
-      if (confirm("Er du der? Trykk ok for å forbli logget inn")) {
+      if (confirm("Er du der? Trykk ok for å ikke bli logget ut om et minutt")) {
         userApi
           .renewSession()
           .then(() => {
@@ -66,7 +66,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
       .logoutUser()
       .then(() => {
         timeout();
-        router.push("/login");
+        router.push("/");
       })
       .catch(() => {
         alert("Det oppstod en feil under utlogging. Vennligst prøv igjen senere.");
