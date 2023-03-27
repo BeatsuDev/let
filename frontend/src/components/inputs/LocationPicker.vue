@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <input
-      v-model="inputValue"
+      v-model="input"
       class="input-text"
       placeholder="Search.."
       type="text"
@@ -59,15 +59,6 @@ const location = computed({
   set(value: Object) {
     locations.value = [];
     emit("update:modelValue", value);
-  },
-});
-
-const inputValue = computed({
-  get() {
-    return props.input;
-  },
-  set(value: string) {
-    emit("update:input", value);
   },
 });
 
