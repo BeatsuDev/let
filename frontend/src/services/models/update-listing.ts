@@ -11,6 +11,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ListingState } from "./listing-state";
 import { Location } from "./location";
 
 /**
@@ -19,6 +20,18 @@ import { Location } from "./location";
  * @interface UpdateListing
  */
 export interface UpdateListing {
+  /**
+   *
+   * @type {number}
+   * @memberof UpdateListing
+   */
+  id?: number;
+  /**
+   *
+   * @type {ListingState}
+   * @memberof UpdateListing
+   */
+  state?: ListingState;
   /**
    *
    * @type {string}

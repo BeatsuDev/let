@@ -12,35 +12,40 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
 /**
  *
  * @export
- * @interface UserBody
+ * @interface UpdateUser
  */
-export interface UserBody {
+export interface UpdateUser {
+  /**
+   *
+   * @type {number}
+   * @memberof UpdateUser
+   */
+  id?: number;
   /**
    *
    * @type {string}
-   * @memberof UserBody
+   * @memberof UpdateUser
    */
   email?: string;
   /**
    *
    * @type {string}
-   * @memberof UserBody
+   * @memberof UpdateUser
    */
   firstName?: string;
   /**
    *
    * @type {string}
-   * @memberof UserBody
+   * @memberof UpdateUser
    */
   lastName?: string;
   /**
    *
    * @type {string}
-   * @memberof UserBody
+   * @memberof UpdateUser
    */
   password?: string;
 }

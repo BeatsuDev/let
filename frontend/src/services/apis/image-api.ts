@@ -236,7 +236,6 @@ export class ImageApi extends BaseAPI {
       .imageIdGet(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Upload a new image
    * @summary Upload an image
