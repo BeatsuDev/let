@@ -1,6 +1,7 @@
 import axios from "axios";
+import type { Image } from "@/services";
 
-export async function uploadImage(images: [File]) {
+export async function uploadImage(images: File[]) {
   // Upload images to backend
   const imageResponses = await Promise.all(
     images.map((image) => {
@@ -21,6 +22,5 @@ export async function uploadImage(images: [File]) {
       imageResponses.filter((response) => response.status !== 201)[0].data
     );
   }
-  const imageIds = imageResponses.map((image) => image.data.id) as string[];
-  return imageIds;
+  return imageResponses.map((r) => r.data) as Image[];
 }

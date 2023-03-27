@@ -1,26 +1,26 @@
 <template>
-  <div v-if="!data && !errorMessage">
+  <div v-if="!listing && !errorMessage">
     <FullPageLoading />
   </div>
   <AlertBox
-    v-if="data?.state === 'SOLD' && !errorMessage"
+    v-if="listing?.state === 'SOLD' && !errorMessage"
     type="warning"
     message="Denne annonsen er solgt"
   />
   <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
-  <main v-if="data" style="padding-top: 3rem">
+  <main v-if="listing" style="padding-top: 3rem">
     <div id="images-section">
       <BackButton style="margin-left: -1rem" />
-      <ImageContainer v-model="mainImage" :images="imageUrls(data.gallery)"></ImageContainer>
+      <ImageContainer v-model="mainImage" :imageUrls="imageUrls(listing.gallery)"></ImageContainer>
     </div>
     <div id="details-section">
       <div class="top-bar">
-        <h1>{{ data.title }}</h1>
+        <h1>{{ listing.title }}</h1>
         <div
-          v-if="sessionStore.getUser()?.email === data.seller.email"
+          v-if="sessionStore.getUser()?.email === listing.seller.email"
           id="edit-btn"
           class="button-slim button-green button-screaming"
-          @click="router.push('/edit-listing/' + data.id)"
+          @click="router.push('/edit-listing/' + listing.id)"
         >
           Rediger
         </div>
@@ -34,28 +34,28 @@
       </div>
 
       <div class="price-bar">
-        <h2>{{ data.price ? data.price / 100 : "-" }}kr</h2>
+        <h2>{{ listing.price ? listing.price / 100 : "-" }}kr</h2>
       </div>
 
       <div class="misc-info-bar">
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
-          <p id="category">{{ data.category.name }}</p>
-          <button class="button button-black button-screaming" v-if="data.state !== 'SOLD'" @click="contactSeller">
+          <p id="category">{{ listing.category.name }}</p>
+          <button class="button button-black button-screaming" v-if="listing.state !== 'SOLD'" @click="contactSeller">
             Kontakt selger
           </button>
         </div>
         <div class="misc-bar-right">
           <h5>Selges av:</h5>
-          <p id="seller">{{ data.seller!.firstName + " " + data.seller!.lastName }}</p>
+          <p id="seller">{{ listing.seller.firstName + " " + listing.seller.lastName }}</p>
           <h5 id="location-header">Sted:</h5>
-          <p id="location">{{ data.locationName }}</p>
+          <p id="location">{{ listing.locationName }}</p>
         </div>
       </div>
 
       <div class="description-bar">
         <h2>Beskrivelse</h2>
-        <p id="description">{{ data.description }}</p>
+        <p id="description">{{ listing.description }}</p>
       </div>
     </div>
   </main>
@@ -86,7 +86,7 @@ const sessionStore = useSessionStore();
 // Define refs
 const isBookmarked = ref(false);
 const mainImage = ref(0);
-const data = ref(null as ListingFull | null);
+const listing = ref<ListingFull | null>(null);
 const errorMessage = ref("" as string);
 
 // Define callbacks
@@ -122,7 +122,7 @@ function contactSeller() {
 listingsApi
   .getListing(id)
   .then((response) => {
-    data.value = response.data;
+    listing.value = response.data;
   })
   .catch((e) => {
     if (e.response.status == 404) {
@@ -236,8 +236,7 @@ main {
 
 .misc-info-bar > .misc-bar-left > p {
   font-size: 0.7rem;
-  margin: 0;
-  margin-top: 5px;
+  margin: 5px 0 0;
 }
 
 .misc-info-bar > .misc-bar-left > button {

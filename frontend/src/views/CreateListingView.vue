@@ -2,20 +2,19 @@
   <div class="wrapper-form">
     <BackButton style="margin-left: -3rem" />
     <h1>Lag en ny annonse</h1>
-    <ListingCreatorForm v-model="listingData" @create-listing="createListing" />
+    <ListingCreatorForm v-model="listingData" @create-listing="createListing" editable="true" />
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
   </div>
 </template>
 
 <script setup lang="ts">
 import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
-import type { CreateListing } from "@/services/index";
+import type { CreateListing, ListingFull } from "@/services/index";
 import { ListingsApi } from "@/services/index";
 import router from "@/router";
 import BackButton from "@/components/inputs/BackButton.vue";
 import { ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
-import { uploadImage } from "@/utils/imageUpload";
 
 // Define api
 const api = new ListingsApi();
@@ -24,44 +23,25 @@ const api = new ListingsApi();
 const listingData = ref({
   title: "",
   description: "",
+  summary: "",
   price: 0,
-  category: "",
-  images: [],
-  thumbnailId: 0,
-} as CreateListing);
-const errorMessage = ref("" as string);
+  category: {
+    id: undefined,
+    name: "",
+  },
+} as ListingFull);
+const errorMessage = ref("");
 
 //Define callback functions
-async function createListing() {
-  // Upload images to backend
-  let imageIds = [] as string[];
-  await uploadImage(listingData.value.images)
-    .then((data) => (imageIds = data))
-    .catch((error) => {
-      errorMessage.value = error.message;
-      return;
-    });
-
-  const { price, location, images, category, ...data } = listingData.value;
-
-  const listingDataWithImages = {
-    ...data,
-    categoryId: category.id,
-    thumbnailId: listingData.value.thumbnailId,
-    location: { ...listingData.value.location },
-    price: Math.round(Number(listingData.value.price) * 100),
-    galleryIds: imageIds,
-  } as unknown as CreateListing;
-  console.table(listingDataWithImages);
-
+async function createListing(newListing: CreateListing) {
   api
-    .createListing(listingDataWithImages)
+    .createListing(newListing)
     .then((response) => {
       router.push({ name: "listing-details", params: { id: response.data.id } });
     })
-    .catch((error) => {
+    .catch(() => {
       errorMessage.value = "Noe gikk galt... Prøv igjen senere";
     });
-  router.push({ name: "listing-details", params: { id: 1 } });
+  await router.push({ name: "listing-details", params: { id: 1 } });
 }
 </script>
