@@ -1,10 +1,12 @@
 package no.ntnu.let.letapi.dto.user;
 
+import lombok.Setter;
 import no.ntnu.let.letapi.model.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Mapper(componentModel = "spring", injectionStrategy = org.mapstruct.InjectionStrategy.CONSTRUCTOR)
 public abstract class UserMapper {
+    @Setter
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
