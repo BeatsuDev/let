@@ -1,10 +1,7 @@
 package no.ntnu.let.letapi.model.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import no.ntnu.let.letapi.model.listing.Listing;
 
 import java.util.List;
@@ -17,6 +14,8 @@ import java.util.List;
 @Entity(name = "user_") // user is a reserved word in h2
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
