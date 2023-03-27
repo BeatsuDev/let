@@ -18,6 +18,7 @@
           <h2>Ingen meldinger å vise...</h2>
         </div>
         <MessageBox
+          class=".chat-message"
           v-else
           v-for="(message, index) in chat.messages"
           :key="index"
@@ -29,8 +30,8 @@
     </div>
 
     <form @submit.prevent="sendMessage" class="chat-input-container">
-      <input v-model="chatMessageInput" class="chat-input" type="text" />
-      <button class="chat-send-button">Send</button>
+      <input v-model="chatMessageInput" id="chat-input" class="chat-input" type="text" />
+      <button id="send-chat-button" class="chat-send-button">Send</button>
     </form>
   </div>
 </template>

@@ -43,6 +43,7 @@
           <h3>Kategori:</h3>
           <p id="category">{{ listing.category.name }}</p>
           <button
+            id="contact-seller-button"
             class="button button-black button-screaming"
             v-if="
               listing.state !== 'SOLD' && sessionStore.getUser()?.email !== listing.seller.email
