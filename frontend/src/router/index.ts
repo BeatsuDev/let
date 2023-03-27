@@ -98,7 +98,6 @@ router.beforeEach((to, from, next) => {
   const sessionStore = useSessionStore();
   const userApi = new UserApi();
   if (startup) {
-    console.log(startup);
     userApi.getCurrentUser().then((data) => {
       if (data.status == 200) {
         sessionStore.authenticate(data.data);

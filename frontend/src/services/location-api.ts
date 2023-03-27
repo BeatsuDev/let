@@ -24,7 +24,6 @@ export async function lookUpLocation(sok: string) {
   });
   const adresser = response.data.navn;
 
-  console.log(adresser);
   return adresser.map((location: any) => {
     return {
       name: location.skrivemåte,

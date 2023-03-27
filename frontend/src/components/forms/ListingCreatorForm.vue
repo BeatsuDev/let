@@ -284,11 +284,13 @@ async function submitData() {
   uploadImage(imagesToUpload.value)
     .then((data) => {
       listing.value.gallery.unshift(...data);
-      console.table(listing.value.gallery);
       emit("createListing", newListing.value);
     })
     .catch((error) => {
-      console.log(error);
+      errorMessage.value = error;
+      setTimeout(() => {
+        errorMessage.value = "";
+      }, 5000);
     });
 }
 

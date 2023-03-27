@@ -93,7 +93,6 @@ const matches = computed(() => {
   const show = categories.value?.find(
     (c) => c.name?.toLowerCase() === inputData.value?.toLowerCase()
   );
-  console.log(show);
   return !show;
 });
 

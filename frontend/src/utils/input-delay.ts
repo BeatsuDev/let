@@ -7,9 +7,7 @@ export class InputHandler {
   }
 
   timer(func: Function) {
-    console.log(this.id);
     this.id = setTimeout(() => {
-      console.log("run function");
       func();
     }, this.delay);
   }

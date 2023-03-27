@@ -79,7 +79,6 @@ function updateUser() {
       }
 
       sessionStore.authenticate(response.data);
-      console.log(response.data);
       changePassword.value = false;
     })
     .catch((error) => {

@@ -65,7 +65,6 @@ watch(
   () => {
     const latitude = props.modelValue?.latitude;
     const longitude = props.modelValue?.longitude;
-    console.log(latitude, longitude);
     if (latitude && longitude) {
       if (marker == null) {
         marker = leaflet.circle([latitude, longitude], props.radius * 1000);
