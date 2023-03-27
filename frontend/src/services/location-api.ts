@@ -23,10 +23,11 @@ export async function lookUpLocation(sok: string) {
     params: { sok: sok + "*", treffPerSide: 10, side: 1 },
   });
   const adresser = response.data.navn;
+  console.log(adresser);
 
   return adresser.map((location: any) => {
     return {
-      name: location.skrivemåte,
+      name: location.fylker[0].fylkesnavn + ", " + location.skrivemåte,
       latitude: location.representasjonspunkt.nord,
       longitude: location.representasjonspunkt.øst,
     };
