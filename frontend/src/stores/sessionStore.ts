@@ -6,7 +6,7 @@ import router from "@/router";
 
 export const useSessionStore = defineStore("sessionStore", () => {
   const user = ref(null as UserFull | null);
-  const EXPIRY_TIME = 9 * 60 * 1000;
+  const EXPIRY_TIME = 1 * 10 * 1000;
   const userApi = new UserApi();
   let id = 0 as number;
 
@@ -25,7 +25,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
     }
   }
 
-  function refreshNotification() {
+  async function refreshNotification() {
     if (!isAuthenticated.value) {
       return;
     }
@@ -61,8 +61,8 @@ export const useSessionStore = defineStore("sessionStore", () => {
     user.value = null;
   }
 
-  function logOut() {
-    userApi
+  async function logOut() {
+    await userApi
       .logoutUser()
       .then(() => {
         timeout();

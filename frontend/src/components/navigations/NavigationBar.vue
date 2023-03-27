@@ -17,19 +17,39 @@
           <ChatIcon class="nav-icon" />
           <span>chats</span></RouterLink
         >
-        <RouterLink v-if="sessionStore.getUser()" id="create-listing-navbutton" class="nav-item" to="/create-listing">
+        <RouterLink
+          v-if="sessionStore.getUser()"
+          id="create-listing-navbutton"
+          class="nav-item"
+          to="/create-listing"
+        >
           <CreateListingIcon class="nav-icon" />
           <span>ny annonse</span></RouterLink
         >
-        <RouterLink v-if="!sessionStore.getUser()" id="login-navbutton" class="nav-item" to="/login">
+        <RouterLink
+          v-if="!sessionStore.getUser()"
+          id="login-navbutton"
+          class="nav-item"
+          to="/login"
+        >
           <ProfileIcon class="nav-icon" />
           <span>logg inn</span></RouterLink
         >
-        <RouterLink v-if="sessionStore.getUser()" id="mypage-navbutton" class="nav-item" to="/my-page">
+        <RouterLink
+          v-if="sessionStore.getUser()"
+          id="mypage-navbutton"
+          class="nav-item"
+          to="/my-page"
+        >
           <ProfileIcon class="nav-icon" />
           <span>profil</span>
         </RouterLink>
-        <a v-if="sessionStore.isAuthenticated"  id="logout-navbutton" class="nav-item" @click="logOut">
+        <a
+          v-if="sessionStore.isAuthenticated"
+          id="logout-navbutton"
+          class="nav-item"
+          @click="logOut"
+        >
           <LogOutIcon class="nav-icon" />
           <span>logg ut</span></a
         >
