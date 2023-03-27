@@ -33,7 +33,7 @@ const emit = defineEmits<{
 const isVisible = ref(true);
 
 // Other variables
-let marker = leaflet.circle([0, 0], { radius: props.radius * 1000, color: "red" });
+let marker: leaflet.Circle<any> = null;
 let map: { setView: (arg0: any[], arg1: number) => void };
 
 // Vue hooks
@@ -46,8 +46,6 @@ onMounted(() => {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     })
     .addTo(map);
-  marker.addTo(map);
-  hide(true);
   map.on("click", (e) => {
     hide(false);
     marker.setLatLng(e.latlng);
@@ -64,13 +62,20 @@ watch(
 
 watch(
   () => props.modelValue,
-  (location: { latitude: number; longitude: number }) => {
-    if (location.latitude && location.longitude) {
-      if (isVisible.value) {
+  () => {
+    const latitude = props.modelValue?.latitude;
+    const longitude = props.modelValue?.longitude;
+    console.log(latitude, longitude);
+    if (latitude && longitude) {
+      if (marker == null) {
+        console.log("mo");
+        marker = leaflet.circle([latitude, longitude], props.radius * 1000);
+        marker.addTo(map);
+      } else if (isVisible.value) {
         hide(false);
       }
-      marker.setLatLng([location.latitude, location.longitude]);
-      map.setView([location.latitude, location.longitude], 3);
+      marker.setLatLng([latitude, longitude]);
+      map.setView([latitude, longitude], 3);
     }
   }
 );
