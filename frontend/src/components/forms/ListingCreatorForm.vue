@@ -63,14 +63,19 @@
         <h3><label for="images">Last opp bilder</label></h3>
         <input
           id="images"
-          :class="{ 'input-text': true, 'red-border': validator.images.$error }"
+          :class="{
+            'input-text': true,
+            'red-border': validator.localImages.$error || validator.allImages.$error,
+          }"
           accept="image/*"
           multiple
           type="file"
           @change="imageFileHandler"
         />
-        <div v-if="validator.images.$error" id="error">
-          {{ validator.images.$errors[0].$message }}
+        <div v-if="validator.localImages.$error || validator.allImages.$error" id="error">
+          {{
+            validator.localImages.$errors[0]?.$message || validator.allImages.$errors[0]?.$message
+          }}
         </div>
       </div>
     </div>
@@ -101,9 +106,9 @@ import { computed, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
-import type { Category, CreateListing, UpdateListing } from "@/services";
+import type { Category, CreateListing, UpdateListing } from "@/services/index";
 import { Image } from "@/services";
-import CategoryPicker from "../inputs/CategoryPicker.vue";
+import CategoryPicker from "@/components/inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
 
@@ -137,18 +142,7 @@ const listing = computed({
   },
 });
 listing.value.category = {} as Category;
-
-const imageValidation = computed(() => {
-  let filters = {
-    images: helpers.withMessage("Bilder må være mindre enn 1 MB", (images: File[]) =>
-      images.every((image) => image.size < 1024 * 1024)
-    ),
-  };
-  if (!props.editable) {
-    filters.required = helpers.withMessage("Bilder er påkrevd", required);
-  }
-  return filters;
-});
+listing.value.images = [] as File[];
 
 const images = computed(() => {
   let images = listing.value.images.map((image: File) => URL.createObjectURL(image));
@@ -158,6 +152,19 @@ const images = computed(() => {
   return images;
 });
 
+const toValidate = computed(() => {
+  return {
+    title: listing.value.title,
+    price: listing.value.price,
+    location: listing.value.location,
+    category: listing.value.category,
+    summary: listing.value.summary,
+    description: listing.value.description,
+    localImages: listing.value.images,
+    allImages: images.value,
+  };
+});
+
 const rules = {
   title: { required: helpers.withMessage("Tittel er påkrevd", required) },
   price: {
@@ -165,16 +172,28 @@ const rules = {
     numeric: helpers.withMessage("Pris må være et tall", numeric),
   },
   location: { required: helpers.withMessage("Lokasjon er påkrevd", required) },
-  category: { required: helpers.withMessage("Kategori er påkrevd", required) },
+  category: {
+    required: helpers.withMessage(
+      "Kategori er påkrevd",
+      (category: Category) => category.id != undefined
+    ),
+  },
   summary: {
     required: helpers.withMessage("Sammendrag er påkrevd", required),
     maxLength: helpers.withMessage("Sammendrag kan ikke være lengre enn 100 tegn", maxLength(100)),
   },
   description: { required: helpers.withMessage("Beskrivelse er påkrevd", required) },
-  images: imageValidation.value,
+  localImages: {
+    size: helpers.withMessage("Bilder må være mindre enn 1 MB", (images: File[]) =>
+      images.every((image) => image.size < 1024 * 1024)
+    ),
+  },
+  allImages: {
+    required: helpers.withMessage("Bilder er påkrevd", (images: File[]) => images.length > 0),
+  },
 };
 
-const validator = useVuelidate(rules, listing);
+const validator = useVuelidate(rules, toValidate);
 
 //Define callback functions
 async function submitData() {
@@ -193,6 +212,8 @@ function deleteImage(index: number) {
   } else {
     listing.value.gallery!.splice(index - listing.value.images.length, 1);
   }
+
+  if (index === images.value.length && index !== 0) --index;
 }
 
 //Vue hooks
