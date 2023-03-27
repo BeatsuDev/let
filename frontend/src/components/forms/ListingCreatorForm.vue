@@ -99,7 +99,11 @@ t
 
     <div id="row-6" class="row">
       <div class="input-container" style="margin-top: 1rem">
-        <button id="create-listing-button" class="button button-black button-screaming" @click="submitData">
+        <button
+          id="create-listing-button"
+          class="button button-black button-screaming"
+          @click="submitData"
+        >
           Publiser Annonse
         </button>
       </div>

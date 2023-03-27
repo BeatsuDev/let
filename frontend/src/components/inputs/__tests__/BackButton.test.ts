@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { mount } from '@vue/test-utils'
+import { mount } from "@vue/test-utils";
 import BackButton from "@/components/inputs/BackButton.vue";
 
 describe("BackButton", () => {
