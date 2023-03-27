@@ -48,4 +48,65 @@ npm run test:e2e
 npm run lint
 ```
 
+### Contributing
+
+#####  Best practices
+
+Composition api is used for all new code. To keep an uniform structure throughout the project, the following template should be used
+
+```vue
+<template>
+  <div class="component-name-wrapper">
+    Component content
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+
+// Define APIs
+// const userApi = new UserApi();
+
+// Define props
+const props = defineProps<{
+  prop1: string;
+  prop2: number;
+}>();
+
+// Define emits
+const emit = defineEmits<{
+  (event: "some-event", ...args: any[]) : void;
+}>();
+
+// Define refs
+const value = ref(null) as Ref<HTMLElement | null>;
+
+// Define computed values
+const computedValue = computed(() => {
+  
+});
+
+// Define callback functions
+function onClick() {
+  
+};
+
+// Vue hooks
+onMounted(() => {
+  
+});
+
+// Other script logic
+
+</script>
+
+<style scoped>
+  .component-name-wrapper {
+    
+  }
+</style>
+```
+
+
 
