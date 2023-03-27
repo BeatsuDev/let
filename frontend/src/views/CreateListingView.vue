@@ -29,6 +29,11 @@ const listingData = ref({
     id: undefined,
     name: "",
   },
+  gallery: [],
+  thumbnail: {
+    id: undefined,
+    url: "",
+  },
 } as ListingFull);
 const errorMessage = ref("");
 
