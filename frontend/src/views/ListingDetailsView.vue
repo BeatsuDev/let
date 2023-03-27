@@ -12,16 +12,16 @@
   <main v-if="listing" style="padding-top: 3rem">
     <div id="images-section">
       <BackButton style="margin-left: -1rem" />
-      <ImageContainer v-model="mainImage" :imageUrls="imageUrls(listing.gallery)"></ImageContainer>
+      <ImageContainer v-model="mainImage" :imageUrls="imageUrls(listing.gallery!)"></ImageContainer>
     </div>
     <div id="details-section">
       <div class="top-bar">
         <h1 id="listing-title" class="text-one-line">{{ listing.title }}</h1>
         <div
-          v-if="sessionStore.getUser()?.email === listing.seller.email"
+          v-if="sessionStore.getUser()?.email === listing.seller?.email"
           id="edit-btn"
           class="button-slim button-green button-screaming"
-          @click="router.push('/edit-listing/' + listing.id)"
+          @click="router.push('/edit-listing/' + listing?.id)"
         >
           Rediger
         </div>
@@ -41,12 +41,12 @@
       <div class="misc-info-bar">
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
-          <p id="category">{{ listing.category.name }}</p>
+          <p id="category">{{ listing.category?.name }}</p>
           <button
             id="contact-seller-button"
             class="button button-black button-screaming"
             v-if="
-              listing.state !== 'SOLD' && sessionStore.getUser()?.email !== listing.seller.email
+              listing.state !== 'SOLD' && sessionStore.getUser()?.email !== listing.seller?.email
             "
             @click="contactSeller"
           >
@@ -55,7 +55,7 @@
         </div>
         <div class="misc-bar-right">
           <h5>Selges av:</h5>
-          <p id="seller">{{ listing.seller.firstName + " " + listing.seller.lastName }}</p>
+          <p id="seller">{{ listing.seller?.firstName + " " + listing.seller?.lastName }}</p>
           <h5 id="location-header">Sted:</h5>
           <p id="location">{{ listing.locationName }}</p>
         </div>
@@ -73,7 +73,8 @@
 import { computed, ref } from "vue";
 import router from "@/router";
 
-import { ChatApi, Image, ListingsApi } from "@/services/index";
+import { ChatApi, ListingsApi } from "@/services/index";
+import type { Image } from "@/services/index";
 import type { ListingFull } from "@/services/index";
 import { useSessionStore } from "@/stores/sessionStore";
 

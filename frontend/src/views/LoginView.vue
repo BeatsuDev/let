@@ -42,6 +42,7 @@ import { useSessionStore } from "@/stores/sessionStore";
 import { UserApi } from "@/services/apis/user-api";
 import router from "@/router";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
+import type { UserFull } from "@/services";
 
 // Define API
 const userApi = new UserApi();
@@ -72,7 +73,7 @@ function login() {
       password: password.value,
     })
     .then((response) => {
-      sessionStore.authenticate(response.data);
+      sessionStore.authenticate(response.data as unknown as UserFull);
 
       // Add animation to emoji
       showEmoji.value = true;

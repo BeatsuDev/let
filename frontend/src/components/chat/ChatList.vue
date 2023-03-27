@@ -7,14 +7,14 @@
       class="chat"
       @click="emit('select-chat', chat)"
     >
-      <h3>[{{ chat.id }}]: {{ chat.listing.title }}</h3>
+      <h3>[{{ chat.id }}]: {{ chat.listing?.title }}</h3>
       <p>{{ chat.lastMessage?.content || "(ny chat)" }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ChatMinimal } from "@/services/index";
+import type { ChatMinimal } from "@/services/index";
 import { computed } from "vue";
 
 // Define APIs

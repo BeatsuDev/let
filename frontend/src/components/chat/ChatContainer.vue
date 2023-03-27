@@ -3,18 +3,18 @@
     <div class="chat-title-bar">
       <h3 v-if="!chat">Ingen chat valgt</h3>
       <h3 v-else>
-        Chat for "{{ chat.listing.title }}" med
+        Chat for "{{ chat.listing?.title }}" med
         {{
-          useSessionStore().getUser()?.id === chat.seller.id
-            ? chat.buyer.firstName
-            : chat.seller.firstName
+          useSessionStore().getUser()?.id === chat.seller?.id
+            ? chat.buyer?.firstName
+            : chat.seller?.firstName
         }}
       </h3>
     </div>
 
     <div ref="messages" class="chat-messages-container">
       <div class="chat-messages">
-        <div v-if="chat === null || chat.messages.length === 0" class="no-chats">
+        <div v-if="chat === null || chat.messages?.length === 0" class="no-chats">
           <h2>Ingen meldinger å vise...</h2>
         </div>
         <MessageBox
@@ -42,7 +42,7 @@ import { computed, nextTick, onMounted, ref, watch } from "vue";
 
 import { useSessionStore } from "@/stores/sessionStore";
 
-import { ChatApi, ChatFull, CreateMessage, Sender } from "@/services/index";
+import { ChatApi, type ChatFull, type CreateMessage, Sender } from "@/services/index";
 import MessageBox from "@/components/chat/MessageBox.vue";
 
 // Define APIs
