@@ -47,17 +47,6 @@ onMounted(() => {
     })
     .addTo(map);
   map.on("click", (e) => {
-    if (marker == null) {
-      marker = leaflet.circle(e.latlng, props.radius * 1000);
-      marker.addTo(map);
-      hide(false);
-      return;
-    }
-    marker.setLatLng(e.latlng);
-    marker.addTo(map);
-    if (!isVisible.value) {
-      hide(false);
-    }
     emit("update:modelValue", { latitude: e.latlng.lat, longitude: e.latlng.lng });
   });
 });
@@ -84,6 +73,9 @@ watch(
       } else {
         marker.setLatLng([latitude, longitude]);
         marker.addTo(map);
+      }
+      if (isVisible.value) {
+        hide(false);
       }
     }
   }
