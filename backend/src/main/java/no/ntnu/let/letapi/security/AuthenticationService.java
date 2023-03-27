@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    public static final TemporalAmount TOKEN_DURATION = ChronoUnit.MINUTES.getDuration().multipliedBy(5); // 5 minutes
+    public static final TemporalAmount TOKEN_DURATION = ChronoUnit.MINUTES.getDuration().multipliedBy(10); // 10 minutes
     private final JwtEncoder encoder;
     private final JwtDecoder decoder;
     private final UserService userService;

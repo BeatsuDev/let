@@ -6,7 +6,7 @@ import router from "@/router";
 
 export const useSessionStore = defineStore("sessionStore", () => {
   const user = ref(null as UserFull | null);
-  const EXPIRY_TIME = 4 * 60 * 1000;
+  const EXPIRY_TIME = 9 * 60 * 1000;
   const userApi = new UserApi();
   let id = 0 as number;
 
