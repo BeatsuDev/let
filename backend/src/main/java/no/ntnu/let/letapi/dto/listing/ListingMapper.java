@@ -68,13 +68,11 @@ public abstract class ListingMapper {
     public abstract Listing toListing(ListingUpdateDTO listingUpdateDTO);
     @Named("toMinimalListingDTO")
     @Mappings({
-            @Mapping(target = "categoryName", source = "category.name"),
             @Mapping(target = "thumbnailUrl", source = "thumbnail", qualifiedByName = "toImageUrl"),
             @Mapping(target = "locationName", source = "location.name")
     })
     public abstract ListingMinimalDTO toListingMinimalDTO(Listing listing);
     @Mappings({
-            @Mapping(target = "categoryName", source = "category.name"),
             @Mapping(target = "locationName", source = "location.name"),
             @Mapping(target = "gallery", source = "gallery"),
             @Mapping(target = "seller", source = "seller", qualifiedByName = "toMinimalDTO")

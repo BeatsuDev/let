@@ -28,9 +28,9 @@
       </div>
       <CategoryPicker
         id="category-picker"
-        v-model="listing.category"
-        v-model:text-input="listing.categoryName"
-        :placeholder="categoryInput"
+        v-model="listing.category.id"
+        v-model:text-input="listing.category.name"
+        placeholder="Kategori"
         :validation-error="validator.category.$errors[0]"
         class="input-container"
         title="Kategori"
@@ -101,7 +101,7 @@ import { computed, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
-import type { CreateListing, UpdateListing } from "@/services";
+import type { Category, CreateListing, UpdateListing } from "@/services";
 import { Image } from "@/services";
 import CategoryPicker from "../inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
@@ -124,7 +124,6 @@ const emit = defineEmits<{
 }>();
 
 // Define refs
-const categoryInput = ref(props.modelValue?.categoryName);
 const locationInput = ref("");
 
 // Define computed
@@ -137,6 +136,7 @@ const listing = computed({
     emit("update:modelValue", newListing);
   },
 });
+listing.value.category = {} as Category;
 
 const imageValidation = computed(() => {
   let filters = {
@@ -196,14 +196,6 @@ function deleteImage(index: number) {
 }
 
 //Vue hooks
-watch(
-  () => props.modelValue.categoryId,
-  (value) => {
-    categoryInput.value = value as string;
-    listing.value.categoryId = props.modelValue?.categoryId;
-  }
-);
-
 watch(
   () => props.modelValue.locationName,
   (value) => {
