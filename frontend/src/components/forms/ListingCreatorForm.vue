@@ -1,6 +1,6 @@
 t
 <template>
-  <form autocomplete="off">
+  <div>
     <div id="row-1" class="row">
       <ValidatedInput
         v-model="listing.title"
@@ -95,12 +95,13 @@ t
 
     <div id="row-6" class="row">
       <div class="input-container" style="margin-top: 1rem">
-        <button class="button button-black button-screaming" type="submit" @click="submitData">
+        <button class="button button-black button-screaming" @click="submitData">
           Publiser Annonse
         </button>
       </div>
     </div>
-  </form>
+    <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -114,6 +115,7 @@ import CategoryPicker from "@/components/inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
 import { uploadImage } from "@/utils/imageUpload";
+import AlertBox from "@/components/dialogs/AlertBox.vue";
 
 // Define props
 const props = defineProps<{
@@ -134,6 +136,7 @@ const emit = defineEmits<{
 // Define refs
 const locationInput = ref("");
 const imagesToUpload = ref<File[]>([]);
+const errorMessage = ref("");
 
 // Define computed
 const listing = computed({
@@ -269,6 +272,12 @@ async function submitData() {
   // Check if inputs follow validation rules
   const result = await validator.value.$validate();
   if (!result) {
+    if (props.modelValue.location === undefined) {
+      errorMessage.value = "Lokasjon er påkrevd";
+      setTimeout(() => {
+        errorMessage.value = "";
+      }, 5000);
+    }
     return;
   }
 
@@ -293,14 +302,6 @@ function deleteImage(index: number) {
   if (index === imageUrls.value.length && index !== 0) thumbnailIndex.value = index - 1;
   else thumbnailIndex.value = index;
 }
-
-//Vue hooks
-watch(
-  () => props.modelValue.locationName,
-  (value) => {
-    locationInput!.value = value;
-  }
-);
 
 //Other script logic
 function imageFileHandler(event: Event) {

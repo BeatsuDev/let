@@ -12,6 +12,7 @@
       ref="input"
       @focus="() => (showDropdown = true)"
       @blur="hide"
+      autocomplete="off"
     />
     <div class="dropdown">
       <div v-if="!error && !categories">loading...</div>

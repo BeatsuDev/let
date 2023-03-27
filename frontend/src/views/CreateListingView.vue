@@ -47,6 +47,5 @@ async function createListing(newListing: CreateListing) {
     .catch(() => {
       errorMessage.value = "Noe gikk galt... Prøv igjen senere";
     });
-  await router.push({ name: "listing-details", params: { id: 1 } });
 }
 </script>

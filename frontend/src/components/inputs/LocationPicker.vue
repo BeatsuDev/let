@@ -6,6 +6,7 @@
       placeholder="Search.."
       type="text"
       @keyup="searchWithDelay"
+      autocomplete="off"
     />
     <div class="dropdown-content">
       <div
