@@ -11,17 +11,18 @@ export const useSessionStore = defineStore("sessionStore", () => {
   let id = 0 as number;
 
   const isAuthenticated = computed(() => {
-    if (user.value == null) {
-      const userFromStorage = localStorage.getItem("user");
-      if (userFromStorage != null) {
-        user.value = JSON.parse(userFromStorage);
-      }
-    }
     return user.value != null;
   });
 
   function getUser() {
-    return user.value;
+    const userFromStorage = sessionStorage.getItem("user");
+    if (user.value != null) {
+      return user.value;
+    }
+    if (userFromStorage != null) {
+      user.value = JSON.parse(userFromStorage);
+      return user.value;
+    }
   }
 
   function refreshNotification() {
@@ -51,19 +52,25 @@ export const useSessionStore = defineStore("sessionStore", () => {
 
   function authenticate(authentication: UserFull) {
     user.value = authentication;
-    localStorage.setItem("user", JSON.stringify(authentication));
+    sessionStorage.setItem("user", JSON.stringify(authentication));
   }
 
   function timeout() {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     clearTimeout(id);
     user.value = null;
   }
 
   function logOut() {
-    userApi.logoutUser().then(() => {
-      timeout();
-    });
+    userApi
+      .logoutUser()
+      .then(() => {
+        timeout();
+        router.push("/login");
+      })
+      .catch(() => {
+        alert("Det oppstod en feil under utlogging. Vennligst prøv igjen senere.");
+      });
   }
 
   function getHighestRole() {

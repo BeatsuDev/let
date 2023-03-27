@@ -37,7 +37,7 @@ const emit = defineEmits(["click"]);
 .card {
   max-width: 15rem;
   font-family: Inter, sans-serif;
-  height: fit-content;
+  height: 25rem;
   background-color: #fff;
   overflow: hidden;
   display: flex;
@@ -57,7 +57,7 @@ const emit = defineEmits(["click"]);
 .thumbnail {
   width: 100%;
   height: 80%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .information {

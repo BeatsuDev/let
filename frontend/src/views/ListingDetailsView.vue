@@ -1,8 +1,8 @@
 <template>
-  <div v-if="!data && !error">
+  <div v-if="!data && !errorMessage">
     <FullPageLoading />
   </div>
-  <AlertBox v-else-if="error" type="error" :message="error" />
+  <AlertBox v-else-if="errorMessage" type="error" :message="errorMessage" />
   <main v-else-if="data">
     <div id="images-section">
       <BackButton />
@@ -90,7 +90,7 @@ const sessionStore = useSessionStore();
 const isBookmarked = ref(false);
 const mainImage = ref(null as string | null);
 const data = ref(null as ListingFull | null);
-const error = ref(null as Error | null);
+const errorMessage = ref("" as string);
 
 // Define callbacks
 function handleBookmarkClick() {
@@ -101,7 +101,7 @@ function handleBookmarkClick() {
         isBookmarked.value = false;
       })
       .catch((e) => {
-        error.value = e;
+        handleError(e);
       });
   } else {
     listingsApi
@@ -110,7 +110,7 @@ function handleBookmarkClick() {
         isBookmarked.value = true;
       })
       .catch((e) => {
-        error.value = e;
+        handleError(e);
       });
   }
 }
@@ -129,7 +129,7 @@ listingsApi
     mainImage.value = response.data.galleryUrls[0];
   })
   .catch((e) => {
-    error.value = e;
+    errorMessage.value = e;
   });
 
 listingsApi
@@ -138,8 +138,17 @@ listingsApi
     isBookmarked.value = response.data;
   })
   .catch((e) => {
-    error.value = e;
+    errorMessage.value = e;
   });
+
+// Other script logic
+function handleError(e: any) {
+  if (e.response.status == 401) {
+    router.push("/login");
+    return;
+  }
+  errorMessage.value = "En uventet feil har oppstått, prøv igjen senere";
+}
 </script>
 
 <style scoped>

@@ -5,7 +5,7 @@
     </NavigationDrawer>
     <MainContainer :collapsed="collapsed">
       <AlertBox v-if="errorMessage" :message="errorMessage" type="error" />
-      <h1 class="text-one-line" style="height: 4rem">Hva leter du etter i dag?</h1>
+      <h1 class="text-one-line" style="height: 4rem; transition: 0.3s all">{{ message }}</h1>
       <PaginationView
         v-model="listingFilter.page"
         :total-pages="totalPages"
@@ -20,16 +20,15 @@
   </main>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { ListingFilter } from "@/types/listing";
 import NavigationDrawer from "@/components/navigations/NavigationDrawer.vue";
-import type { InlineResponse200 } from "@/services/models";
+import type { Category, InlineResponse200 } from "@/services/models";
 import ListingFilterForm from "@/components/forms/ListingFilterForm.vue";
 import { ListingsApi } from "@/services/apis/listings-api";
 import { CategoryApi } from "@/services/apis/category-api";
 import PaginationView from "@/components/paginations/PaginationContainer.vue";
 import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
-import runAxios from "@/services/composable";
 import MainContainer from "@/components/containers/MainContainer.vue";
 import ListingsNotFound from "@/components/listings/NoListingsFound.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
@@ -44,10 +43,21 @@ const listingRequest = ref({ listings: [] } as InlineResponse200);
 const loading = ref(false);
 const errorMessage = ref("" as string);
 const collapsed = ref(false);
-const { data } = runAxios(categoryApi.getCategories());
-const categories = data;
+const categories = ref([] as Category[]);
+const message = ref("");
+
+const messages = [
+  "Hva leter du etter i dag? ☘️",
+  "Velkommen til  ̶F̶I̶N̶N̶.̶n̶o̶  letno!",
+  "På tide å finne drømmetingen! ",
+  "Slår du gull i dag? 🪙",
+  "Velkommen tilbake 👋",
+];
 
 fetchListings();
+categoryApi.getCategories().then((response) => {
+  categories.value = response.data;
+});
 
 // Define computed values
 const listings = computed(() => {
@@ -71,7 +81,7 @@ function fetchListings() {
       filters.search,
       filters.location?.longitude,
       filters.location?.latitude,
-      filters.location == undefined ? undefined : filters.radius,
+      filters.location?.latitude == undefined ? undefined : filters.radius,
       filters.category ? [filters.category] : undefined,
       undefined,
       undefined,
@@ -93,6 +103,9 @@ function fetchListings() {
 }
 
 // Vue hooks
+onMounted(() => {
+  message.value = messages[Math.floor(Math.random() * messages.length)];
+});
 watch(
   listingFilter,
   () => {

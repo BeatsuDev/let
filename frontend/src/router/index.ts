@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import { useSessionStore } from "@/stores/sessionStore";
+import { UserApi } from "@/services/index";
 
+let startup = true;
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -88,6 +90,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const sessionStore = useSessionStore();
+  const userApi = new UserApi();
+  if (startup) {
+    console.log(startup);
+    userApi.getCurrentUser().then((user) => {
+      if (user != null) {
+        sessionStore.authenticate(user);
+      }
+    });
+    startup = false;
+  }
   if (to.meta.requiresAuth && !sessionStore.isAuthenticated) {
     next({ name: "login" });
   } else if (to.meta.requiresRole && sessionStore.getHighestRole() !== to.meta.requiresRole) {

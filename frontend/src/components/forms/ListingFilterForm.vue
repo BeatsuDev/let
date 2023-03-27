@@ -11,8 +11,9 @@
   </div>
   <h3 class="nav-title">Søk</h3>
   <input v-model="searchValue" class="input-text" type="text" @input="search" />
-  <h3 class="nav-title">Lokasjon</h3>
+  <h3 class="nav-title">Sted</h3>
   <LocationPicker v-model="value.location" @update:modelValue="value.page = 1" />
+  <LocationMapPicker v-model="value.location" :radius="parseInt(radius)"></LocationMapPicker>
   <h3 class="nav-title">Radius</h3>
   <input
     v-model="radius"
@@ -33,19 +34,18 @@ import { ListingFilter } from "@/types/listing";
 import type { Category } from "@/services/models";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import { InputHandler } from "@/utils/input-delay";
+import LocationMapPicker from "@/components/inputs/LocationMapPicker.vue";
 
 // Define props
 const props = defineProps({
   modelValue: {
     type: ListingFilter,
-    required: true,
   },
   categories: {
     type: [Array] as PropType<Category[]>,
     required: true,
   },
 });
-
 // Define emits
 const emit = defineEmits<{
   (event: "update:modelValue", newFilter: ListingFilter): void;

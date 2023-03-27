@@ -65,6 +65,9 @@ export class BaseAPI {
         return response;
       },
       (error) => {
+        if (error.response.status === 401 && useSessionStore().isAuthenticated) {
+          useSessionStore().timeout();
+        }
         useSessionStore().refreshNotification();
         throw error;
       }
