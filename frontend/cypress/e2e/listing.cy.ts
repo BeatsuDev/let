@@ -58,7 +58,8 @@ describe("Test creating, editing and deleting listings", () => {
     cy.get("#edit-btn").click();
 
     // Change title
-    cy.get("#title-input input").clear().type("Test Listing Cypress Edited");
+    cy.get("#title-input input").clear();
+    cy.get("#title-input input").type("Test Listing Cypress Edited");
 
     // Write some text in the location picker
     cy.get("#location-picker").type("Oslo");
