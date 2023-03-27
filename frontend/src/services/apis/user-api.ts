@@ -16,7 +16,7 @@ import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { CreateUser, LoginUser, UserBody, UserFull } from "../models";
+import { CreateUser, LoginUser, UpdateUser, UserFull } from "../models";
 
 /**
  * UserApi - axios parameter creator
@@ -402,11 +402,14 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
     /**
      * This can only be done by the logged in user or admin
      * @summary Update user
-     * @param {UserBody} [body] Updated user object
+     * @param {UpdateUser} [body] Updated user object
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateUser: async (body?: UserBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+    updateUser: async (
+      body?: UpdateUser,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
       const localVarPath = `/user`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, "https://example.com");
@@ -612,12 +615,12 @@ export const UserApiFp = function (configuration?: Configuration) {
     /**
      * This can only be done by the logged in user or admin
      * @summary Update user
-     * @param {UserBody} [body] Updated user object
+     * @param {UpdateUser} [body] Updated user object
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async updateUser(
-      body?: UserBody,
+      body?: UpdateUser,
       options?: AxiosRequestConfig
     ): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<UserFull>>> {
       const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUser(
@@ -735,12 +738,12 @@ export const UserApiFactory = function (
     /**
      * This can only be done by the logged in user or admin
      * @summary Update user
-     * @param {UserBody} [body] Updated user object
+     * @param {UpdateUser} [body] Updated user object
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async updateUser(
-      body?: UserBody,
+      body?: UpdateUser,
       options?: AxiosRequestConfig
     ): Promise<AxiosResponse<UserFull>> {
       return UserApiFp(configuration)
@@ -773,7 +776,6 @@ export class UserApi extends BaseAPI {
       .createUser(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * This can only be done by the logged in user or admin
    * @summary Delete user
@@ -787,7 +789,6 @@ export class UserApi extends BaseAPI {
       .deleteUser(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Get the currently logged in user
    * @summary Get current user
@@ -800,7 +801,6 @@ export class UserApi extends BaseAPI {
       .getCurrentUser(options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    *
    * @summary Get user by id
@@ -817,7 +817,6 @@ export class UserApi extends BaseAPI {
       .getUserById(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    *
    * @summary Logs user into the system
@@ -834,7 +833,6 @@ export class UserApi extends BaseAPI {
       .loginUser(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    *
    * @summary Logs out current logged in user session
@@ -847,7 +845,6 @@ export class UserApi extends BaseAPI {
       .logoutUser(options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    *
    * @summary Renew session
@@ -864,13 +861,13 @@ export class UserApi extends BaseAPI {
   /**
    * This can only be done by the logged in user or admin
    * @summary Update user
-   * @param {UserBody} [body] Updated user object
+   * @param {UpdateUser} [body] Updated user object
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UserApi
    */
   public async updateUser(
-    body?: UserBody,
+    body?: UpdateUser,
     options?: AxiosRequestConfig
   ): Promise<AxiosResponse<UserFull>> {
     return UserApiFp(this.configuration)

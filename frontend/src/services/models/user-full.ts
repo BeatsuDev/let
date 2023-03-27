@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * let API - OpenAPI 3.0
  * A simple API for listing items for sale.  Some useful links: - [The GitHub repository](https://github.com/BeatsuDev/let)
@@ -12,13 +11,24 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
 /**
  *
  * @export
  * @interface UserFull
  */
 export interface UserFull {
+  /**
+   *
+   * @type {number}
+   * @memberof UserFull
+   */
+  id?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof UserFull
+   */
+  admin?: boolean;
   /**
    *
    * @type {string}

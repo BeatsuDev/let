@@ -16,6 +16,6 @@ export * from "./login-user";
 export * from "./message";
 export * from "./sender";
 export * from "./update-listing";
-export * from "./user-body";
+export * from "./update-user";
 export * from "./user-full";
 export * from "./user-minimal";

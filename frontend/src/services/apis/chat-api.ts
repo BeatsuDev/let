@@ -469,7 +469,6 @@ export class ChatApi extends BaseAPI {
       .createChat(body, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Get a chat by ID
    * @summary Retrieve an existing chat
@@ -483,7 +482,6 @@ export class ChatApi extends BaseAPI {
       .getChat(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Retrieve all chats
    * @summary Retrieve all chats
@@ -496,7 +494,6 @@ export class ChatApi extends BaseAPI {
       .getChats(options)
       .then((request) => request(this.axios, this.basePath));
   }
-
   /**
    * Send a message to an existing chat
    * @summary Send a message to an existing chat
