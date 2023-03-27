@@ -16,7 +16,7 @@
     </div>
     <div id="details-section">
       <div class="top-bar">
-        <h1 class="text-one-line">{{ listing.title }}</h1>
+        <h1 id="listing-title" class="text-one-line">{{ listing.title }}</h1>
         <div
           v-if="sessionStore.getUser()?.email === listing.seller.email"
           id="edit-btn"
