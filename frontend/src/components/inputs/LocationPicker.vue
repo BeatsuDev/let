@@ -67,17 +67,7 @@ function searchWithDelay() {
   inputDelay.searchWithDelay(search);
 }
 
-function setValue(location: Location) {
-  location.value = location;
-  locations.value = [];
-  input.value = location.name;
-  emit("update:modelValue", {
-    longitude: location.longitude,
-    latitude: location.latitude,
-    name: location.name,
-  } as Location);
-}
-
+// Callback functions
 function search() {
   if (input.value == "" || input.value.length < 2) {
     console.log(input.value.length);
@@ -94,6 +84,17 @@ function search() {
     .catch(() => {
       loading.value = false;
     });
+}
+
+function setValue(location: Location) {
+  location.value = location;
+  locations.value = [];
+  input.value = location.name;
+  emit("update:modelValue", {
+    longitude: location.longitude,
+    latitude: location.latitude,
+    name: location.name,
+  } as Location);
 }
 </script>
 <style scoped>
