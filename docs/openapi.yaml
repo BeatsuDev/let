@@ -587,15 +587,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - type: object
-                  properties:
-                    id:
-                      type: integer
-                      format: int64
-                      description: ID of the user to update
-                      example: 1
-                - $ref: '#/components/schemas/CreateUser'
+              $ref: '#/components/schemas/UpdateUser'
       responses:
         '200':
           description: successful operation
@@ -788,16 +780,40 @@ components:
             format: int64
             example: 876
     UpdateListing:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: integer
-              format: int64
-              example: 1337
-            state:
-              $ref: '#/components/schemas/ListingState'
-        - $ref: '#/components/schemas/CreateListing'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1337
+        state:
+          $ref: '#/components/schemas/ListingState'
+        title:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+          description: Price in øre
+          example: 26300
+        categoryId:
+          type: integer
+          format: int64
+          example: 1234
+        location:
+          $ref: '#/components/schemas/Location'
+        thumbnailIndex:
+          type: integer
+          format: int64
+          example: 3
+        galleryIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+            example: 876
     ListingMinimal:
       type: object
       properties:
@@ -951,14 +967,15 @@ components:
           type: string
           example: Electronics
     Category:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: integer
-              format: int64
-              example: 10
-        - $ref: '#/components/schemas/CreateCategory'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: Electronics
     LoginUser:
       type: object
       properties:
@@ -972,6 +989,26 @@ components:
     CreateUser:
       type: object
       properties:
+        email:
+          type: string
+          format: email
+          example: example@example.org
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        password:
+          type: string
+          example: password123
+    UpdateUser:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int64
+          example: 10
         email:
           type: string
           format: email
@@ -999,17 +1036,25 @@ components:
           type: string
           example: James
     UserFull:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: integer
-              format: int64
-              example: 10
-            admin:
-              type: boolean
-              example: false
-        - $ref: '#/components/schemas/UserMinimal'  
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        admin:
+          type: boolean
+          example: false
+        email:
+          type: string
+          format: email
+          example: example@example.org
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
   securitySchemes:
     bearerAuth:
       type: http
