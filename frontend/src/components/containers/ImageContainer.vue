@@ -2,32 +2,32 @@
   <div style="max-width: 100%; margin-top: 1rem">
     <div>
       <CloseIcon
-        v-if="deletable"
+        v-if="props.deletable"
         @click="$emit('delete-image', modelValue)"
         style="cursor: pointer; width: 1rem; height: 1rem"
       >
         slett
       </CloseIcon>
-      <img id="main-image" :src="images[modelValue]" />
+      <img id="main-image" :src="imageUrls[modelValue]" alt="Thumbnail image" />
     </div>
     <div id="other-images">
       <img
-        v-for="(image_url, index) in images"
+        v-for="(imageUrl, index) in imageUrls"
         :key="index"
-        :src="image_url"
+        :src="imageUrl"
         loading="lazy"
         @click="emit('update:modelValue', index)"
+        alt="Selectable gallery image"
       />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from "vue";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 
 const props = defineProps<{
-  images: [string];
-  modelValue: string;
+  imageUrls: string[];
+  modelValue: number;
   deletable?: boolean;
 }>();
 
@@ -35,15 +35,6 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: number): void;
   (e: "delete-image", value: number): void;
 }>();
-
-const mainImage = ref(props.modelValue);
-
-watch(
-  () => props.modelValue,
-  (newVal) => {
-    mainImage.value = newVal;
-  }
-);
 </script>
 <style scoped>
 #main-image {

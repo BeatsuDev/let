@@ -9,7 +9,7 @@
         title="Tittel"
       />
       <ValidatedInput
-        v-model="listing.price"
+        v-model="nokPrice"
         :error="validator.price.$errors[0]"
         class="input-container"
         placeholder="249.99"
@@ -79,12 +79,12 @@
         </div>
       </div>
     </div>
-    <div v-if="images.length !== 0">
+    <div v-if="imageUrls.length !== 0">
       <h3>Velg forsidebilde og behandle bilder</h3>
       <div class="form-container">
         <ImageContainer
-          v-model="listing.thumbnailId"
-          :images="images"
+          v-model="thumbnailIndex"
+          :imageUrls="imageUrls"
           deletable
           @delete-image="deleteImage"
         ></ImageContainer>
@@ -106,15 +106,16 @@ import { computed, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
-import type { Category, CreateListing, UpdateListing } from "@/services/index";
+import type { Category, ListingFull, UpdateListing } from "@/services/index";
 import { Image } from "@/services";
 import CategoryPicker from "@/components/inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
+import { uploadImage } from "@/utils/imageUpload";
 
 // Define props
 const props = defineProps<{
-  modelValue: UpdateListing | CreateListing;
+  modelValue: ListingFull;
   editable: {
     type: Boolean;
     required: false;
@@ -124,12 +125,13 @@ const props = defineProps<{
 
 // Emit form data to parent component
 const emit = defineEmits<{
-  (event: "createListing"): void;
-  (event: "update:modelValue", value: UpdateListing | CreateListing): void;
+  (event: "createListing", value: UpdateListing): void;
+  (event: "update:modelValue", value: ListingFull): void;
 }>();
 
 // Define refs
 const locationInput = ref("");
+const imagesToUpload = ref<File[]>([]);
 
 // Define computed
 const listing = computed({
@@ -141,13 +143,78 @@ const listing = computed({
     emit("update:modelValue", newListing);
   },
 });
-listing.value.category = {} as Category;
-listing.value.images = [] as File[];
 
-const images = computed(() => {
-  let images = listing.value.images.map((image: File) => URL.createObjectURL(image));
+const nokPrice = computed({
+  get() {
+    return listing.value.price / 100;
+  },
+  set(value: number) {
+    listing.value.price = value * 100;
+  },
+});
+
+const uploadIndex = ref<number | undefined>(undefined);
+const thumbnailIndex = computed<number>({
+  get() {
+    if (uploadIndex.value !== undefined) return uploadIndex.value;
+    const IndexOfThumbnail = listing.value.gallery
+      .map((i: Image) => i.id)
+      .indexOf(listing.value.thumbnail.id);
+    if (IndexOfThumbnail === undefined || IndexOfThumbnail === -1) return 0;
+    return imagesToUpload.value.length + IndexOfThumbnail;
+  },
+  set(value: number) {
+    // Unset upload index
+    uploadIndex.value = undefined;
+    // Out of bounds (don't set)
+    if (value < 0 || value >= imageUrls.value.length) return;
+
+    // Thumbnail is in images to upload
+    if (value < imagesToUpload.value.length) {
+      uploadIndex.value = value;
+      return;
+    }
+
+    // Thumbnail is in gallery - copy not to overwrite gallery images
+    listing.value.thumbnail = { ...listing.value.gallery[value - imagesToUpload.value.length] };
+  },
+});
+const newListing = computed<UpdateListing>({
+  get() {
+    return {
+      id: listing.value.id,
+      title: listing.value.title,
+      summary: listing.value.summary,
+      description: listing.value.summary,
+      price: listing.value.price,
+      categoryId: listing.value.category.id,
+      location: listing.value.location,
+      thumbnailIndex: thumbnailIndex.value,
+      galleryIds: listing.value.gallery.map((image: Image) => image.id),
+      state: listing.value.state,
+    } as UpdateListing;
+  },
+  set(value: UpdateListing) {
+    thumbnailIndex.value = value.thumbnailIndex ?? 0;
+    listing.value = {
+      ...listing.value,
+      id: value.id,
+      title: value.title,
+      summary: value.summary,
+      description: value.description,
+      price: value.price,
+      category: { id: value.categoryId, name: "" } as Category,
+      location: value.location,
+      gallery: listing.value.gallery,
+      state: value.state,
+    };
+  },
+});
+
+const imageUrls = computed(() => {
+  let images = imagesToUpload.value.map((image: File) => URL.createObjectURL(image));
   if (listing.value.gallery) {
-    images = [...images, ...imageUrls(listing.value.gallery)];
+    images = [...images, ...getImageUrls(listing.value.gallery)];
   }
   return images;
 });
@@ -160,8 +227,8 @@ const toValidate = computed(() => {
     category: listing.value.category,
     summary: listing.value.summary,
     description: listing.value.description,
-    localImages: listing.value.images,
-    allImages: images.value,
+    localImages: imagesToUpload,
+    allImages: imageUrls.value,
   };
 });
 
@@ -203,17 +270,26 @@ async function submitData() {
     return;
   }
 
-  emit("createListing");
+  uploadImage(imagesToUpload.value)
+    .then((data) => {
+      listing.value.gallery.unshift(...data);
+      console.table(listing.value.gallery);
+      emit("createListing", newListing.value);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 function deleteImage(index: number) {
-  if (index < listing.value.images.length) {
-    listing.value.images.splice(index, 1);
+  if (index < imagesToUpload.value.length) {
+    imagesToUpload.value.splice(index, 1);
   } else {
-    listing.value.gallery!.splice(index - listing.value.images.length, 1);
+    listing.value.gallery!.splice(index - imagesToUpload.value.length, 1);
   }
 
-  if (index === images.value.length && index !== 0) --index;
+  if (index === imageUrls.value.length && index !== 0) thumbnailIndex.value = index - 1;
+  else thumbnailIndex.value = index;
 }
 
 //Vue hooks
@@ -229,11 +305,14 @@ function imageFileHandler(event: Event) {
   const target = event.target as HTMLInputElement;
   const files = target.files;
   if (files) {
-    listing.value.images = Array.from(files);
+    const oldLength = imagesToUpload.value.length;
+    imagesToUpload.value = Array.from(files);
+    const diff = imagesToUpload.value.length - oldLength;
+    thumbnailIndex.value = thumbnailIndex.value! + diff;
   }
 }
 
-function imageUrls(images: [Image]): string[] {
+function getImageUrls(images: [Image]): string[] {
   return images!.map((image) => image.url!);
 }
 </script>

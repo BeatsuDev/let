@@ -2,7 +2,7 @@
   <div class="wrapper-form">
     <BackButton style="margin-left: -3rem" />
     <h1>Rediger annonsen din</h1>
-    <ListingCreatorForm v-model="listingData" @create-listing="updateListing" editable />
+    <ListingCreatorForm v-model="listingToUpdate" @create-listing="updateListing" editable="true" />
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
     <div style="margin-top: 1rem">
       <button
@@ -21,65 +21,41 @@
 
 <script lang="ts" setup>
 import ListingCreatorForm from "@/components/forms/ListingCreatorForm.vue";
-import type { UpdateListing } from "@/services/index";
+import type { ListingFull, UpdateListing } from "@/services/index";
 import { ListingsApi } from "@/services/index";
 import router from "@/router";
 import BackButton from "@/components/inputs/BackButton.vue";
 import { ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
-import { uploadImage } from "@/utils/imageUpload";
 
 // Define api
 const api = new ListingsApi();
 
 // Define refs
-const listingData = ref({
+const listingToUpdate = ref<ListingFull>({
   title: "",
-  description: "moren din",
-  price: undefined,
-  category: "",
-  images: [],
-  thumbnailId: 0,
-} as UpdateListing);
+  summary: "",
+  description: "",
+  category: {
+    id: undefined,
+    name: "",
+  },
+});
 const errorMessage = ref("");
 
 api
   .getListing(parseInt(router.currentRoute.value.params.id as string))
   .then((response) => {
-    listingData.value.location = { name: response.data.locationName };
-    listingData.value = { ...listingData.value, ...response.data };
-    listingData.value.price = response.data.price / 100;
+    listingToUpdate.value = { ...listingToUpdate.value, ...response.data };
   })
   .catch(() => {
     errorMessage.value = "Noe gikk galt...";
   });
 
 // Callback functions
-async function updateListing() {
-  // Upload images to backend
-  let imageIds = [] as string[];
-  await uploadImage(listingData.value.images)
-    .then((data) => (imageIds = data))
-    .catch((error) => {
-      errorMessage.value = error.message;
-      return;
-    });
-
-  const galleryIds = listingData.value.gallery.map((image) => image.id) as string[];
-
-  const listingDataWithImages = {
-    id: listingData.value.id,
-    categoryId: listingData.value.category.id,
-    thumbnailIndex: listingData.value.thumbnailId,
-    summary: listingData.value.summary,
-    description: listingData.value.description,
-    location: { ...listingData.value.location },
-    price: Math.round(Number(listingData.value.price) * 100),
-    galleryIds: [...imageIds, ...galleryIds],
-  } as unknown as UpdateListing;
-
+async function updateListing(newListing: UpdateListing) {
   api
-    .updateListing(listingDataWithImages)
+    .updateListing(newListing)
     .then((response) => {
       router.push({ name: "listing-details", params: { id: response.data.id } });
     })
@@ -101,7 +77,7 @@ function deleteListing() {
 
 function sellListing() {
   const update = {
-    id: listingData.value.id,
+    id: listingToUpdate.value.id,
     state: "SOLD",
   } as UpdateListing;
   api
