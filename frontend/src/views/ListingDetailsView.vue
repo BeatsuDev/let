@@ -41,7 +41,11 @@
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
           <p id="category">{{ listing.category.name }}</p>
-          <button class="button button-black button-screaming" v-if="listing.state !== 'SOLD'" @click="contactSeller">
+          <button
+            class="button button-black button-screaming"
+            v-if="listing.state !== 'SOLD' && sessionStore.getUser().email !== listing.seller.email"
+            @click="contactSeller"
+          >
             Kontakt selger
           </button>
         </div>
