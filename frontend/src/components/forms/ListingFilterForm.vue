@@ -1,4 +1,12 @@
 <template>
+  <h3 class="nav-title">Søk</h3>
+  <input
+    v-model="searchValue"
+    class="input-text"
+    type="text"
+    @input="search"
+    style="margin-bottom: 1rem"
+  />
   <h3 class="drawer-item">Kategori</h3>
   <div
     v-for="(category, index) in categories"
@@ -9,10 +17,12 @@
   >
     {{ category.name }}
   </div>
-  <h3 class="nav-title">Søk</h3>
-  <input v-model="searchValue" class="input-text" type="text" @input="search" />
   <h3 class="nav-title">Sted</h3>
-  <LocationPicker v-model="value.location" @update:modelValue="value.page = 1" />
+  <LocationPicker
+    v-model="value.location"
+    @update:modelValue="value.page = 1"
+    v-model:input="inputLocation"
+  />
   <LocationMapPicker
     v-model="value.location"
     @update:modelValue="value.page = 1"
@@ -57,6 +67,7 @@ const emit = defineEmits<{
 
 // Define refs
 const inputDelay = new InputHandler(500);
+const inputLocation = ref("");
 
 const searchValue = ref("");
 const radiusValue = ref(10);

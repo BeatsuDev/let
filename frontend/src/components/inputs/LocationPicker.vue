@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <input
-      v-model="input"
+      v-model="inputValue"
       class="input-text"
       placeholder="Search.."
       type="text"
@@ -36,13 +36,16 @@ const props = defineProps({
     type: Object || undefined,
     required: true,
   },
+  input: {
+    type: String,
+    required: true,
+  },
 });
 
 // Define emits
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "update:input"]);
 
 // Define refs
-const input = ref("");
 const locations = ref([]);
 const loading = ref(false);
 
@@ -62,6 +65,15 @@ const location = computed({
   },
 });
 
+const inputValue = computed({
+  get() {
+    return props.input;
+  },
+  set(value: string) {
+    emit("update:input", value);
+  },
+});
+
 // Other functions
 function searchWithDelay() {
   inputDelay.searchWithDelay(search);
@@ -69,13 +81,13 @@ function searchWithDelay() {
 
 // Callback functions
 function search() {
-  if (input.value == "" || input.value.length < 2) {
+  if (props.input == "" || props.input.length < 2) {
     locations.value = [];
     emit("update:modelValue", undefined);
     return;
   }
   loading.value = true;
-  lookUpLocation(input.value)
+  lookUpLocation(props.input)
     .then((response) => {
       loading.value = false;
       locations.value = response;
@@ -88,7 +100,7 @@ function search() {
 function setValue(location: Location) {
   location.value = location;
   locations.value = [];
-  input.value = location.name;
+  emit("update:input", location.name);
   emit("update:modelValue", {
     longitude: location.longitude,
     latitude: location.latitude,

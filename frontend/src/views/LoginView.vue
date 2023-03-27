@@ -1,9 +1,15 @@
 <template>
   <div class="wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
-  
-  <div :class="{'blur-background': true, blur: showEmoji}"></div>
-  <div class="emoji" :class="{'emoji-animation': showEmoji}">{{ ['🤩','🥰','😮','😎','🤑','👀','😩💦','🌱','🤭','😍'][Math.floor(Math.random()*10)] }}</div>
+
+    <div :class="{ 'blur-background': true, blur: showEmoji }"></div>
+    <div class="emoji" :class="{ 'emoji-animation': showEmoji }">
+      {{
+        ["🤩", "🥰", "😮", "😎", "🤑", "👀", "😩💦", "🌱", "🤭", "😍"][
+          Math.floor(Math.random() * 10)
+        ]
+      }}
+    </div>
     <form @submit.prevent="login" class="form-container">
       <label for="email">Email</label>
       <input
@@ -125,7 +131,7 @@ function clearError() {
 }
 
 .emoji-animation {
-  animation: bounce-in 800ms cubic-bezier(0.145, 0.940, 0.925, 0.075);
+  animation: bounce-in 800ms cubic-bezier(0.145, 0.94, 0.925, 0.075);
   animation-iteration-count: 1;
 }
 
