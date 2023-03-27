@@ -114,6 +114,7 @@ function clearError() {
   justify-content: center;
   font-size: 30rem;
   z-index: 101;
+  white-space: nowrap;
 }
 
 .blur {

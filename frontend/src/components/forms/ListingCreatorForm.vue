@@ -3,6 +3,7 @@ t
   <div class="main">
     <div id="row-1" class="row">
       <ValidatedInput
+        id="title-input"
         v-model="listing.title"
         :error="validator.title.$errors[0]"
         class="input-container"
@@ -10,6 +11,7 @@ t
         title="Tittel"
       />
       <ValidatedInput
+        id="price-input"
         v-model="nokPrice"
         :error="validator.price.$errors[0]"
         class="input-container"
@@ -23,6 +25,7 @@ t
       <div id="location-picker-wrapper" class="input-container">
         <h3><label for="location-picker">Sted</label></h3>
         <LocationPicker
+          id="location-picker"
           v-model="listing.location"
           v-model:input="locationInput"
           class="input-container"
@@ -41,6 +44,7 @@ t
 
     <div id="row-3" class="row">
       <ValidatedInput
+        id="summary-input"
         v-model="listing.summary"
         :error="validator.summary.$errors[0]"
         class="input-container"
@@ -95,7 +99,7 @@ t
 
     <div id="row-6" class="row">
       <div class="input-container" style="margin-top: 1rem">
-        <button class="button button-black button-screaming" @click="submitData">
+        <button id="create-listing-button" class="button button-black button-screaming" @click="submitData">
           Publiser Annonse
         </button>
       </div>
@@ -110,7 +114,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { helpers, maxLength, numeric, required } from "@vuelidate/validators";
 import ValidatedInput from "@/components/inputs/ValidatedInput.vue";
 import type { Category, ListingFull, UpdateListing } from "@/services/index";
-import { Image } from "@/services";
+import type { Image } from "@/services/index";
 import CategoryPicker from "@/components/inputs/CategoryPicker.vue";
 import LocationPicker from "@/components/inputs/LocationPicker.vue";
 import ImageContainer from "@/components/containers/ImageContainer.vue";
