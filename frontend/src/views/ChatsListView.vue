@@ -69,7 +69,7 @@ chatApi
   })
   .then(() => {
     let chatId: number | undefined = parseInt(router.currentRoute.value.params.chatId as string);
-    if (!chatId) chatId = chatList.value![0].id;
+    if (!chatId) chatId = chatList.value![0]?.id;
     if (chatId) {
       loadChat({ id: chatId } as ChatMinimal);
     }
