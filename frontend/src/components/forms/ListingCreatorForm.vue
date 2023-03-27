@@ -14,6 +14,7 @@
         class="input-container"
         placeholder="249.99"
         title="Pris (kr)"
+        input-type="number"
       />
     </div>
 

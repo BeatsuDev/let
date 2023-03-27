@@ -34,7 +34,7 @@ const props = defineProps<{
   modelValue: string; // The data that the user writes in the input will be updated here
   error: any;
   placeholder?: string;
-  inputType?: "text" | "textarea" | "password" | "email";
+  inputType?: "text" | "textarea" | "password" | "email" | "number";
 }>();
 
 // Define emits
