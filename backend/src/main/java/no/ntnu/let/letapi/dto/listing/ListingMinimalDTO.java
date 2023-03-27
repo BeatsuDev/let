@@ -3,6 +3,9 @@ package no.ntnu.let.letapi.dto.listing;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO for a minimal listing view
+ */
 @Getter
 @Setter
 public class ListingMinimalDTO {

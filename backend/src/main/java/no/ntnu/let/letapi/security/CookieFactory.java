@@ -4,7 +4,15 @@ import jakarta.servlet.http.Cookie;
 
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Factory for creating cookies
+ */
 public class CookieFactory {
+    /**
+     * Creates a cookie for the authorization token
+     * @param token The token to set
+     * @return The cookie
+     */
     public static Cookie getAuthorizationCookie(String token) {
         Cookie cookie = new Cookie("Authorization", token);
         cookie.setHttpOnly(true);

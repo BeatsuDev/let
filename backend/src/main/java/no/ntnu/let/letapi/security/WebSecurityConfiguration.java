@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Disable Spring Security for the application.
+ * Web security configuration
  */
 @Configuration
 @EnableWebSecurity
@@ -39,6 +39,12 @@ public class WebSecurityConfiguration {
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenFilter jwtTokenFilter;
 
+    /**
+     * Configure CORS, disable CSRF, set the user details service, set the session management and add the JWT token filter
+     * @param http The HTTP security
+     * @return The security filter chain
+     * @throws Exception If the configuration fails
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -55,11 +61,19 @@ public class WebSecurityConfiguration {
         return http.build();
     }
 
+    /**
+     * Create a JWT decoder. This is used to decode the JWT token
+     * @return The JWT decoder
+     */
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(rsaKeys.publicKey()).build();
     }
 
+    /**
+     * Create a JWT encoder. This is used to encode the JWT token
+     * @return The JWT encoder
+     */
     @Bean
     public JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(rsaKeys.publicKey()).privateKey(rsaKeys.privateKey()).build();
@@ -67,21 +81,39 @@ public class WebSecurityConfiguration {
         return new NimbusJwtEncoder(jwks);
     }
 
+    /**
+     * Create an authentication manager
+     * @param authenticationConfiguration The authentication configuration
+     * @return The authentication manager
+     * @throws Exception If the configuration fails
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    /**
+     * Ignore all requests
+     * @return The web security customizer
+     */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().requestMatchers(r -> true);
     }
 
+    /**
+     * Create a password encoder
+     * @return The password encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configure CORS
+     * @return The web mvc configurer
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

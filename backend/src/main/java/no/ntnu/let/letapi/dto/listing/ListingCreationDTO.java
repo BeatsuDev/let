@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * DTO for creating a listing
+ */
 @Getter
 @Setter
 public class ListingCreationDTO {

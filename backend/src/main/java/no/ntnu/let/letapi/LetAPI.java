@@ -11,6 +11,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SpringBootApplication
 @EnableConfigurationProperties(RsaKeyProperties.class)
 public class LetAPI {
+    /**
+     * Main method for the LetAPI application.
+     * @param args The arguments
+     */
     public static void main(String[] args) {
         SpringApplication.run(LetAPI.class, args);
     }

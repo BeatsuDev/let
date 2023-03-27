@@ -6,6 +6,9 @@ import no.ntnu.let.letapi.dto.listing.ListingMinimalDTO;
 import no.ntnu.let.letapi.dto.user.UserFullDTO;
 import no.ntnu.let.letapi.model.chat.Sender;
 
+/**
+ * DTO for a chat
+ */
 @Getter
 @Setter
 public class ChatFullDTO {

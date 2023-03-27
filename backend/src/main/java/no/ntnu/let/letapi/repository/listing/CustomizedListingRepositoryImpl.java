@@ -18,6 +18,9 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 public class CustomizedListingRepositoryImpl implements CustomizedListingRepository {
     private final EntityManager entityManager;
     private final ListingRepository listingRepository;
@@ -35,6 +38,14 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         return cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%");
     }
 
+    /**
+     * Find the distance between two locations based on their latitude and longitude
+     * @param lat1 Latitude of the first location
+     * @param lat2 Latitude of the second location
+     * @param lon1 Longitude of the first location
+     * @param lon2 Longitude of the second location
+     * @return The distance between the two locations in kilometers
+     */
     private Double distanceBetweenLocations(double lat1, double lat2, double lon1, double lon2) {
         final int R = 6371; // Radius of the earth
 
@@ -55,6 +66,9 @@ public class CustomizedListingRepositoryImpl implements CustomizedListingReposit
         return R * c;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Page<Listing> findAll(ListingFilter filter, PageRequest pageRequest) {
         if (filter == null) return listingRepository.findAll(pageRequest);
 

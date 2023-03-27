@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.ntnu.let.letapi.util.UrlUtil;
 
+/**
+ * Model for an image
+ */
 @Getter
 @Setter
 @Entity

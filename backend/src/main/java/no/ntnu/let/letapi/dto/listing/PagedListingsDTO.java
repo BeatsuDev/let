@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * DTO for a paged list of listings
+ */
 @Getter
 @Setter
 @AllArgsConstructor

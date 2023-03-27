@@ -10,6 +10,9 @@ import no.ntnu.let.letapi.model.user.User;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Model for a listing
+ */
 @Getter
 @Setter
 @Entity

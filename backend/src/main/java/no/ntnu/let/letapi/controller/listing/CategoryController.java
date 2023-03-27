@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Category controller
+ */
 @RestController
 @RequestMapping("/category")
 @RequiredArgsConstructor
@@ -22,12 +25,23 @@ public class CategoryController {
     private final ListingMapper listingMapper;
     private final AuthenticationService authenticationService;
 
+    /**
+     * Get all categories
+     *
+     * @return List of categories
+     */
     @GetMapping
     public ResponseEntity<Object> getCategories() {
         var categories = categoryService.getCategories();
         return ResponseEntity.ok(categories.stream().map(listingMapper::toCategoryDTO).toList());
     }
 
+    /**
+     * Create a new category
+     *
+     * @param categoryDTO Category creation DTO
+     * @return The crated category
+     */
     @PostMapping
     public ResponseEntity<Object> createCategory(@RequestBody CategoryCreationDTO categoryDTO) {
         Boolean isAdmin = authenticationService.isAdmin();
@@ -38,6 +52,12 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(listingMapper.toCategoryDTO(category));
     }
 
+    /**
+     * Get a category by id
+     *
+     * @param id Category id
+     * @return The category
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCategory(@PathVariable long id) {
         Category category = categoryService.getCategory(id);
@@ -45,6 +65,12 @@ public class CategoryController {
         return ResponseEntity.ok(listingMapper.toCategoryDTO(category));
     }
 
+    /**
+     * Update a category
+     *
+     * @param id Category id
+     * @return The updated category
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable long id) {
         Boolean isAdmin = authenticationService.isAdmin();

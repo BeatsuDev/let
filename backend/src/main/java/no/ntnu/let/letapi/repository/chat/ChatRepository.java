@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository for chats
+ */
 public interface ChatRepository extends JpaRepository<Chat, Long>, CustomizedChatRepository {
     Optional<Chat> findByListingAndBuyer(Listing listing, User buyer);
 }

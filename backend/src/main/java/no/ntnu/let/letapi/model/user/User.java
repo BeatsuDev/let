@@ -9,9 +9,12 @@ import no.ntnu.let.letapi.model.listing.Listing;
 
 import java.util.List;
 
+/**
+ * Model for a user
+ */
 @Getter
 @Setter
-@Entity(name = "user_")
+@Entity(name = "user_") // user is a reserved word in h2
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

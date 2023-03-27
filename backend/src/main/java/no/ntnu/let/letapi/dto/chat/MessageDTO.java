@@ -8,6 +8,9 @@ import no.ntnu.let.letapi.model.chat.Sender;
 
 import java.util.Date;
 
+/**
+ * DTO for a message
+ */
 @Getter
 @Setter
 @NoArgsConstructor

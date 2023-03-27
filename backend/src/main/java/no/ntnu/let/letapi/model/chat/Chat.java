@@ -9,6 +9,9 @@ import lombok.Setter;
 import no.ntnu.let.letapi.model.listing.Listing;
 import no.ntnu.let.letapi.model.user.User;
 
+/**
+ * Model for a chat
+ */
 @Getter
 @Setter
 @Entity

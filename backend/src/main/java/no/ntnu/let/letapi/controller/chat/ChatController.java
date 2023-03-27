@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller for chat endpoints
+ */
 @RestController
 @RequestMapping("/chat")
 @RequiredArgsConstructor
@@ -31,6 +34,10 @@ public class ChatController {
     private final Sender SELLER = Sender.SELLER;
     private final Sender BUYER = Sender.BUYER;
 
+    /**
+     * Get all chats for the logged-in user
+     * @return List of chats
+     */
     @GetMapping
     public ResponseEntity<Object> getChats() {
         User user = authenticationService.getLoggedInUser();
@@ -43,6 +50,11 @@ public class ChatController {
         return ResponseEntity.ok(chats);
     }
 
+    /**
+     * Create a new chat
+     * @param chatCreation Chat creation DTO
+     * @return Chat
+     */
     @PostMapping
     public ResponseEntity<Object> createChat(@RequestBody ChatCreationDTO chatCreation) {
         Listing listing = listingService.getListing(chatCreation.getListingId());
@@ -61,6 +73,11 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.CREATED).body(chatMapper.toChatFullDto(chat, List.of()));
     }
 
+    /**
+     * Get a chat
+     * @param id Chat ID
+     * @return Chat
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getChat(@PathVariable long id) {
         Chat chat = chatService.getChat(id);
@@ -78,6 +95,12 @@ public class ChatController {
         return ResponseEntity.ok(chatMapper.toChatFullDto(chat, messages));
     }
 
+    /**
+     * Send a message in a chat
+     * @param id Chat ID
+     * @param messageCreation Message creation DTO
+     * @return Chat
+     */
     @PostMapping("/{id}")
     public ResponseEntity<Object> sendMessage(@PathVariable long id, @RequestBody MessageCreationDTO messageCreation) {
         Chat chat = chatService.getChat(id);

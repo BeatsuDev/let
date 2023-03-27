@@ -23,6 +23,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * User controller
+ */
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -32,6 +35,12 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
+    /**
+     * Register a new user and log them in
+     * @param userDTO Information to create the user
+     * @param response The http response. This is used to set the authorization cookie on the client
+     * @return Information about the created user
+     */
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody UserCreationDTO userDTO, HttpServletResponse response) {
         User user = userMapper.toUser(userDTO);
@@ -51,6 +60,11 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
+    /**
+     * Update the details of a user
+     * @param userDTO Information to update the user with
+     * @return The updated information about the user
+     */
     @PutMapping
     public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO userDTO) {
         Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == userDTO.getId());
@@ -65,6 +79,10 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
+    /**
+     * Get the current logged-in user
+     * @return Information about the current logged-in user
+     */
     @GetMapping("/session")
     public ResponseEntity<Object> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -74,6 +92,12 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
+    /**
+     * Log a user in and set the authorization cookie
+     * @param loginDTO User credentials
+     * @param response The http response. This is used to set the authorization cookie on the client
+     * @return Information about the logged-in user
+     */
     @PostMapping("/session")
     public ResponseEntity<Object> logInUser(@RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         Authentication authentication;
@@ -91,6 +115,11 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
+    /**
+     * Log a user out and remove the authorization cookie
+     * @param response The http response. This is used to remove the authorization cookie on the client
+     * @return An empty ok response
+     */
     @DeleteMapping("/session")
     public ResponseEntity<Object> logOutUser(HttpServletResponse response) {
         Cookie cookie = CookieFactory.getClearCookie();
@@ -99,6 +128,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Renew the authorization cookie
+     * @return An empty ok response
+     */
     @PutMapping("/session")
     public ResponseEntity<Object> renewSession() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -106,12 +139,21 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Get a user by id
+     * @param id The id of the user
+     * @return Information about the user
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable long id) {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
+    /**
+     * Delete a user
+     * @return no content
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable long id) {
         Boolean selfOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == id);

@@ -11,6 +11,9 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Service for images
+ */
 @Service
 public class ImageService {
     private final String IMAGE_PATH_BASE = "uploads/images/";
@@ -21,6 +24,12 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
+    /**
+     * Save an image file
+     * @param file The file to save
+     * @return The saved image
+     * @throws RuntimeException If the file could not be saved
+     */
     public Image saveImageFile(MultipartFile file) throws RuntimeException {
         String fileName = file.getOriginalFilename();
         if (fileName == null) throw new IllegalArgumentException("File has no name");
@@ -46,6 +55,11 @@ public class ImageService {
     }
 
 
+    /**
+     * Get an image by id
+     * @param id The id of the image
+     * @return The image
+     */
     public Image getImageFile(long id) {
         return imageRepository.findById(id).orElse(null);
     }

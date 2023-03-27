@@ -15,6 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Image controller
+ */
 @RestController
 @RequestMapping("/image")
 @RequiredArgsConstructor
@@ -23,6 +26,12 @@ public class ImageController {
     private final ImageService imageService;
     private final ListingMapper listingMapper;
 
+    /**
+     * Upload an image
+     *
+     * @param file Image file
+     * @return The uploaded image
+     */
     @PostMapping
     public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,6 +53,12 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.CREATED).body(listingMapper.toImageDTO(image));
     }
 
+    /**
+     * Get an image by id
+     *
+     * @param id Image id
+     * @return The image
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getImage(@PathVariable Long id) {
         Image image = imageService.getImageFile(id);

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import no.ntnu.let.letapi.model.listing.ListingState;
 
+/**
+ * DTO for updating a listing
+ */
 @Getter
 @Setter
 public class ListingUpdateDTO extends ListingCreationDTO {

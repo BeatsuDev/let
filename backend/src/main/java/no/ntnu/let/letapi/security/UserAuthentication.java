@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * Authentication for user
+ */
 @RequiredArgsConstructor
 public class UserAuthentication implements Authentication {
     private final UserDetails user;

@@ -5,6 +5,9 @@ import lombok.Setter;
 import no.ntnu.let.letapi.dto.user.UserMinimalDTO;
 import no.ntnu.let.letapi.model.listing.ListingState;
 
+/**
+ * DTO for a listing
+ */
 @Getter
 @Setter
 public class ListingFullDTO {

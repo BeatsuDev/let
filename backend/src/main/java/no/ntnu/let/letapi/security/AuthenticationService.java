@@ -19,6 +19,9 @@ import java.time.temporal.TemporalAmount;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Service for authentication
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -27,6 +30,11 @@ public class AuthenticationService {
     private final JwtDecoder decoder;
     private final UserService userService;
 
+    /**
+     * Get the current user
+     * @param authentication The authentication object
+     * @return The current user
+     */
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
@@ -42,6 +50,11 @@ public class AuthenticationService {
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    /**
+     * Renew a token
+     * @param token The token to renew
+     * @return The renewed token
+     */
     public String renewToken(String token) {
         User user = this.userService.getUserByEmail(this.decoder.decode(token).getSubject());
         UserDetails userDetails = new UserDetailsImpl(user);
@@ -49,6 +62,11 @@ public class AuthenticationService {
         return this.generateToken(authentication);
     }
 
+    /**
+     * Get the expiration date of a token
+     * @param token The token
+     * @return The expiration date
+     */
     public Instant getExpirationDate(String token) {
         return this.decoder.decode(token).getExpiresAt();
     }
@@ -61,6 +79,10 @@ public class AuthenticationService {
         return new UserAuthentication(userDetails);
     }
 
+    /**
+     * Get the currently logged-in user
+     * @return The currently logged-in user
+     */
     public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) return null;
@@ -68,18 +90,32 @@ public class AuthenticationService {
         return this.userService.getUserByEmail(email);
     }
 
+    /**
+     * Check if the currently logged-in user is an admin or allowed
+     * @param allowedTest The test to check if the user is allowed
+     * @return True if the user is an admin or allowed
+     */
     public Boolean isAdminOrAllowed(Predicate<User> allowedTest) {
         User user = this.getLoggedInUser();
         if (user == null) return false;
         return user.getAdmin() || allowedTest.test(user);
     }
 
+    /**
+     * Check if the currently logged-in user is allowed
+     * @param allowedTest The test to check if the user is allowed
+     * @return True if the user is allowed
+     */
     public Boolean isAllowed(Predicate<User> allowedTest) {
         User user = this.getLoggedInUser();
         if (user == null) return null;
         return allowedTest.test(user);
     }
 
+    /**
+     * Check if the currently logged-in user is an admin
+     * @return True if the user is an admin
+     */
     public Boolean isAdmin() {
         User user = this.getLoggedInUser();
         if (user == null) return null;
@@ -87,6 +123,11 @@ public class AuthenticationService {
     }
 
 
+    /**
+     * Get a user from a token
+     * @param token The token
+     * @return The user
+     */
     public User getUser(String token) {
         String email = this.decoder.decode(token).getSubject();
         return this.userService.getUserByEmail(email);

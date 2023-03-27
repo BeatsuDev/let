@@ -3,6 +3,9 @@ package no.ntnu.let.letapi.dto.user;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO for creating a user
+ */
 @Getter
 @Setter
 public class UserCreationDTO {

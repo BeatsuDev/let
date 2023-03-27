@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * Service for listings
+ */
 @Service
 @RequiredArgsConstructor
 public class ListingService {
@@ -21,16 +24,33 @@ public class ListingService {
     private final LocationRepository locationRepository;
     private final UserService userService;
 
+    /**
+     * Get a listing by id
+     * @param filter The filter to use
+     * @param pageRequest The page request
+     * @return The page of listings
+     */
     public Page<Listing> getListings(ListingFilter filter, PageRequest pageRequest) {
         return listingRepository.findAll(filter, pageRequest);
     }
 
+    /**
+     * Create a listing connected to a seller
+     * @param listing The listing to create
+     * @param sellerEmail The email of the seller
+     * @return The created listing
+     */
     public Listing createListing(Listing listing, String sellerEmail) {
         User seller = userService.getUserByEmail(sellerEmail);
         listing.setSeller(seller);
         return createListing(listing);
     }
 
+    /**
+     * Create a listing
+     * @param listing The listing to create
+     * @return The created listing
+     */
     public Listing createListing(Listing listing) {
         Date created = DateUtil.getNow();
         listing.setCreated(created);
@@ -44,6 +64,11 @@ public class ListingService {
         return listing;
     }
 
+    /**
+     * Update a listing. If a field is null, it will not be updated with a new value.
+     * @param listing The listing to update
+     * @return The updated listing
+     */
     public Listing updateListing(Listing listing) {
         Listing oldListing = listingRepository.findById(listing.getId()).orElse(null);
         if (oldListing == null) throw new IllegalArgumentException("Listing does not exist in database");
@@ -63,10 +88,19 @@ public class ListingService {
         return listing;
     }
 
+    /**
+     * Get a listing by id
+     * @param id The id of the listing
+     * @return The listing
+     */
     public Listing getListing(long id) {
         return listingRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Delete a listing
+     * @param listing The listing to delete
+     */
     public void deleteListing(Listing listing) {
         listingRepository.delete(listing);
     }

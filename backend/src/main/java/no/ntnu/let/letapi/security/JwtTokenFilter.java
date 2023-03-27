@@ -15,6 +15,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Filter for checking if the user is authenticated
+ */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final AuthenticationService authenticationService;
@@ -23,6 +26,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         this.authenticationService = authenticationService;
     }
 
+    /**
+     * Filter for checking if the user is authenticated
+     * @param request The request
+     * @param response The response
+     * @param filterChain The filter chain
+     * @throws ServletException If the filter fails
+     * @throws IOException If the filter fails
+     */
     @Override
     protected void doFilterInternal(
             @NotNull HttpServletRequest request,

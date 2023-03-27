@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Controller for listing endpoints
+ */
 @RestController
 @RequestMapping("/listing")
 @RequiredArgsConstructor
@@ -35,6 +38,11 @@ public class ListingController {
     private final AuthenticationService authenticationService;
     private final String BASE_URL = UrlUtil.getBaseUrl() + "/listing";
 
+    /**
+     * Get a listing by ID
+     * @param id Listing ID
+     * @return Listing
+     */
     @GetMapping
     public ResponseEntity<Object> getListings(
             @RequestParam(required = false) String searchString,
@@ -122,6 +130,11 @@ public class ListingController {
         return ResponseEntity.ok(pagedListings);
     }
 
+    /**
+     * Get a listing by ID
+     * @param id Listing ID
+     * @return Listing
+     */
     @PostMapping
     public ResponseEntity<Object> createListing(@RequestBody ListingCreationDTO listingCreationDTO) {
         // Validate the input
@@ -153,6 +166,11 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingFullDTO(savedListing));
     }
 
+    /**
+     * Update a listing
+     * @param listingDTO Listing to update
+     * @return Updated listing
+     */
     @PutMapping
     public ResponseEntity<Object> updateListing(@RequestBody ListingUpdateDTO listingDTO) {
         Listing oldListing = listingService.getListing(listingDTO.getId());
@@ -166,6 +184,11 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
     }
 
+    /**
+     * Get a listing by ID
+     * @param id Listing ID
+     * @return Listing
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getListing(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
@@ -176,6 +199,11 @@ public class ListingController {
         return ResponseEntity.ok(mapper.toListingFullDTO(listing));
     }
 
+    /**
+     * Delete a listing
+     * @param id Listing ID
+     * @return Status code
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteListing(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
@@ -191,6 +219,11 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Listing deleted");
     }
 
+    /**
+     * Check if the listing is favorited by the logged in user
+     * @param id Listing ID
+     * @return True if favorited, false otherwise
+     */
     @GetMapping("/{id}/favorite")
     public ResponseEntity<Object> isListingFavorited(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
@@ -204,6 +237,11 @@ public class ListingController {
         return ResponseEntity.ok(userService.isListingFavorited(user, listing));
     }
 
+    /**
+     * Favorite a listing for the logged-in user
+     * @param id Listing ID
+     * @return Status code
+     */
     @PostMapping("/{id}/favorite")
     public ResponseEntity<Object> favoriteListing(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
@@ -215,6 +253,11 @@ public class ListingController {
         return ResponseEntity.ok("Listing favorited");
     }
 
+    /**
+     * Unfavorite a listing for the logged-in user
+     * @param id Listing ID
+     * @return Status code
+     */
     @DeleteMapping("/{id}/favorite")
     public ResponseEntity<Object> unfavoriteListing(@PathVariable long id) {
         Listing listing = listingService.getListing(id);
@@ -226,6 +269,12 @@ public class ListingController {
         return ResponseEntity.ok("Listing unfavorited");
     }
 
+    /**
+     * Check if a user has access to a listing. Currently, this is only used to check if a user is logged in.
+     * @param listing Listing to check
+     * @param user User to check
+     * @return Null if the user has access, otherwise a response entity with the error
+     */
     private ResponseEntity<Object> validateListingAccess(Listing listing, User user) {
         if (listing == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Listing not found");
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
