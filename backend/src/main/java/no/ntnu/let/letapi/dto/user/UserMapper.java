@@ -11,10 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Mapper for users
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", injectionStrategy = org.mapstruct.InjectionStrategy.CONSTRUCTOR)
 public abstract class UserMapper {
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    protected PasswordEncoder passwordEncoder;
 
     /**
      * Map a user to a minimal user DTO
