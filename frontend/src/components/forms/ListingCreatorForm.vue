@@ -1,6 +1,6 @@
 t
 <template>
-  <div>
+  <div class="main">
     <div id="row-1" class="row">
       <ValidatedInput
         v-model="listing.title"
@@ -387,5 +387,36 @@ input {
   color: red;
   font-size: 0.9rem;
   font-style: italic;
+}
+
+@media only screen and (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  #row-1 > .input-container:first-child {
+    grid-column: 1 / 1;
+  }
+
+  #row-1 > .input-container:last-child {
+    grid-column: 1 / 1;
+  }
+
+  #row-2 > .input-container:first-child {
+    grid-column: 1 / 1;
+  }
+
+  #row-2 > .input-container:last-child {
+    grid-column: 1 / 1;
+  }
+
+  #row-6 > .input-container:first-child {
+    grid-column: 1 / 1;
+  }
+
+  .main {
+    padding: 0;
+    width: 100%;
+  }
 }
 </style>

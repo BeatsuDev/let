@@ -81,6 +81,12 @@ nav {
     height: 1.2rem !important;
   }
 
+  .column {
+    margin: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
   span {
     display: none;
   }

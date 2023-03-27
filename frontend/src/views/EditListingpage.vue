@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper-form">
-    <BackButton style="margin-left: -3rem" />
-    <h1>Rediger annonsen din</h1>
+    <BackButton class="back-button" />
+    <h1 class="text-one-line">Rediger annonsen din</h1>
     <ListingCreatorForm v-model="listingToUpdate" @create-listing="updateListing" editable="true" />
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
     <div style="margin-top: 1rem">
@@ -90,3 +90,14 @@ function sellListing() {
     });
 }
 </script>
+<style>
+.back-button {
+  margin-left: -3rem;
+}
+
+@media screen and (min-width: 768px) {
+  .back-button {
+    margin-left: 0;
+  }
+}
+</style>

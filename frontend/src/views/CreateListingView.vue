@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper-form">
-    <BackButton style="margin-left: -3rem" />
-    <h1>Lag en ny annonse</h1>
+    <h1 class="text-one-line" style="padding-left: 0.5rem">Lag en ny annonse</h1>
     <ListingCreatorForm v-model="listingData" @create-listing="createListing" editable="true" />
     <AlertBox v-if="errorMessage" :message="errorMessage" type="error"></AlertBox>
   </div>
@@ -49,3 +48,13 @@ async function createListing(newListing: CreateListing) {
     });
 }
 </script>
+<style>
+.back-button {
+  margin-left: -3rem;
+}
+
+@media screen and (min-width: 768px) {
+  .back-button {
+  }
+}
+</style>

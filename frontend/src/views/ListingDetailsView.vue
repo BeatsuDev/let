@@ -283,4 +283,12 @@ main {
     max-width: 100%;
   }
 }
+
+@media (max-width: 800px) {
+  main {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 </style>
