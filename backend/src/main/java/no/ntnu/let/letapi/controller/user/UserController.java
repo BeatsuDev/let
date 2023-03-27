@@ -13,6 +13,8 @@ import no.ntnu.let.letapi.security.CookieFactory;
 import no.ntnu.let.letapi.security.UserAuthentication;
 import no.ntnu.let.letapi.security.UserDetailsImpl;
 import no.ntnu.let.letapi.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,7 @@ public class UserController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
      * Register a new user and log them in
@@ -45,14 +48,18 @@ public class UserController {
     public ResponseEntity<Object> createUser(@RequestBody UserCreationDTO userDTO, HttpServletResponse response) {
         User user = userMapper.toUser(userDTO);
         if (userService.getUserByEmail(user.getEmail()) != null) {
+            logger.info("Failed to create user with email " + user.getEmail() + ": Email already in use");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         try {
+            logger.debug("Creating user with email " + user.getEmail());
             user = userService.createUser(user);
         } catch (Exception e) {
+            logger.warn("Failed to create user with email " + user.getEmail() + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please supply all necessary fields");
         }
 
+        logger.info("User created with email " + user.getEmail());
         UserDetails userDetails = new UserDetailsImpl(user);
         String token = authenticationService.generateToken(new UserAuthentication(userDetails));
 
@@ -73,9 +80,11 @@ public class UserController {
 
         // If the user is not an admin, they cannot change their admin status
         if (!authenticationService.isAdmin()) userDTO.setAdmin(null);
+        logger.debug("Updating user with id " + userDTO.getId());
 
         User user = userMapper.toUser(userDTO);
         user = userService.updateUser(user);
+        logger.info("User updated with id " + user.getId());
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
 
@@ -88,6 +97,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+        logger.info("Getting user with email " + authentication.getName());
         User user = userService.getUserByEmail(authentication.getName());
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
@@ -108,6 +118,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+        logger.info("User logged in with email " + loginDTO.getEmail());
         User user = userService.getUserByEmail(loginDTO.getEmail());
         String token = authenticationService.generateToken(authentication);
         response.addCookie(CookieFactory.getAuthorizationCookie(token));
@@ -160,6 +171,7 @@ public class UserController {
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+        logger.info("Deleting user with id " + id);
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }

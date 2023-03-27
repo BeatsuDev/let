@@ -24,7 +24,6 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final ListingMapper listingMapper;
     private final AuthenticationService authenticationService;
-
     /**
      * Get all categories
      *
@@ -48,6 +47,7 @@ public class CategoryController {
         if (isAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!isAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+        logger.info("Creating category with name " + categoryDTO.getName());
         Category category = categoryService.createCategory(listingMapper.toCategory(categoryDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(listingMapper.toCategoryDTO(category));
     }
@@ -77,6 +77,7 @@ public class CategoryController {
         if (isAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!isAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+        logger.info("Deleting category with id " + id);
         Category category = categoryService.getCategory(id);
         if (category == null) return ResponseEntity.notFound().build();
 

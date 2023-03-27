@@ -12,6 +12,8 @@ import no.ntnu.let.letapi.service.UserService;
 import no.ntnu.let.letapi.util.ListingFilter;
 import no.ntnu.let.letapi.util.ListingFilter.ListingFilterBuilder;
 import no.ntnu.let.letapi.util.UrlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,11 +39,21 @@ public class ListingController {
     private final CategoryService categoryService;
     private final AuthenticationService authenticationService;
     private final String BASE_URL = UrlUtil.getBaseUrl() + "/listing";
+    private final Logger logger = LoggerFactory.getLogger(ListingController.class);
 
     /**
-     * Get a listing by ID
-     * @param id Listing ID
-     * @return Listing
+     * Filter listing and return paginated matches
+     * @param searchString Search string
+     * @param longitude Longitude
+     * @param latitude Latitude
+     * @param radius Radius
+     * @param categories Categories
+     * @param userId User ID
+     * @param favorites Whether to only show favorites
+     * @param states Listing states to filter by
+     * @param page  Page number
+     * @param pageSize Page size
+     * @return List of listings (paginated)
      */
     @GetMapping
     public ResponseEntity<Object> getListings(
@@ -160,9 +172,11 @@ public class ListingController {
             savedListing = listingService.createListing(listing,
                     SecurityContextHolder.getContext().getAuthentication().getName());
         } catch (DataIntegrityViolationException e) {
+            logger.info("Invalid ID in gallery, thumbnail, or category for listing creation");
             return ResponseEntity.badRequest().body("Invalid ID in gallery, thumbnail, or category");
         }
 
+        logger.info("Listing created: " + savedListing.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingFullDTO(savedListing));
     }
 
@@ -180,6 +194,7 @@ public class ListingController {
         if (selfOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!selfOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+        logger.info("Listing updated: " + listingDTO.getId());
         Listing savedListing = listingService.updateListing(mapper.toListing(listingDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toListingMinimalDTO(savedListing));
     }
@@ -215,6 +230,7 @@ public class ListingController {
         if (ownerOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         if (!ownerOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+        logger.info("Listing deleted: " + id);
         listingService.deleteListing(listing);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Listing deleted");
     }
