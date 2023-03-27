@@ -27,7 +27,6 @@ const emit = defineEmits<{
 }>();
 
 let marker = leaflet.circle([0, 0], { radius: props.radius * 1000, color: "red" });
-let isVisible = ref(false);
 let map: { setView: (arg0: any[], arg1: number) => void };
 
 onMounted(() => {
@@ -72,7 +71,6 @@ watch(
   () => props.modelValue,
   (location) => {
     if (location.latitude && location.longitude) {
-      hide(false);
       marker.setLatLng([location.latitude, location.longitude]);
       map.setView([location.latitude, location.longitude]);
     }

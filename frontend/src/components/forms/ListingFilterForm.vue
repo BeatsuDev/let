@@ -13,19 +13,23 @@
   <input v-model="searchValue" class="input-text" type="text" @input="search" />
   <h3 class="nav-title">Sted</h3>
   <LocationPicker v-model="value.location" @update:modelValue="value.page = 1" />
-  <LocationMapPicker v-model="value.location" :radius="parseInt(radius)"></LocationMapPicker>
+  <LocationMapPicker
+    v-model="value.location"
+    @update:modelValue="value.page = 1"
+    :radius="parseInt(radiusValue)"
+  ></LocationMapPicker>
   <h3 class="nav-title">Radius</h3>
   <input
-    v-model="radius"
+    v-model="radiusValue"
     class="slider"
     style="width: 100%"
     type="range"
     @mouseup="
-      value.radius = radius;
+      value.radius = radiusValue;
       value.page = 1;
     "
   />
-  <div class="center-text">{{ radius }}km</div>
+  <div class="center-text">{{ radiusValue }}km</div>
 </template>
 
 <script lang="ts" setup>
@@ -55,7 +59,7 @@ const emit = defineEmits<{
 const inputDelay = new InputHandler(500);
 
 const searchValue = ref("");
-const radius = ref(props.modelValue.radius);
+const radiusValue = ref(10);
 
 // Define computed values
 const value = computed(() => props.modelValue);
