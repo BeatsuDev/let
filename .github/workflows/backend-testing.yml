@@ -14,6 +14,7 @@ jobs:
     - uses: actions/setup-java@v3
       with:
         distribution: 'temurin' # See 'Supported distributions' for available options
-        java-version: '17'
-    - run: cd backend
-    - run: mvn clean test
+        java-version: '17' 
+    - run: |
+      cd backend
+      mvn clean test
