@@ -3,6 +3,7 @@
     <BackIcon class="button-icon" />Tilbake
   </button>
 </template>
+
 <script setup lang="ts">
 import BackIcon from "@/components/icons/BackIcon.vue";
 import router from "@/router";
