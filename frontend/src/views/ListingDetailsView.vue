@@ -98,6 +98,10 @@ const errorMessage = ref("" as string);
 
 // Define callbacks
 function handleBookmarkClick() {
+  if (!sessionStore.isAuthenticated) {
+    router.push("/login");
+    return;
+  }
   if (isBookmarked.value) {
     listingsApi
       .removeFavorite(id)
