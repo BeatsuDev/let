@@ -11,7 +11,7 @@
       name="category-picker"
       ref="input"
       @focus="() => (showDropdown = true)"
-      @blur="() => (showDropdown = false)"
+      @blur="hide"
     />
     <div class="dropdown">
       <div v-if="!error && !categories">loading...</div>
@@ -95,6 +95,12 @@ const matches = computed(() => {
   console.log(show);
   return !show;
 });
+
+function hide() {
+  setTimeout(() => {
+    showDropdown.value = false;
+  }, 200);
+}
 </script>
 
 <style scoped>

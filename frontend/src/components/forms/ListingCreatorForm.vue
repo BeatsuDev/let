@@ -1,6 +1,6 @@
 t
 <template>
-  <div>
+  <form autocomplete="off">
     <div id="row-1" class="row">
       <ValidatedInput
         v-model="listing.title"
@@ -100,7 +100,7 @@ t
         </button>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script lang="ts" setup>
