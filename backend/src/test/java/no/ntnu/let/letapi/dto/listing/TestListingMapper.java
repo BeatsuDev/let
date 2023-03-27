@@ -6,8 +6,8 @@ import no.ntnu.let.letapi.model.listing.*;
 import no.ntnu.let.letapi.model.user.User;
 import no.ntnu.let.letapi.util.DateUtil;
 import no.ntnu.let.letapi.util.UrlUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -25,44 +25,31 @@ public class TestListingMapper {
     private final User user1 = new User();
     private LocationDTO locationDTO1 = new LocationDTO();
     private final Listing listing1 = new Listing();
-    private final ListingUpdateDTO listingUpdateDTO1 = new ListingUpdateDTO();
     private final ListingMapper listingMapper = new ListingMapperImpl(new UserMapperImpl());
 
-    @BeforeEach
-    public void resetImages() {
+    @Before
+    public void setUp() throws ParseException {
         long id = 1L;
         for (Image image : Stream.of(image1, image2, image3).toList()) {
             image.setId(id);
             image.setFileName("dev-gallery" + id + ".jpg");
         }
-    }
 
-    @BeforeEach
-    public void resetCategories() {
         category1.setId(1L);
         category1.setName("Test category 1");
-    }
 
-    @BeforeEach
-    public void resetLocations() {
         location1.setId(1L);
         location1.setLatitude(1.0);
         location1.setLongitude(2.0);
         location1.setName("Test location 1");
         locationDTO1 = listingMapper.toLocationDTO(location1);
-    }
 
-    @BeforeEach
-    public void resetUsers() {
         user1.setId(1L);
         user1.setFirstName("Test");
         user1.setLastName("User");
         user1.setEmail("user@example.org");
         user1.setAdmin(true);
-    }
 
-    @BeforeEach
-    public void resetListings() throws ParseException {
         listing1.setId(1L);
         listing1.setTitle("Test listing 1");
         listing1.setSummary("Test short description 1");
@@ -79,21 +66,6 @@ public class TestListingMapper {
         listing1.setState(ListingState.ACTIVE);
         listing1.setCreated(DateUtil.parseDate("2001-01-08T22:00:00.000Z"));
         listing1.setSeller(user1);
-
-        listingUpdateDTO1.setId(1L);
-        listingUpdateDTO1.setTitle("Test listing 1");
-        listingUpdateDTO1.setSummary("Test short description 1");
-        listingUpdateDTO1.setDescription("Test description 1");
-        listingUpdateDTO1.setPrice(100L);
-        listingUpdateDTO1.setThumbnailIndex(1);
-        listingUpdateDTO1.setGalleryIds(List.of(
-                1L,
-                2L,
-                3L
-        ));
-        listingUpdateDTO1.setCategoryId(1L);
-        listingUpdateDTO1.setLocation(locationDTO1);
-        listingUpdateDTO1.setState(ListingState.ACTIVE);
     }
 
     @Test
