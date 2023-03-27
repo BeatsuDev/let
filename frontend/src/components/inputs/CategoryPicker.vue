@@ -8,17 +8,16 @@
       :class="{ 'input-text': true, 'red-border': props.validationError }"
       :placeholder="props.placeholder"
       name="category-picker"
-      @change="filterResults"
-      @keyup="filterResults"
+      ref="input"
     />
-    <div class="dropdown">
+    <div>
       <div v-if="!error && !categories">loading...</div>
       <div v-else-if="error" class="error">
         {{ error }}
       </div>
-      <div v-else class="categories">
+      <div v-else-if="showDropdown" class="categories" ref="dropdown">
         <div
-          v-for="category in categories"
+          v-for="category in categoriesToShow"
           :key="category.id"
           class="category"
           @click="() => (inputData = category.name)"
@@ -52,12 +51,14 @@ const props = defineProps<{
 
 // Define emits
 const emit = defineEmits<{
-  (event: "update:modelValue", value: Category): void;
+  (event: "update:modelValue", value: number | undefined): void;
   (event: "update:textInput", value: string): void;
 }>();
 
 // Define refs;
 const { data: categories, error } = runAxios(categoryApi.getCategories());
+const input = ref<HTMLInputElement | null>(null);
+const dropdown = ref<HTMLDivElement | null>(null);
 
 const inputData = computed({
   get() {
@@ -70,62 +71,38 @@ const inputData = computed({
 
     // Only update the v-model if the value is a valid category
     const category = categories.value?.find((c) => c.name === value);
-
     if (category) {
-      emit("update:modelValue", { id: category.id, name: category.name });
+      emit("update:modelValue", category.id);
+      console.log("Set category to " + category);
     } else {
-      emit("update:modelValue", {} as Category);
+      emit("update:modelValue", undefined);
     }
   },
 });
 
-function changeWidth() {
-  const input = document.querySelector("input[name='category-picker']") as HTMLInputElement;
-  const dropdown = document.querySelector(".categories") as HTMLDivElement;
+const categoriesToShow = computed(() => {
+  return (
+    categories.value?.filter((c) => c.name != undefined && c.name?.indexOf(inputData.value) > -1) ||
+    ([] as Category[])
+  );
+});
 
-  if (!input || !dropdown) {
-    return;
-  }
+const showDropdown = computed(() => {
+  const show = categories.value?.find(
+    (c) => c.name?.toLowerCase() === inputData.value?.toLowerCase()
+  );
+  console.log(show);
+  return !show;
+});
 
-  dropdown.style.width = input.offsetWidth + "px";
-}
-
-function filterResults() {
-  const input = document.querySelector("input[name='category-picker']") as HTMLInputElement;
-  const dropdown = document.querySelector(".categories") as HTMLDivElement;
-
-  if (!input || !dropdown) {
-    return;
-  }
-
-  const filter = input.value.toUpperCase();
-  const categoryDivs = dropdown.getElementsByTagName("div");
-
-  for (let i = 0; i < categoryDivs.length; i++) {
-    if (categoryDivs[i].innerText.toUpperCase().indexOf(filter) > -1) {
-      categoryDivs[i].style.display = "";
-    } else {
-      categoryDivs[i].style.display = "none";
-    }
-  }
-
-  // Hide the dropdown if the input matches the only category
-  const categoryNames = categories.value?.map((c) => c.name);
-
-  if (
-    [...categoryDivs].filter((c) => c.style.display === "").length <= 1 &&
-    categoryNames?.includes(input.value)
-  ) {
-    dropdown.style.display = "none";
-  } else {
-    if ([...categoryDivs].filter((c) => c.style.display === "").length > 0) {
-      dropdown.style.display = "";
-    }
-  }
-}
-
-//Vue hooks
 // Code to ensure that the dropdown is the same width as the input element
+function changeWidth() {
+  if (!input.value || !dropdown.value) {
+    return;
+  }
+  dropdown.value.style.width = input.value.offsetWidth + "px";
+}
+
 onMounted(() => {
   setInterval(changeWidth, 100);
   window.addEventListener("resize", changeWidth);

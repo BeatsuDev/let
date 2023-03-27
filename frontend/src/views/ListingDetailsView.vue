@@ -40,7 +40,7 @@
       <div class="misc-info-bar">
         <div class="misc-bar-left">
           <h3>Kategori:</h3>
-          <p id="category">{{ data.categoryName }}</p>
+          <p id="category">{{ data.category.name }}</p>
           <button class="button button-black button-screaming" v-if="data.state !== 'SOLD'" @click="contactSeller">
             Kontakt selger
           </button>

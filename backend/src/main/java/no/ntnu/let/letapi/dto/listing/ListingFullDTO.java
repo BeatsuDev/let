@@ -14,7 +14,7 @@ public class ListingFullDTO {
     private Long price;
     private ImageDTO thumbnail;
     private String locationName;
-    private String categoryName;
+    private CategoryDTO category;
     private String description;
     private ListingState state;
     private String created;
