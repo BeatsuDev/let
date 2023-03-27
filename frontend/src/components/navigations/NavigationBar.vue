@@ -46,6 +46,7 @@ import ProfileIcon from "@/components/icons/ProfileIcon.vue";
 import { useSessionStore } from "@/stores/sessionStore";
 import LogOutIcon from "@/components/icons/LogOutIcon.vue";
 import router from "@/router";
+import { computed } from "vue";
 
 // eslint-disable-next-line no-undef
 const sessionStore = useSessionStore();
