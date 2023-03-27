@@ -35,7 +35,7 @@ import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
 import MainContainer from "@/components/containers/MainContainer.vue";
 import { UserApi } from "@/services/apis/user-api";
 import { useSessionStore } from "@/stores/sessionStore";
-import type { UserBody } from "@/services";
+import type { UserBody } from "@/services/index";
 import { computed, ref } from "vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
 import router from "@/router";

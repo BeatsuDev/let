@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import type { UserBody, UserFull } from "@/services";
+import type { UserBody, UserFull } from "@/services/index";
 import { computed, ref } from "vue";
 import ValidatedInput from "../inputs/ValidatedInput.vue";
 import { helpers, minLength, required } from "@vuelidate/validators";

@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import type { UserFull } from "@/services";
+import type { UserFull } from "@/services/index";
 import { UserApi } from "@/services/apis/user-api";
 import router from "@/router";
 

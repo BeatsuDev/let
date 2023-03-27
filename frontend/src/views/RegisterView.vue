@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import FullUserDetailsForm from "@/components/forms/FullUserDetailsForm.vue";
-import type { UserBody } from "@/services";
+import type { UserBody } from "@/services/index";
 import { UserApi } from "@/services/index";
 import { useSessionStore } from "@/stores/sessionStore";
 import router from "@/router";

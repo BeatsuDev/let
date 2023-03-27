@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Image } from "@/services";
+import type { Image } from "@/services/index";
 
 export async function uploadImage(images: File[]) {
   // Upload images to backend
