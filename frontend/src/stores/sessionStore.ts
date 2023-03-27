@@ -21,7 +21,7 @@ export const useSessionStore = defineStore("sessionStore", () => {
     }
     if (userFromStorage != null) {
       user.value = JSON.parse(userFromStorage);
-      return user.value;
+      return <UserFull>user.value;
     }
   }
 
