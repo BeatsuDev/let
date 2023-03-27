@@ -54,6 +54,7 @@ public class ListingService {
         if (listing.getDescription() == null) listing.setDescription(oldListing.getDescription());
         if (listing.getCategory() == null) listing.setCategory(oldListing.getCategory());
         if (listing.getLocation() == null) listing.setLocation(oldListing.getLocation());
+        if (listing.getThumbnail() == null) listing.setThumbnail(oldListing.getThumbnail());
         if (listing.getGallery() == null) listing.setGallery(oldListing.getGallery());
         if (listing.getState() == null) listing.setState(oldListing.getState());
         if (listing.getSeller() == null) listing.setSeller(oldListing.getSeller());
