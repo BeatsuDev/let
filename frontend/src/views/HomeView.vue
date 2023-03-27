@@ -32,6 +32,7 @@ import ListingScrollPane from "@/components/listings/ListingScrollPane.vue";
 import MainContainer from "@/components/containers/MainContainer.vue";
 import ListingsNotFound from "@/components/listings/NoListingsFound.vue";
 import AlertBox from "@/components/dialogs/AlertBox.vue";
+import { ListingState } from "@/services/models";
 
 //Define apis
 const listingApi = new ListingsApi();
@@ -85,7 +86,7 @@ function fetchListings() {
       filters.category ? [filters.category] : undefined,
       undefined,
       undefined,
-      undefined,
+      [ListingState.ACTIVE],
       filters.page,
       20
     )
