@@ -124,6 +124,10 @@ function handleBookmarkClick() {
 }
 
 function contactSeller() {
+  if (!sessionStore.isAuthenticated) {
+    router.push("/login");
+    return;
+  }
   chatApi.createChat({ listingId: id }).then((response) => {
     router.push({ name: "chat", params: { chatId: response.data.id } });
   });
