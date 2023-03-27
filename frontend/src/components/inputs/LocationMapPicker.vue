@@ -65,7 +65,9 @@ onMounted(() => {
 watch(
   () => props.radius,
   (radius) => {
-    marker.setRadius(radius * 1000);
+    if (marker && radius) {
+      marker.setRadius(radius * 1000);
+    }
   }
 );
 
