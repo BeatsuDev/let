@@ -2,6 +2,7 @@
   <div id="map">
     <button
       class="button delete"
+      v-if="!isVisible"
       @click="
         (event) => {
           event.stopPropagation();
@@ -28,7 +29,10 @@ const emit = defineEmits<{
   (event: "update:modelValue", location: { longitude: number; latitude: number }): void;
 }>();
 
-//Other variables
+// Define refs
+const isVisible = ref(true);
+
+// Other variables
 let marker = leaflet.circle([0, 0], { radius: props.radius * 1000, color: "red" });
 let map: { setView: (arg0: any[], arg1: number) => void };
 
@@ -62,6 +66,9 @@ watch(
   () => props.modelValue,
   (location: { latitude: number; longitude: number }) => {
     if (location.latitude && location.longitude) {
+      if (isVisible.value) {
+        hide(false);
+      }
       marker.setLatLng([location.latitude, location.longitude]);
       map.setView([location.latitude, location.longitude], 3);
     }
@@ -70,6 +77,7 @@ watch(
 
 // Other functions
 function hide(hide: boolean) {
+  isVisible.value = hide;
   if (hide) {
     emit("update:modelValue", { latitude: undefined, longitude: undefined });
     marker.removeFrom(map);
