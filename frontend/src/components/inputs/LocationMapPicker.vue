@@ -47,8 +47,17 @@ onMounted(() => {
     })
     .addTo(map);
   map.on("click", (e) => {
-    hide(false);
+    if (marker == null) {
+      marker = leaflet.circle(e.latlng, props.radius * 1000);
+      marker.addTo(map);
+      hide(false);
+      return;
+    }
     marker.setLatLng(e.latlng);
+    marker.addTo(map);
+    if (!isVisible.value) {
+      hide(false);
+    }
     emit("update:modelValue", { latitude: e.latlng.lat, longitude: e.latlng.lng });
   });
 });
@@ -68,14 +77,12 @@ watch(
     console.log(latitude, longitude);
     if (latitude && longitude) {
       if (marker == null) {
-        console.log("mo");
         marker = leaflet.circle([latitude, longitude], props.radius * 1000);
         marker.addTo(map);
-      } else if (isVisible.value) {
-        hide(false);
+      } else {
+        marker.setLatLng([latitude, longitude]);
+        marker.addTo(map);
       }
-      marker.setLatLng([latitude, longitude]);
-      map.setView([latitude, longitude], 3);
     }
   }
 );
@@ -87,7 +94,6 @@ function hide(hide: boolean) {
     emit("update:modelValue", { latitude: undefined, longitude: undefined });
     marker.removeFrom(map);
   } else {
-    marker.addTo(map);
     emit("update:modelValue", {
       latitude: marker.getLatLng().lat,
       longitude: marker.getLatLng().lng,
