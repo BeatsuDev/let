@@ -46,7 +46,7 @@ VALUES (-1, TIMESTAMP '2023-03-20 23:45:36.187', 'En fin sofa i god stand', 1000
        (-10, TIMESTAMP '2023-03-20 23:45:36.187', 'En fin stol i god stand!', 10000, NULL, 'ACTIVE', 'En fin stol',
         'Stol', -1, -1, -1, -7),
        (-11, TIMESTAMP '2023-03-20 23:45:36.187', 'En fin stol i god stand!', 11000, NULL, 'ACTIVE', 'En fin stol',
-        'Stol', -1, -1, -1, -7),
+        'Stol', -1, -1, -1, -7);
 
 INSERT INTO "PUBLIC"."LISTING_GALLERY"
 VALUES (-1, -1),
