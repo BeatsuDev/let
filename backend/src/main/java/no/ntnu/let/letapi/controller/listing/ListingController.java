@@ -50,7 +50,7 @@ public class ListingController {
      * @param categories Categories
      * @param userId User ID
      * @param favorites Whether to only show favorites
-     * @param states Listing states to filter by
+     * @param state Listing states to filter by
      * @param page  Page number
      * @param pageSize Page size
      * @return List of listings (paginated)
@@ -64,7 +64,7 @@ public class ListingController {
             @RequestParam(required = false) List<Integer> categories,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Boolean favorites,
-            @RequestParam(required = false) List<ListingState> states,
+            @RequestParam(required = false) List<ListingState> state,
             @RequestParam(defaultValue = "1", required = false) Integer page,
             @RequestParam(defaultValue = "50", required = false) Integer pageSize
     ) {
@@ -107,7 +107,7 @@ public class ListingController {
                 .categories(categories)
                 .userId(userId)
                 .favoritesOf(favoritesOf)
-                .states(states);
+                .states(state);
         ListingFilter filter = filterBuilder.build();
 
         // Get the listings from the database
@@ -144,7 +144,6 @@ public class ListingController {
 
     /**
      * Get a listing by ID
-     * @param id Listing ID
      * @return Listing
      */
     @PostMapping
