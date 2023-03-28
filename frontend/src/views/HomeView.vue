@@ -53,6 +53,7 @@ const messages = [
   "På tide å finne drømmetingen! ",
   "Slår du gull i dag? 🪙",
   "Velkommen tilbake 👋",
+  "Vi skal bli større enn Finn! 🚀",
 ];
 
 fetchListings();

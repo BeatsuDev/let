@@ -59,7 +59,6 @@ const responses = [
   "På tide å lete 🔍",
   "Du er tilbake! 🎉",
   "Vi har savna deg 🥺",
-  "Et steg nærmere å finne drømmehjemmet! 🤩",
   "Hva var nå passordet igjen... 🤔",
 ];
 

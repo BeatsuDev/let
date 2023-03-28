@@ -35,7 +35,6 @@ const responses = [
   "På tide å finne ting 🔍",
   "Klar til å finne drømmeplanten? 🌱",
   "En ny verden venter deg! 🌎",
-  "Et steg nærmere å finne drømmehjemmet! 🤩",
 ];
 
 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
