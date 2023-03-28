@@ -198,7 +198,7 @@ const newListing = computed<UpdateListing>({
       id: listing.value.id,
       title: listing.value.title,
       summary: listing.value.summary,
-      description: listing.value.summary,
+      description: listing.value.description,
       price: listing.value.price,
       categoryId: listing.value.category.id,
       location: listing.value.location,

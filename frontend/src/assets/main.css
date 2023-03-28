@@ -18,6 +18,7 @@ main {
 }
 
 .spacer {
+  width: 0;
   flex: 1;
 }
 
