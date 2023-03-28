@@ -10,9 +10,11 @@
       <p>{{ message.content }}</p>
       <div class="spacer" />
     </div>
-    
-    <span>{{ //@ts-ignore
-      new Date(message.timestamp!).toLocaleTimeString("no", { timeStyle: "short" }) }}</span>
+
+    <span>{{
+      //@ts-ignore
+      new Date(message.timestamp!).toLocaleTimeString("no", { timeStyle: "short" })
+    }}</span>
   </div>
 </template>
 <script setup lang="ts">

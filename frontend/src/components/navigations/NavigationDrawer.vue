@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import CollapseIcon from "@/components/icons/CollapseIcon.vue";
 import BackButton from "@/components/inputs/BackButton.vue";
+import { onMounted } from "vue";
 
 // Define props
 const props = defineProps({
@@ -32,6 +33,15 @@ const props = defineProps({
 
 // Define emits
 const emit = defineEmits(["update:modelValue"]);
+
+onMounted(() => {
+  // Add event listener for window resize
+  window.addEventListener("resize", () => {
+    if (window.innerWidth < 700) {
+      emit("update:modelValue", true);
+    }
+  });
+});
 </script>
 
 <style scoped>
