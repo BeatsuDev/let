@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.ntnu.let.letapi.model.user.User;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@SQLDelete(sql = "UPDATE listing SET state = 'DELETED' WHERE id = ?")
+@Where(clause = "state <> 'DELETED'")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Listing {
