@@ -34,11 +34,12 @@ const props = defineProps({
 // Define emits
 const emit = defineEmits(["update:modelValue"]);
 
+if (window.innerWidth < 900) {
+  emit("update:modelValue", true);
+}
+
 onMounted(() => {
   // Add event listener for window resize
-  if (window.innerWidth < 700) {
-    emit("update:modelValue", true);
-  }
   window.addEventListener("resize", () => {
     if (window.innerWidth < 700) {
       emit("update:modelValue", true);
