@@ -36,6 +36,9 @@ const emit = defineEmits(["update:modelValue"]);
 
 onMounted(() => {
   // Add event listener for window resize
+  if (window.innerWidth < 700) {
+    emit("update:modelValue", true);
+  }
   window.addEventListener("resize", () => {
     if (window.innerWidth < 700) {
       emit("update:modelValue", true);
