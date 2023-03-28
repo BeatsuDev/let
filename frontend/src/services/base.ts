@@ -16,7 +16,7 @@ import { Configuration } from "./configuration";
 // @ts-ignore
 import globalAxios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
-export const BASE_PATH = "http://api.letno.no/".replace(/\/+$/, "");
+export const BASE_PATH = "https://api.letno.no/".replace(/\/+$/, "");
 
 /**
  *

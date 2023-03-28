@@ -41,7 +41,7 @@ const formattedPrice = computed(() => oreToNokFormatted(props.value?.price));
 
 <style scoped>
 .card {
-  max-width: 15rem;
+  max-width: 20rem;
   font-family: Inter, sans-serif;
   height: 25rem;
   background-color: #fff;
@@ -62,12 +62,12 @@ const formattedPrice = computed(() => oreToNokFormatted(props.value?.price));
 
 .thumbnail {
   width: 100%;
-  height: 80%;
+  height: 60%;
   object-fit: contain;
 }
 
 .information {
-  height: 20%;
+  height: 40%;
   width: 100%;
 }
 

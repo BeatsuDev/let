@@ -246,7 +246,10 @@ const toValidate = computed(() => {
 });
 
 const rules = {
-  title: { required: helpers.withMessage("Tittel er påkrevd", required) },
+  title: {
+    required: helpers.withMessage("Tittel er påkrevd", required),
+    maxLength: helpers.withMessage("Tittel kan ikke være lengre enn 20 tegn", maxLength(20)),
+  },
   price: {
     required: helpers.withMessage("Pris er pekrevd", required),
     numeric: helpers.withMessage("Pris må være et tall", numeric),
