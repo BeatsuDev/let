@@ -18,7 +18,9 @@
       <div class="top-bar">
         <h1 id="listing-title" class="text-one-line">{{ listing.title }}</h1>
         <div
-          v-if="sessionStore.getUser()?.email === listing.seller?.email"
+          v-if="
+            sessionStore.getUser()?.email === listing.seller?.email || sessionStore.getUser()?.admin
+          "
           id="edit-btn"
           class="button-slim button-green button-screaming"
           @click="router.push('/edit-listing/' + listing?.id)"

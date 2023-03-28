@@ -263,7 +263,7 @@ const rules = {
   },
   summary: {
     required: helpers.withMessage("Sammendrag er påkrevd", required),
-    maxLength: helpers.withMessage("Sammendrag kan ikke være lengre enn 100 tegn", maxLength(100)),
+    maxLength: helpers.withMessage("Sammendrag kan ikke være lengre enn 60 tegn", maxLength(60)),
   },
   description: { required: helpers.withMessage("Beskrivelse er påkrevd", required) },
   localImages: {
