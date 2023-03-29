@@ -267,8 +267,8 @@ const rules = {
   },
   description: { required: helpers.withMessage("Beskrivelse er påkrevd", required) },
   localImages: {
-    size: helpers.withMessage("Bilder må være mindre enn 1 MB", (images: File[]) =>
-      images.every((image) => image.size < 1024 * 1024)
+    size: helpers.withMessage("Bilder må være mindre enn 3 MB", (images: File[]) =>
+      images.every((image) => image.size < 3 * 1024 * 1024)
     ),
   },
   allImages: {
