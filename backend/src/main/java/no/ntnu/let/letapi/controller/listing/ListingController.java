@@ -48,7 +48,7 @@ public class ListingController {
      * @param latitude Latitude
      * @param radius Radius
      * @param categories Categories
-     * @param userId User ID
+     * @param user User ID
      * @param favorites Whether to only show favorites
      * @param state Listing states to filter by
      * @param page  Page number
@@ -62,7 +62,7 @@ public class ListingController {
             @RequestParam(required = false) Double latitude,
             @RequestParam(required = false) Integer radius,
             @RequestParam(required = false) List<Integer> categories,
-            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long user,
             @RequestParam(required = false) Boolean favorites,
             @RequestParam(required = false) List<ListingState> state,
             @RequestParam(defaultValue = "1", required = false) Integer page,
@@ -93,8 +93,8 @@ public class ListingController {
             favoritesOf = authenticationService.getLoggedInUser();
         }
 
-        if (userId != null) {
-            Boolean ownerOrAdmin = authenticationService.isAdminOrAllowed(user -> user.getId() == userId);
+        if (user != null) {
+            Boolean ownerOrAdmin = authenticationService.isAdminOrAllowed(u -> u.getId() == user);
             if (ownerOrAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             if (!ownerOrAdmin) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -105,7 +105,7 @@ public class ListingController {
                 .searchString(searchString)
                 .locationRadius(location, radius)
                 .categories(categories)
-                .userId(userId)
+                .userId(user)
                 .favoritesOf(favoritesOf)
                 .states(state);
         ListingFilter filter = filterBuilder.build();
