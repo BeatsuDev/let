@@ -183,6 +183,7 @@ function imageUrls(images: Image[]): string[] {
 main {
   display: flex;
   flex-direction: row;
+  height: 100vh;
 }
 
 /* ----- IMAGES SECTION ----- */
