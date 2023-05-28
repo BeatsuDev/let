@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper main-wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
 
     <div :class="{ 'blur-background': true, blur: showEmoji }"></div>
