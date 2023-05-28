@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrapper">
+  <div class="main-wrapper wrapper">
     <h2 id="title">{{ randomResponse }}</h2>
     <div class="form-container">
       <FullUserDetailsForm
@@ -58,6 +58,11 @@ function register() {
 </script>
 
 <style scoped>
+.wrapper {
+  text-align: center;
+}
+
+
 h2 {
   margin: 2rem auto 3rem auto;
 }
