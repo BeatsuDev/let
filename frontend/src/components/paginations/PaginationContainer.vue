@@ -52,4 +52,10 @@ const page = computed({
   padding: 2rem;
   display: flex;
 }
+
+@media (max-width: 768px) {
+  .menu {
+    padding: 0;
+  }
+}
 </style>
