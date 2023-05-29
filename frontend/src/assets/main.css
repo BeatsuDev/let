@@ -134,6 +134,15 @@ main {
   background-color: rgba(50, 50, 50, 0.3);
   border-radius: 5px;
 }
+.main-wrapper {
+  height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .main-wrapper {
+    margin: 0 1.5rem;
+  }
+}
 
 @media screen and (max-width: 600px) {
   .active {
@@ -145,8 +154,8 @@ main {
   }
 
   .wrapper-form {
-    padding: 0.5rem;
-    margin: 0.3rem;
+    padding: 2rem 2rem;
+    margin: 2rem;
     width: 100%;
   }
 }
